@@ -1,17 +1,18 @@
 import { FunctionComponent, useState } from "react";
-import { isTemplateTail } from "typescript";
+import { appConfig } from "../../../configuration";
 import { validateEmail } from "../../../utils";
-import { Input } from "../../shared";
-import Button from "../../shared/button/Button";
+import { Input, Button } from "../../shared";
 
 interface SignUpFormProps {
 
 }
-interface signUp { name: string, email: string; password: string; confirmPassword: string; avatar: string; }
+
+interface SignUp { name: string, email: string; password: string; confirmPassword: string; avatar: string; }
 const initialState = { email: '', password: '', confirmPassword: '', name: '', avatar: '' }
+
 const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
 
-    const [signUp, setSignUp] = useState<signUp>(initialState)
+    const [signUp, setSignUp] = useState<SignUp>(initialState)
     const [isValid, setIsValid] = useState<boolean>(false)
 
     const handleChange = ({ target }: { target: any }) => {
@@ -28,10 +29,26 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
         })
     }
 
-    const handleSubmit = (event: any) => {
+    const handleSubmit = async (event: any) => {
         event.preventDefault();
         //send to server
-        setSignUp(initialState)
+        const url = `${appConfig.serverUrl}${appConfig.signUpEndpoint}`
+        const res = await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(signUp),
+            credentials: "include",
+            mode: 'cors',
+            redirect: 'follow',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        if (res.ok) {
+            const resBody = await res.json()
+            console.log(resBody);
+            setIsValid(false);
+            setSignUp(initialState);
+        }
     }
 
     return (<>
