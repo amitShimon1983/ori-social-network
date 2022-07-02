@@ -6,7 +6,7 @@ const corsOptions = (whiteList: string[]) => (req: any, callback: any) => {
     const getOriginValue = () => whiteList.find((origin: string) => origin === req.header('origin'))
     const options = {
         origin: getOriginValue(),
-        credential: true,
+        credentials: true,
     }
     callback(null, options)
 }
@@ -19,10 +19,10 @@ export default (app: Application, options: CorsMiddlewareOptions) => {
         if (req.headers.origin && allowedOrigins.includes(req.headers.origin)) {
             res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
         }
-        res.setHeader('Access-Control-Allow-Method', 'GET, OPTIONS, PUT, PATCH, DELETE, POST');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS, POST, PUT, PATCH, DELETE');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, *');
-        res.setHeader('Access-Control-Allow-Credential', 'true');
-        res.setHeader('Cache-Control', 'no-store,no-cache, must-revalidate');
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.setHeader('Cache-Control', 'no-store,no-cache,must-revalidate');
         res.setHeader('Vary', 'Origin');
         return next();
     }
