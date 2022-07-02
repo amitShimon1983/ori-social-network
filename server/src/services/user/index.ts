@@ -14,6 +14,13 @@ export class UserService {
             password,
         })
     }
+
+    async findOneIfExists(email: string) {
+        return await UserModel.findOne({
+            email,
+        })
+    }
+    
     async createUser(name: string, email: string, password: string, avatar: string) {
         return await UserModel.create({
             name,
