@@ -1,4 +1,8 @@
 import { FunctionComponent, useState } from "react";
+import { useNavigate } from "react-router";
+import { appConfig } from "../../../configuration";
+import { httpService } from "../../../services";
+import { validateEmail } from "../../../utils";
 import { Input } from "../../shared";
 import Button from "../../shared/button/Button";
 
@@ -13,16 +17,34 @@ interface Login {
 const LoginForm: FunctionComponent<LoginFormProps> = () => {
     const [login, setLogin] = useState<Login>(initialState);
     const [isValid, setIsValid] = useState<boolean>(false)
+    const navigate = useNavigate();
 
     const handleChange = ({ target }: { target: any }) => {
         console.log({ target });
-        setLogin((prev) => ({ ...prev, [target?.name]: target?.value }))
+        setLogin((prev) => {
+            const newState = { ...prev, [target?.name]: target?.value };
+            if ((newState?.email && validateEmail(newState.email)) && newState.password) {
+                setIsValid(true)
+            }
+            return (newState)
+        })
     }
 
-    const handleSubmit = (event: any) => {
+    const onSuccess = (payload: any) => {
+        setIsValid(false);
+        setLogin(initialState);
+        localStorage.setItem('i', JSON.stringify(payload));
+        navigate("/home");
+    }
+
+    const handleSubmit = async (event: any) => {
         event.preventDefault();
         //logic
-        setLogin(initialState)
+        const url = `${appConfig.serverUrl}${appConfig.loginEndpoint}`
+        const res: any = await httpService.post(url, JSON.stringify(login));
+        if (res.status === 200) {
+            onSuccess(res.payload);
+        }
     }
 
     return (<form>

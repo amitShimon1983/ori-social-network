@@ -15,16 +15,16 @@ function App() {
   const handleNavigate = () => {
     navigate("/home")
   }
-  const handleLogout = () => {
-    localStorage.setItem('i', '');
-    setUser(undefined)
-    navigate("/")
-  }
+  // const handleLogout = () => {
+  //   localStorage.setItem('i', '');
+  //   setUser(undefined)
+  //   navigate("/")
+  // }
 
   return (
     <div className="App">
       <Button handleClick={handleNavigate}>Go big or go home</Button>
-      <Button handleClick={handleLogout}>logout</Button>
+      {/* <Button handleClick={handleLogout}>logout</Button> */}
       <h1>Ori Social network</h1>
       <Routes>
         <Route path="/" element={<Authenticate />} />

@@ -15,7 +15,7 @@ export class AuthenticationService {
         //todo convert password to hash
         const user = await userService.findOneIfExists(email)
         const res = new ApiResponse();
-        if (!user || !await hashService.compare(user.password, password)) {
+        if (!user || !await hashService.compare(password, user.password)) {
             res.setErrors(['Something went wrong please try again later.'])
         } else {
             const payload = { name: user.name, email: user.email, avatar: user.avatar, _id: user._id }
