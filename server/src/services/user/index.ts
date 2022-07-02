@@ -8,13 +8,7 @@ export class UserService {
         }
         return UserService.instance;
     }
-    async findOne(email: string, password: string) {
-        return await UserModel.findOne({
-            email,
-            password,
-        })
-    }
-
+    
     async findOneIfExists(email: string) {
         return await UserModel.findOne({
             email,

@@ -1,5 +1,7 @@
 import { FunctionComponent, useState } from "react";
+import { useNavigate } from "react-router";
 import { appConfig } from "../../../configuration";
+import { httpService } from "../../../services";
 import { validateEmail } from "../../../utils";
 import { Input, Button } from "../../shared";
 
@@ -14,6 +16,15 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
 
     const [signUp, setSignUp] = useState<SignUp>(initialState)
     const [isValid, setIsValid] = useState<boolean>(false)
+    const navigate = useNavigate();
+
+    const onSuccess = (payload: any) => {
+        setIsValid(false);
+        setSignUp(initialState);
+        //set user
+        localStorage.setItem('i', JSON.stringify(payload));
+        navigate("/home");
+    }
 
     const handleChange = ({ target }: { target: any }) => {
         setSignUp((prev) => {
@@ -31,23 +42,10 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
 
     const handleSubmit = async (event: any) => {
         event.preventDefault();
-        //send to server
         const url = `${appConfig.serverUrl}${appConfig.signUpEndpoint}`
-        const res = await fetch(url, {
-            method: 'POST',
-            body: JSON.stringify(signUp),
-            credentials: "include",
-            mode: 'cors',
-            redirect: 'follow',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        if (res.ok) {
-            const resBody = await res.json()
-            console.log(resBody);
-            setIsValid(false);
-            setSignUp(initialState);
+        const res: any = await httpService.post(url, JSON.stringify(signUp));
+        if (res.status === 200) {
+            onSuccess(res.payload);
         }
     }
 
