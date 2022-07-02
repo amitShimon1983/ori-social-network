@@ -3,3 +3,5 @@ export { LoginButton } from './authenticate';
 export { LoginForm } from './authenticate';
 export { SignUpButton } from './authenticate';
 export { SignUpForm } from './authenticate';
+export { default as Home } from './home';
+export * from './shared';
