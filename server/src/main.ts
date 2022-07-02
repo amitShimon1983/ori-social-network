@@ -8,10 +8,7 @@ const app = express();
 const port = appConfig.port;
 
 async function main() {
-     configureApp(app, appConfig);
-    if (appConfig?.dbConnectionString) {
-        mongoose.connect(appConfig.dbConnectionString);
-    }
+    configureApp(app, appConfig);
     app.listen(port, () => {
         console.log(`Example app listening on port ${port}`)
     });
