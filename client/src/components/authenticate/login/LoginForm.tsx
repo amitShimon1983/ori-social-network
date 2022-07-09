@@ -2,8 +2,8 @@ import { FunctionComponent, useState } from "react";
 import { useNavigate } from "react-router";
 import { authService } from "../../../services";
 import { validateEmail } from "../../../utils";
-import { Input } from "../../shared";
-import Button from "../../shared/button/Button";
+import { Input, Button } from "../../shared";
+
 
 interface LoginFormProps {
     setUser: React.Dispatch<React.SetStateAction<{
@@ -36,7 +36,6 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({ setUser }) => {
     }
 
     const handleSubmit = async (event: any) => {
-        debugger
         event.preventDefault();
         await authService.login(login, (payload) => {
             onSuccess(payload)
