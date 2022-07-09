@@ -1,4 +1,5 @@
 
+import 'reflect-metadata'
 import express from 'express';
 import mongoose from 'mongoose';
 import { configureApp } from './app/configureApp';
@@ -8,8 +9,8 @@ const app = express();
 const port = appConfig.port;
 
 async function main() {
-    configureApp(app, appConfig);
-    app.listen(port, () => {
+    app.listen(port, async () => {
+        await configureApp(app, appConfig);
         console.log(`Example app listening on port ${port}`)
     });
 }

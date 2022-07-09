@@ -12,7 +12,8 @@ const createApolloServer = async (app: Express) => {
             emitSchemaFile: true,
             nullableByDefault: true
         })
-    })
+    });
+    await server.start()
     server.applyMiddleware({ app, path: 'api/graphql', cors: false })
     return server;
 }
