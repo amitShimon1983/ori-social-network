@@ -13,8 +13,6 @@ export class AuthenticationService {
     }
 
     async authenticate(email: string, password: string): Promise<{ servicesRes: ApiResponse; token?: string; isAuthenticate: boolean }> {
-        //todo convert password to hash
-        //generate token
         const user = await userService.findOneIfExists(email)
         const servicesRes = new ApiResponse();
         let token: string = '';
@@ -22,14 +20,32 @@ export class AuthenticationService {
         if (!user || !await hashService.compare(password, user.password)) {
             servicesRes.setErrors(['Something went wrong please try again later.'])
         } else {
-            const payload = { name: user.name, email: user.email, avatar: user.avatar, _id: user._id }
-            token = jwtService.sign(JSON.stringify(payload), 3600);
+            const { payload, newToken } = this._onAuthenticateSuccess(user);
+            token = newToken;
             isAuthenticate = true;
             servicesRes.setPayload(payload)
         }
         return { servicesRes, token, isAuthenticate };
     }
-
+    _onAuthenticateSuccess(user: IUser): { payload: any; newToken: string; } {
+        const payload = { name: user.name, email: user.email, avatar: user.avatar, _id: user._id }
+        const newToken = jwtService.sign(JSON.stringify(payload), 3600);
+        return { payload, newToken }
+    }
+    async refresh(oldToken: string): Promise<{ servicesRes: ApiResponse; token?: string; isAuthenticate: boolean }> {
+        const res = jwtService.verify(oldToken);
+        const servicesRes = new ApiResponse();
+        let isAuthenticate: boolean = false;
+        let token = '';
+        if (res?.data) {
+            const user = JSON.parse(res?.data);
+            const { payload, newToken } = this._onAuthenticateSuccess(user);
+            isAuthenticate = true;
+            token = newToken;
+            servicesRes.setPayload(payload)
+        }
+        return { servicesRes, isAuthenticate, token }
+    }
     async register(user: IUser): Promise<ApiResponse> {
         let res = new ApiResponse();
         const exists = await userService.findOneIfExists(user.email);
