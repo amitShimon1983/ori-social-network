@@ -1,11 +1,19 @@
 import { Resolver, Query, Ctx } from "type-graphql";
 import { userService } from "../../../services";
+import { User } from "./types";
 
 @Resolver()
 export class Account {
-    @Query(() => String)
-    async getAccount(@Ctx() context: any) {
+    @Query(() => User)
+    async getAccount(@Ctx() context: any): Promise<User> {
         const { user } = context;
-        return await userService.findOneIfExists(user.email)
+        const dbUser = await userService.findOneIfExists(user.email);
+        return {
+            name: dbUser?.name,
+            email: dbUser?.email,
+            _id: dbUser?._id,
+            avatar: dbUser?.avatar
+
+        } as User
     }
 }
