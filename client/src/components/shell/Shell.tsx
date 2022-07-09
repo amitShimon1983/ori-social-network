@@ -1,23 +1,29 @@
+import { useReactiveVar } from "@apollo/client";
 import { FunctionComponent } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { authService } from "../../services";
+import { appContextVar } from "../../services/store";
 import { Button } from "../shared";
 
 interface ShellProps {
-    setUser: React.Dispatch<React.SetStateAction<{
-        [key: string]: any;
-    } | undefined>>
+
 }
-const Shell: FunctionComponent<ShellProps> = ({ setUser }) => {
+const Shell: FunctionComponent<ShellProps> = () => {
+    const { isAuthenticate } = useReactiveVar(appContextVar);
     const navigate = useNavigate();
     const handleNavigate = () => {
         navigate("/home")
     }
     const handleLogout = async () => {
-        await authService.logout(() => {
-            setUser(undefined)
-            navigate("/login")
-        })
+        if (isAuthenticate) {
+            await authService.logout(() => {
+                appContextVar({
+                    user: {},
+                    isAuthenticate: false
+                })
+                navigate("/login")
+            })
+        }
     }
     const refreshToken = async () => {
         await authService.refresh()
