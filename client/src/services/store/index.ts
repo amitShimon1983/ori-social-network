@@ -1,6 +1,7 @@
 import { ApolloClient, from, NormalizedCacheObject, InMemoryCache, createHttpLink, makeVar } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
+import { authService } from '..';
 import { appConfig } from '../../configuration';
 const initialData = {
     user: {},
@@ -31,16 +32,24 @@ class ApolloProvider {
         this._getUser();
     }
     _getUser() {
-        let newValue: { [key: string]: any } = { isAuthenticate: false, loading: false };
         const userAsString = localStorage.getItem('user');
         if (!!userAsString?.trim()) {
-            newValue = {
+            const newValue = {
                 user: JSON.parse(userAsString),
                 isAuthenticate: true,
                 loading: false
             }
+            appContextVar(newValue)
+        } else {
+            this._tryRefresh()
         }
-        appContextVar(newValue)
+    }
+    _tryRefresh() {
+        authService.refresh((data: any) => {
+            appContextVar({ user: data, isAuthenticate: true, loading: false })
+        }, () => {
+            appContextVar({ isAuthenticate: false, loading: false })
+        });
     }
     _createApolloLinks() {
         const httpLink = this._createHttpLink();
