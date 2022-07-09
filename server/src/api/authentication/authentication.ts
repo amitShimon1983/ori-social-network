@@ -39,7 +39,7 @@ router.post('/api/logout', async (req: Request, res: Response) => {
 })
 router.get('/api/refresh', async (req: Request, res: Response) => {
     if (req.cookies.user) {
-        console.log(req.cookies.user);
+        //TODO build refresh mechanism
     }
     res.status(200).json({});
 })
