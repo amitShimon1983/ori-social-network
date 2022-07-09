@@ -5,12 +5,10 @@ import { authService } from '..';
 import { appConfig } from '../../configuration';
 const initialData = {
     user: {},
-    isAuthenticate: false
+    isAuthenticate: false,
+    loading: true
 }
-export const appContextVar = makeVar<{ [key: string]: any }>({
-    ...initialData,
-    loading: true,
-})
+export const appContextVar = makeVar<{ [key: string]: any }>(initialData)
 class ApolloProvider {
     client?: ApolloClient<NormalizedCacheObject>;
     static instance: ApolloProvider;

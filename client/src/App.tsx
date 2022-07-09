@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
 import './App.css';
-import { Home, LoginForm, ProtectedRoute, SignUpForm, Shell, StoreProvider } from './components';
+import { Home, LoginForm, ProtectedRoute, SignUpForm, Shell, AppContainer } from './components';
 import { Routes, Route, Navigate } from 'react-router-dom';
+
 
 
 function App() {
   return (
-    <StoreProvider>
+    <AppContainer>
       <div className="app">
         <Routes>
           <Route path="*" element={<Navigate to={'home'} />} />
@@ -23,7 +23,7 @@ function App() {
           </Route>
         </Routes>
       </div>
-    </StoreProvider>
+    </AppContainer>
   );
 }
 
