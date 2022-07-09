@@ -14,7 +14,6 @@ class HttpProvider {
         options?: RequestInit
     ): Promise<TResponse | undefined> {
         const response = await fetch(url, options);
-        debugger
         let res: TResponse | undefined;
         const bodyAsText = await response.text();
         if (bodyAsText) {

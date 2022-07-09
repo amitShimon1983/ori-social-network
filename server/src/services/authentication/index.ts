@@ -1,5 +1,6 @@
 import { ApiResponse, IUser } from '../../model';
-import { userService, hashService } from '../';
+import { userService, hashService, jwtService } from '../';
+import { stringify } from 'querystring';
 
 export class AuthenticationService {
     private static instance: AuthenticationService;
@@ -11,18 +12,22 @@ export class AuthenticationService {
         return AuthenticationService.instance;
     }
 
-    async authenticate(email: string, password: string): Promise<ApiResponse> {
+    async authenticate(email: string, password: string): Promise<{ servicesRes: ApiResponse; token?: string; isAuthenticate: boolean }> {
         //todo convert password to hash
         //generate token
         const user = await userService.findOneIfExists(email)
-        const res = new ApiResponse();
+        const servicesRes = new ApiResponse();
+        let token: string = '';
+        let isAuthenticate: boolean = false;
         if (!user || !await hashService.compare(password, user.password)) {
-            res.setErrors(['Something went wrong please try again later.'])
+            servicesRes.setErrors(['Something went wrong please try again later.'])
         } else {
             const payload = { name: user.name, email: user.email, avatar: user.avatar, _id: user._id }
-            res.setPayload(payload)
+            token = jwtService.sign(JSON.stringify(payload), 3600);
+            isAuthenticate = true;
+            servicesRes.setPayload(payload)
         }
-        return res;
+        return { servicesRes, token, isAuthenticate };
     }
 
     async register(user: IUser): Promise<ApiResponse> {

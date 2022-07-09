@@ -6,29 +6,21 @@ import { httpService } from './services';
 import { appConfig } from './configuration';
 
 function App() {
-  const [user, setUser] = useState();
-  useEffect(() => {
-    const item = localStorage.getItem('user');
-    if (item) {
-      setUser(JSON.parse(item));
-    }
-  }, [])
+  const [user, setUser] = useState<{ [key: string]: any }>();
   const navigate = useNavigate();
   const handleNavigate = () => {
     navigate("/home")
   }
   const handleLogout = async () => {
-    localStorage.setItem('user', '');
     const url = `${appConfig.serverUrl}${appConfig.logoutEndpoint}`
     const res: any = await httpService.post(url);
+    localStorage.setItem('user', '');
     setUser(undefined)
-    navigate("/")
+    navigate("/login")
   }
   const refreshToken = async () => {
     const url = `${appConfig.serverUrl}/api/refresh`
-    const res: any = await httpService.get(url);
-    setUser(undefined)
-    navigate("/")
+    await httpService.get(url);
   }
 
   return (
@@ -38,8 +30,8 @@ function App() {
       <Button handleClick={refreshToken}>refresh</Button>
       <h1>Ori Social network</h1>
       <Routes>
-        <Route path="/" element={<Authenticate />} />
-        <Route path="/login" element={<LoginForm />} />
+        <Route path="*" element={<Home />} />
+        <Route path="login" element={<LoginForm setUser={setUser} />} />
         <Route path="sign-up" element={<SignUpForm />} />
         <Route
           path="home"

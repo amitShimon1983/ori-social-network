@@ -12,36 +12,36 @@ router.post('/api/signUp', async (req: Request, res: Response) => {
     res.status(response?.status || 400).json(response)
 })
 router.post('/api/login', async (req: Request, res: Response) => {
-    let response: ApiResponse;
+
     if (req.body) {
-        response = await authenticationService.authenticate(req.body.email, req.body.password);
-        res.cookie('user', { user: JSON.stringify(response.payload) }, {
+        const { servicesRes, token, isAuthenticate } = await authenticationService.authenticate(req.body.email, req.body.password);
+        res.cookie('user', token, {
             expires: new Date(Date.now() + 315360000000),
             secure: true,
             httpOnly: true,
             sameSite: 'none'
         });
-        res.status(response?.status).json(response)
+        res.status(servicesRes?.status).json({ servicesRes, isAuthenticate })
     } else {
         res.status(400).json({})
     }
 })
 router.post('/api/logout', async (req: Request, res: Response) => {
     if (req.cookies) {
-        res.cookie('user', { user: '' }, {
+        res.cookie('user', '', {
             expires: new Date(Date.now() + 315360000000),
             secure: true,
             httpOnly: true,
             sameSite: 'none'
         });
     }
-    res.status(200);
+    res.status(200).json({});
 })
 router.get('/api/refresh', async (req: Request, res: Response) => {
     if (req.cookies.user) {
-       console.log(req.cookies.user);   
+        console.log(req.cookies.user);
     }
-    res.status(200);
+    res.status(200).json({});
 })
 
 

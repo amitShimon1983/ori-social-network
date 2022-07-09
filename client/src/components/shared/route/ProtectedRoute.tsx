@@ -7,8 +7,8 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: FunctionComponent<ProtectedRouteProps> = ({ user, children }) => {
-    if (!user) {
-        return <Navigate to="/" replace />;
+    if (!user?.isAuthenticate) {
+        return <Navigate to="/login" replace />;
     }
     return <>{children}</>;
 }
