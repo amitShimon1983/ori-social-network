@@ -13,6 +13,7 @@ export class AuthenticationService {
 
     async authenticate(email: string, password: string): Promise<ApiResponse> {
         //todo convert password to hash
+        //generate token
         const user = await userService.findOneIfExists(email)
         const res = new ApiResponse();
         if (!user || !await hashService.compare(password, user.password)) {

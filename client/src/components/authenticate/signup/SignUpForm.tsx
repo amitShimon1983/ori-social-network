@@ -21,8 +21,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
     const onSuccess = (payload: any) => {
         setIsValid(false);
         setSignUp(initialState);
-        //set user
-        localStorage.setItem('i', JSON.stringify(payload));
+        localStorage.setItem('user', JSON.stringify(payload));
         navigate("/home");
     }
 

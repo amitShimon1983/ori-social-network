@@ -33,15 +33,15 @@ const LoginForm: FunctionComponent<LoginFormProps> = () => {
     const onSuccess = (payload: any) => {
         setIsValid(false);
         setLogin(initialState);
-        localStorage.setItem('i', JSON.stringify(payload));
+        localStorage.setItem('user', JSON.stringify(payload));
         navigate("/home");
     }
 
     const handleSubmit = async (event: any) => {
         event.preventDefault();
-        //logic
         const url = `${appConfig.serverUrl}${appConfig.loginEndpoint}`
         const res: any = await httpService.post(url, JSON.stringify(login));
+        debugger
         if (res.status === 200) {
             onSuccess(res.payload);
         }
