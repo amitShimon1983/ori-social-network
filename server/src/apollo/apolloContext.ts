@@ -7,7 +7,6 @@ export const apolloContext = () => ({ req, res, event }: { req: any; res: any; e
     }
     const user = jwtService.verify(req?.cookies?.user);
     return {
-        user
+        user: JSON.parse(user?.data)
     }
-
 }
