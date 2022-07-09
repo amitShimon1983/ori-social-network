@@ -22,9 +22,9 @@ function App() {
 
   return (
     <div className="App">
-      <Button handleClick={handleNavigate}>Go big or go home</Button>
+      <Button handleClick={handleNavigate}>Go &#127968;</Button>
       <Button handleClick={handleLogout}>logout</Button>
-      <Button handleClick={refreshToken}>refresh</Button>
+      <Button handleClick={refreshToken}>&#10227;</Button>
       <h1>Ori Social network</h1>
       <Routes>
         <Route path="*" element={<Home />} />
