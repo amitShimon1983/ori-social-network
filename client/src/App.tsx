@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
-import { Authenticate, Home, LoginForm, ProtectedRoute, SignUpForm, Button } from './components';
+import { Home, LoginForm, ProtectedRoute, SignUpForm, Button } from './components';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { httpService } from './services';
-import { appConfig } from './configuration';
+import { authService } from './services';
 
 function App() {
   const [user, setUser] = useState<{ [key: string]: any }>();
@@ -12,15 +11,13 @@ function App() {
     navigate("/home")
   }
   const handleLogout = async () => {
-    const url = `${appConfig.serverUrl}${appConfig.logoutEndpoint}`
-    const res: any = await httpService.post(url);
-    localStorage.setItem('user', '');
-    setUser(undefined)
-    navigate("/login")
+    await authService.logout(() => {
+      setUser(undefined)
+      navigate("/login")
+    })
   }
   const refreshToken = async () => {
-    const url = `${appConfig.serverUrl}/api/refresh`
-    await httpService.get(url);
+    await authService.refresh()
   }
 
   return (

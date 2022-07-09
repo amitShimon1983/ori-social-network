@@ -1,7 +1,6 @@
 import { FunctionComponent, useState } from "react";
 import { useNavigate } from "react-router";
-import { appConfig } from "../../../configuration";
-import { httpService } from "../../../services";
+import { authService } from "../../../services";
 import { validateEmail } from "../../../utils";
 import { Input } from "../../shared";
 import Button from "../../shared/button/Button";
@@ -32,22 +31,16 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({ setUser }) => {
     }
 
     const onSuccess = (payload: any) => {
-        setIsValid(false);
-        setLogin(initialState);
-        const userAsString = JSON.stringify(payload);
-        localStorage.setItem('user', userAsString);
         setUser({ user: payload, isAuthenticate: true })
         navigate("/home");
     }
 
     const handleSubmit = async (event: any) => {
-        event.preventDefault();
-        const url = `${appConfig.serverUrl}${appConfig.loginEndpoint}`
-        const res: any = await httpService.post(url, JSON.stringify(login));
         debugger
-        if (res.isAuthenticate) {
-            onSuccess(res.servicesRes.payload);
-        }
+        event.preventDefault();
+        await authService.login(login, (payload) => {
+            onSuccess(payload)
+        })
     }
 
     return (<form>
