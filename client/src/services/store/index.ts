@@ -28,6 +28,7 @@ class ApolloProvider {
             cache: new InMemoryCache(),
             link: this._createApolloLinks()
         });
+        this._getUser();
     }
     _getUser() {
         let newValue: { [key: string]: any } = { isAuthenticate: false, loading: false };

@@ -18,7 +18,6 @@ const GET_ACCOUNT = gql`
 `;
 const Home: FunctionComponent<HomeProps> = () => {
     const { data, error, loading } = useQuery(GET_ACCOUNT)
-    debugger
     return (
         <div>
             <h1>Home Page, {JSON.stringify(data)}</h1>

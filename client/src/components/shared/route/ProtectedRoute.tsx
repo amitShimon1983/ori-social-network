@@ -1,5 +1,7 @@
+import { useReactiveVar } from "@apollo/client";
 import { FunctionComponent } from "react";
 import { Navigate } from "react-router";
+import { appContextVar } from "../../../services/store";
 
 interface ProtectedRouteProps {
     user: { [key: string]: any } | undefined,
@@ -7,7 +9,8 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: FunctionComponent<ProtectedRouteProps> = ({ user, children }) => {
-    if (!user?.isAuthenticate) {
+    const { isAuthenticate } = useReactiveVar(appContextVar);
+    if (!isAuthenticate) {
         return <Navigate to="/login" replace />;
     }
     return <>{children}</>;
