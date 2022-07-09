@@ -5,7 +5,7 @@ import { apolloContext, Account } from '../../../apollo';
 
 const createApolloServer = async (app: Express) => {
     const server = new ApolloServer({
-        context: apolloContext(),
+        context:  apolloContext(),
         schema: await buildSchema({
             resolvers: [Account],
             validate: false,
@@ -14,7 +14,7 @@ const createApolloServer = async (app: Express) => {
         })
     });
     await server.start()
-    server.applyMiddleware({ app, path: 'api/graphql', cors: false })
+    server.applyMiddleware({ app, path: '/api/graphql', cors: false })
     return server;
 }
 export default createApolloServer;
