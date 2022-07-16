@@ -1,4 +1,4 @@
-import { Configuration } from "../model";
+import { Configuration } from "../models";
 
 export class AppConfig {
 

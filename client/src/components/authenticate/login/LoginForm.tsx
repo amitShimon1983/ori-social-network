@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { authService } from "../../../services";
 import { appContextVar } from "../../../services/store";
 import { validateEmail } from "../../../utils";
-import { Input, Button } from "../../shared";
+import { Input, Button, AiOutlineLogin } from "../../shared";
 
 
 interface LoginFormProps {
@@ -48,7 +48,7 @@ const LoginForm: FunctionComponent<LoginFormProps> = () => {
     return (<form>
         <Input value={login.email} placeholder='Email' type='email' name='email' required handleChange={handleChange} />
         <Input value={login.password} placeholder="Password" type='password' name='password' required handleChange={handleChange} />
-        <Button disabled={!isValid} handleClick={handleSubmit}>Sign in...</Button>
+        <Button disabled={!isValid} handleClick={handleSubmit}><AiOutlineLogin />Sign in...</Button>
         {!!errors.length && errors.map(error => (<div>{error}</div>))}
     </form>);
 }

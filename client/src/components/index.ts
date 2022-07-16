@@ -6,3 +6,4 @@ export { SignUpForm } from './authenticate';
 export { Home } from './home';
 export { Shell } from './shell';
 export * from './shared';
+export * from './post';
