@@ -6,10 +6,14 @@ interface PostProps {
 }
 
 const Post: FunctionComponent<PostProps> = () => {
-    return (<>
-        <h1>Post</h1>
+    return (<div style={{ overflow: 'scroll', width: '100%', height: '100%' }}>
         <Video type={'video/mp4'} link={videoBj} />
-    </>);
+        <Video type={'video/mp4'} link={videoBj} />
+        <Video type={'video/mp4'} link={videoBj} />
+        <Video type={'video/mp4'} link={videoBj} />
+        <Video type={'video/mp4'} link={videoBj} />
+        <Video type={'video/mp4'} link={videoBj} />
+    </div>);
 }
 
 export default Post;

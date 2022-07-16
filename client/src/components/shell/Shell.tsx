@@ -4,7 +4,7 @@ import { Outlet, useNavigate } from "react-router";
 import { authService } from "../../services";
 import { appContextVar } from "../../services/store";
 import { AiOutlineLogout, Button, FcHome, FiRefreshCw } from "../shared";
-
+import classes from './Shell.module.css';
 interface ShellProps {
 
 }
@@ -29,11 +29,14 @@ const Shell: FunctionComponent<ShellProps> = () => {
         await authService.refresh()
     }
     return (<>
-        <Button handleClick={handleNavigate}>Go <FcHome /></Button>
-        <Button handleClick={handleLogout}><AiOutlineLogout /> logout</Button>
-        <Button handleClick={refreshToken}><FiRefreshCw /></Button>
-        <h1>Ori Social network</h1>
-        <Outlet />
+        <div style={{ position: 'sticky', top: 0 }}>
+            <Button handleClick={handleNavigate}>Go <FcHome /></Button>
+            <Button handleClick={handleLogout}><AiOutlineLogout /> logout</Button>
+            <Button handleClick={refreshToken}><FiRefreshCw /></Button>
+        </div>
+        <div className={classes.container}>
+            <Outlet />
+        </div>
     </>);
 }
 
