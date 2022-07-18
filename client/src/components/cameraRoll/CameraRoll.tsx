@@ -10,7 +10,7 @@ interface VideoProps {
 const CameraRoll: FunctionComponent<VideoProps> = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const photoRef = useRef<any>(null);
-    const [hasPhoto, sethasPhoto] = useState<boolean>(false)
+    const [hasPhoto, setHasPhoto] = useState<boolean>(false)
 
     const handleStream = useCallback(async (stream: MediaStream) => {
         let video = videoRef.current;
@@ -26,15 +26,18 @@ const CameraRoll: FunctionComponent<VideoProps> = () => {
         return () => {
         }
     }, [videoRef, getUserVideo])
-
+    const handleSaveImage = () => { cameraService.saveImage(videoRef.current, photoRef.current, () => setHasPhoto(true)) }
+    const handleClearImage = () => { cameraService.clearImage(photoRef.current, () => setHasPhoto(false)) }
     return (
         <div className={classes.camera}>
-            <VideoElement ref={videoRef}>
+            <VideoElement className={classes.video} ref={videoRef}>
             </VideoElement>
-            <Button handleClick={() => { }}>SNAP!</Button>
+            <div className={classes.buttons_panel}>
+                <Button handleClick={handleSaveImage}>SNAP!</Button>
+            </div>
             <div className={`${classes.results} ${hasPhoto && classes.hasPhoto}`}>
                 <canvas ref={photoRef}></canvas>
-                <Button handleClick={() => { }}>Close</Button>
+                <Button handleClick={handleClearImage}>Close</Button>
             </div>
         </div>
     );

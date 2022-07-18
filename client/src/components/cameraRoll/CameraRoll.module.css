@@ -1,3 +1,14 @@
-.camera{
-    
+.camera {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.video {
+    width: 25%;
+}
+
+.buttons_panel {
+    display: flex;
 }
