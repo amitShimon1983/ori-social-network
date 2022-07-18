@@ -30,8 +30,8 @@ const CameraRoll: FunctionComponent<VideoProps> = () => {
     return (
         <div className={classes.camera}>
             <VideoElement ref={videoRef}>
-                <Button handleClick={() => { }}>SNAP!</Button>
             </VideoElement>
+            <Button handleClick={() => { }}>SNAP!</Button>
             <div className={`${classes.results} ${hasPhoto && classes.hasPhoto}`}>
                 <canvas ref={photoRef}></canvas>
                 <Button handleClick={() => { }}>Close</Button>
