@@ -13,8 +13,11 @@ const CameraRoll: FunctionComponent<VideoProps> = () => {
     const [hasPhoto, setHasPhoto] = useState<boolean>(false)
 
     const handleStream = useCallback(async (stream: MediaStream) => {
-        let video = videoRef.current;
-        if (video) { video.srcObject = stream; video.play(); }
+        let video: any = videoRef.current;
+        if (video) {
+            video.srcObject = stream;
+            video.play();
+        }
     }, [videoRef])
 
     const getUserVideo = useCallback(async () => {
@@ -35,7 +38,7 @@ const CameraRoll: FunctionComponent<VideoProps> = () => {
             <div className={classes.buttons_panel}>
                 <Button handleClick={handleSaveImage}>SNAP!</Button>
             </div>
-            <div className={`${classes.results} ${hasPhoto && classes.hasPhoto}`}>
+            <div className={`${classes.picture} ${hasPhoto && classes.hasPhoto}`}>
                 <canvas ref={photoRef}></canvas>
                 <Button handleClick={handleClearImage}>Close</Button>
             </div>

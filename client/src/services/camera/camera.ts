@@ -26,8 +26,6 @@ class CameraService {
             photo.width = width;
             photo.height = height;
             const ctx = photo.getContext('2d');
-            console.log({ video });
-
             ctx.drawImage(video, 0, 0, width, height);
             if (typeof onSuccess === 'function') {
                 onSuccess();
