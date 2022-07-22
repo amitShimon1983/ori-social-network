@@ -8,15 +8,16 @@ interface HomeProps {
 }
 
 const Home: FunctionComponent<HomeProps> = () => {
-  return (
+  return (<>
+    {/* <CameraRoll /> */}
     <div className={classes.container}>
-      {/* <CameraRoll /> */}
       <Post />
       <Post />
       <Post />
       <Post />
       <Post />
     </div>
+  </>
   );
 }
 
