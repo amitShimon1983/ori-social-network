@@ -5,5 +5,7 @@ export { SignUpButton } from './authenticate';
 export { SignUpForm } from './authenticate';
 export { Home } from './home';
 export { Shell } from './shell';
+export { Video } from './video';
+export { VideoFooter } from './videoFooter';
 export * from './shared';
 export * from './post';

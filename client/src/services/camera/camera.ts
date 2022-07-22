@@ -27,6 +27,8 @@ class CameraService {
             photo.height = height;
             const ctx = photo.getContext('2d');
             ctx.drawImage(video, 0, 0, width, height);
+            const base64 = this._toBase64(photo);
+
             if (typeof onSuccess === 'function') {
                 onSuccess();
             }
@@ -47,6 +49,30 @@ class CameraService {
             if (typeof onError === 'function') {
                 onError(error);
             }
+        }
+    }
+
+    _onVideoStart(video: any) {
+        video.play();
+    }
+
+    _onVideoPause(video: any) {
+        video.pause();
+    }
+
+    handleVideoActiveState(video: any, isPlaying: boolean) {
+        if (isPlaying) {
+            this._onVideoPause(video)
+        } else {
+            this._onVideoStart(video)
+        }
+    }
+
+    _toBase64(video: any) {
+        try {
+            return video.toDataURL("image/png");
+        } catch (error: any) {
+            console.error('[dataURItoBlob]', error.message);
         }
     }
 

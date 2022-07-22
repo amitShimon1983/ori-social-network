@@ -13,7 +13,7 @@ const CameraRoll: FunctionComponent<VideoProps> = () => {
     const [hasPhoto, setHasPhoto] = useState<boolean>(false)
 
     const handleStream = useCallback(async (stream: MediaStream) => {
-        let video: any = videoRef.current;
+        const video: any = videoRef.current;
         if (video) {
             video.srcObject = stream;
             video.play();
@@ -29,7 +29,9 @@ const CameraRoll: FunctionComponent<VideoProps> = () => {
         return () => {
         }
     }, [videoRef, getUserVideo])
-    const handleSaveImage = () => { cameraService.saveImage(videoRef.current, photoRef.current, () => setHasPhoto(true)) }
+    const handleSaveImage = () => { 
+        cameraService.saveImage(videoRef.current, photoRef.current, () => setHasPhoto(true)) 
+    }
     const handleClearImage = () => { cameraService.clearImage(photoRef.current, () => setHasPhoto(false)) }
     return (
         <div className={classes.camera}>

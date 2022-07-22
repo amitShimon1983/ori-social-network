@@ -1,19 +1,16 @@
 import { FunctionComponent } from "react";
-import { Video } from "../../screens";
+import { Video } from "../video";
 import videoBj from '../../assets/videoBj.mp4';
+import { VideoFooter } from "../videoFooter";
 interface PostProps {
 
 }
 
 const Post: FunctionComponent<PostProps> = () => {
-    return (<div style={{ overflow: 'scroll', width: '100%', height: '100%' }}>
+    return (<>
         <Video type={'video/mp4'} link={videoBj} />
-        <Video type={'video/mp4'} link={videoBj} />
-        <Video type={'video/mp4'} link={videoBj} />
-        <Video type={'video/mp4'} link={videoBj} />
-        <Video type={'video/mp4'} link={videoBj} />
-        <Video type={'video/mp4'} link={videoBj} />
-    </div>);
+        <VideoFooter />
+    </>);
 }
 
 export default Post;

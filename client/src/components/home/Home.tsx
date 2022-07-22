@@ -10,7 +10,11 @@ interface HomeProps {
 const Home: FunctionComponent<HomeProps> = () => {
   return (
     <div className={classes.container}>
-      <CameraRoll/>
+      {/* <CameraRoll /> */}
+      <Post />
+      <Post />
+      <Post />
+      <Post />
       <Post />
     </div>
   );
