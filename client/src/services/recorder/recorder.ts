@@ -16,7 +16,11 @@ export class Recorder {
     }
     start() {
         if (this?.cameraStream) {
-            this.mediaRecorder = new MediaRecorder(this?.cameraStream!, { mimeType: 'video/webm' });
+            this.mediaRecorder = new MediaRecorder(this?.cameraStream!, {
+                mimeType: 'video/webm',
+                audioBitsPerSecond: 128000,
+                videoBitsPerSecond: 2500000,
+            });
             this.mediaRecorder.ondataavailable = this._onDataAvailable.bind(this);
             this.mediaRecorder.onstop = this._onRecordingStop.bind(this);
             this.mediaRecorder.start(15000);

@@ -9,7 +9,7 @@ class CameraService {
         return CameraService.instance;
     }
 
-    async startRecordingVideo(stream: MediaStream) {
+    async startRecording(stream: MediaStream) {
         const recorder = new Recorder(stream);
         recorder.start()
         return recorder;

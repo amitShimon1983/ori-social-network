@@ -9,14 +9,14 @@ interface HomeProps {
 
 const Home: FunctionComponent<HomeProps> = () => {
   return (<>
-    {/* <CameraRoll /> */}
-    <div className={classes.container}>
+    <CameraRoll />
+    {/* <div className={classes.container}>
       <Post />
       <Post />
       <Post />
       <Post />
       <Post />
-    </div>
+    </div> */}
   </>
   );
 }
