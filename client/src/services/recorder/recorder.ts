@@ -23,7 +23,7 @@ export class Recorder {
             });
             this.mediaRecorder.ondataavailable = this._onDataAvailable.bind(this);
             this.mediaRecorder.onstop = this._onRecordingStop.bind(this);
-            this.mediaRecorder.start(15000);
+            this.mediaRecorder.start(1000);
         }
     }
     stop() {
