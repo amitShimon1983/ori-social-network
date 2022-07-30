@@ -1,3 +1,5 @@
+import { Recorder } from "../recorder/recorder";
+
 class CameraService {
     static instance: CameraService;
     static getInstance(): CameraService {
@@ -6,7 +8,17 @@ class CameraService {
         }
         return CameraService.instance;
     }
-    async getVideo(constraints?: MediaStreamConstraints | undefined, onSuccess?: (stream: MediaStream) => void, onError?: (error: Error) => void) {
+
+    async startRecordingVideo(stream: MediaStream) {
+        const recorder = new Recorder(stream);
+        recorder.start()
+        return recorder;
+    }
+    async stopRecording(recorder: Recorder) {
+        recorder.stop()
+    }
+
+    async getCameraStream(constraints?: MediaStreamConstraints | undefined, onSuccess?: (stream: MediaStream) => void, onError?: (error: Error) => void) {
         try {
             const stream: MediaStream = await navigator.mediaDevices.getUserMedia(constraints);
             if (typeof onSuccess === 'function') {
