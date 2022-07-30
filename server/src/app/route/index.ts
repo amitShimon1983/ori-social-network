@@ -1,8 +1,10 @@
 import { Application } from 'express';
-import { router } from '../../api';
+import { authRouter, fileUpload } from '../../api';
+
 
 const configureRoutes = (app: Application) => {
-    app.use('/', router)
+    app.use('/api/auth', authRouter)
+    app.use('/api/file', fileUpload)
 };
 
 

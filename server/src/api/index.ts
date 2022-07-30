@@ -1,1 +1,2 @@
-export { router } from './authentication'
+export * from './authentication'
+export * from './fileUpload'

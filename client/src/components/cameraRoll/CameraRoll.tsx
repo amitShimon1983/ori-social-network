@@ -1,6 +1,7 @@
 import { FunctionComponent, useCallback, useEffect, useRef, useState } from "react";
-import { cameraService, Recorder } from "../../services";
-import { Button, VideoElement } from "../shared";
+import { appConfig } from "../../configuration";
+import { cameraService, httpService, Recorder } from "../../services";
+import { Button, RecordingIcon, VideoElement } from "../shared";
 import classes from "./CameraRoll.module.css";
 
 interface VideoProps {
@@ -14,6 +15,10 @@ const CameraRoll: FunctionComponent<VideoProps> = () => {
     const [isRecording, setIsRecording] = useState<boolean>(false);
     const [recorder, serRecorder] = useState<Recorder>();
     const [stream, setStream] = useState<MediaStream>()
+    const [blob, setBlob] = useState<Blob>()
+
+    console.log('camera roll');
+
 
     const handleStream = useCallback(async (stream: MediaStream) => {
         const video: any = videoRef.current;
@@ -44,29 +49,49 @@ const CameraRoll: FunctionComponent<VideoProps> = () => {
     const handleStop = async () => {
         if (recorder) {
             cameraService.stopRecording(recorder);
-            setIsRecording(false)
+            setIsRecording(false);
         }
     }
+
     const handleStart = async () => {
+        setBlob(undefined)
         if (stream) {
-            const r = await cameraService.startRecording(stream);
+            const r = await cameraService.startRecording(stream, undefined, setBlob);
             setIsRecording(true)
             serRecorder(r)
         }
     }
+
+    const handleSave = async () => {
+        const url = `${appConfig.serverUrl}${appConfig.uploadEndpoint || '/api/file/upload'}`
+        // const res: any = await httpService.post(url, blob as any);
+        debugger
+        const fd = new FormData();
+        fd.append('files', blob!);
+        const res = await fetch(url, {
+            // HTTP request type
+            method: "POST",
+            // Sending our blob with our request
+            body: fd
+        });
+
+    }
+
     return (
         <div className={classes.camera}>
-            <VideoElement className={classes.video} video={{ controls: true, muted: isRecording }} ref={videoRef}>
+            <VideoElement className={classes.video} video={{ controls: true, muted: true }} ref={videoRef}>
             </VideoElement>
             <div className={classes.buttons_panel}>
                 <Button handleClick={handleSaveImage}>SNAP!</Button>
             </div>
+            {isRecording && <RecordingIcon>Recording... </RecordingIcon>}
+            {isRecording && <Button handleClick={handleStop}>stop recording...</Button>}
+            {!!blob && <Button handleClick={handleSave}>save video</Button>}
+            {!isRecording && <Button handleClick={handleStart}>start recording...</Button>}
             <div className={`${classes.picture} ${hasPhoto && classes.hasPhoto}`}>
                 <canvas ref={photoRef}></canvas>
                 <Button handleClick={handleClearImage}>Close</Button>
             </div>
-            {isRecording && <Button handleClick={handleStop}>stop recording...</Button>}
-            {!isRecording && <Button handleClick={handleStart}>start recording...</Button>}
         </div>
     );
 }
