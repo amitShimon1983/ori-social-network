@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import multer from "multer";
 import path from 'path';
-import { fileHandler, jwtService } from '../../services';
+import { fileService, jwtService } from '../../services';
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/')
@@ -18,7 +18,7 @@ router.post('/upload', upload.array("files"), async (req: Request, res: Response
     if (req.files) {
         const files = req.files
         const user = jwtService.getCookieData(req.cookies.user);
-        if (user) { await fileHandler.saveAll(files as Express.Multer.File[], user) }
+        if (user) { await fileService.saveAll(files as Express.Multer.File[], user) }
     }
     res.status(200).json(response)
 })
