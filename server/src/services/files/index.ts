@@ -12,7 +12,6 @@ export class FileHandler {
     }
 
     async saveAll(files: Express.Multer.File[], user: any) {
-        console.log(files);
         const newPosts = []
         for (let index = 0; index < files?.length; index++) {
             const file = files[index];
