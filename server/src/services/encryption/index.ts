@@ -20,14 +20,32 @@ class EncryptionProvider {
             data: input
         }, this._secret);
     }
+    getCookieData(input: string) {
+        if (!input) {
+            throw new Error('no valid cookie')
+        }
+        const res = this.verify(input);
+        if (res?.data) {
+            console.log(res?.data);
 
+            try {
+                const user = JSON.parse(res?.data);
+                return user;
+            }
+            catch (error) {
+                console.log(error);
+            }
+
+        }
+    }
     verify(input: string) {
         let token: any = '';
         try {
             token = jwt.verify(input, this._secret);
         }
         catch (error: any) {
-            return 'UNAUTHENTICATED';
+            const data = jwt.decode(input) as any
+            return { error: 'UNAUTHENTICATED', ...data };
         }
         return token
     }

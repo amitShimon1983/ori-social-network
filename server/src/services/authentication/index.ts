@@ -1,6 +1,5 @@
 import { ApiResponse, IUser } from '../../model';
 import { userService, hashService, jwtService } from '../';
-import { stringify } from 'querystring';
 
 export class AuthenticationService {
     private static instance: AuthenticationService;
@@ -15,8 +14,8 @@ export class AuthenticationService {
     async authenticate(email: string, password: string): Promise<{ servicesRes: ApiResponse; token?: string; isAuthenticate: boolean }> {
         const user = await userService.findOneIfExists(email)
         const servicesRes = new ApiResponse();
-        let token: string = '';
-        let isAuthenticate: boolean = false;
+        let token = '';
+        let isAuthenticate = false;
         if (!user || !await hashService.compare(password, user.password)) {
             servicesRes.setErrors(['Something went wrong please try again later.'])
         } else {
@@ -33,12 +32,11 @@ export class AuthenticationService {
         return { payload, newToken }
     }
     async refresh(oldToken: string): Promise<{ servicesRes: ApiResponse; token?: string; isAuthenticate: boolean }> {
-        const res = jwtService.verify(oldToken);
+        const user = jwtService.getCookieData(oldToken);
         const servicesRes = new ApiResponse();
-        let isAuthenticate: boolean = false;
+        let isAuthenticate = false;
         let token = '';
-        if (res?.data) {
-            const user = JSON.parse(res?.data);
+        if (user) {
             const { payload, newToken } = this._onAuthenticateSuccess(user);
             isAuthenticate = true;
             token = newToken;
@@ -47,7 +45,7 @@ export class AuthenticationService {
         return { servicesRes, isAuthenticate, token }
     }
     async register(user: IUser): Promise<ApiResponse> {
-        let res = new ApiResponse();
+        const res = new ApiResponse();
         const exists = await userService.findOneIfExists(user.email);
         if (exists) {
             res.setErrors(['Something went wrong please try again later.'])
