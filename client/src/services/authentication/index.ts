@@ -18,7 +18,7 @@ class AuthenticationService {
     }
 
     async refresh(onSuccess?: (value: any) => void, onError?: () => void) {
-        const url = `${appConfig.serverUrl}/api/refresh`
+        const url = `${appConfig.serverUrl}${appConfig.refreshEndpoint}`
         const res: any = await httpService.get(url);
         if (res?.isAuthenticate) {
             this._onAuthenticationSuccess(res, onSuccess);
