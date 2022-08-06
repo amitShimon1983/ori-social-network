@@ -75,16 +75,13 @@ class HttpProvider {
 
     async post<TResponse>(
         url: RequestInfo,
-        body?: string
+        body?: string | FormData
     ): Promise<TResponse | undefined> {
         return await this.callApi<TResponse>(url, {
             method: "POST",
             credentials: "include",
             mode: 'cors',
             redirect: 'follow',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body,
         });
     }
