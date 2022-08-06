@@ -53,10 +53,11 @@ class CameraService {
     }
     async saveVideo(url: string, blob: any, onSuccess?: () => void, onError?: (error: Error) => void): Promise<void> {
         try {
+            const filename = `${Date.now()}.webm`
             const formData = new FormData();
-            const blobFile = new File([blob!], 'your_file_name.webm');
+            const blobFile = new File([blob!], filename);
             formData.append('files', blobFile!);
-            formData.append('fileName', 'your_file_name.webm');
+            formData.append('fileName', filename);
             const res: any = await httpService.post(url, formData);
 
             if (typeof onSuccess === 'function') {
