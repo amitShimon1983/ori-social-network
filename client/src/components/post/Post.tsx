@@ -13,7 +13,7 @@ const Post: FunctionComponent<PostProps> = ({ post }) => {
     const [url, setUrl] = useState<string>('')
     useEffect(() => {
         const loadPost = async () => {
-            const blob: any = await httpService.getStream(filesUri + post.originalname);
+            const blob: any = await httpService.getStream(filesUri + post?.file?.originalname);
             const objectURL = URL.createObjectURL(blob);
             setUrl(objectURL)
         }

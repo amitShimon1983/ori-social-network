@@ -2,13 +2,10 @@ import { model, Schema } from "mongoose";
 import { IPost } from "./type";
 
 const postSchema = new Schema<IPost>({
-    userId: { type: Schema.Types.ObjectId, ref: 'User' },
-    originalname: { type: String },
-    encoding: { type: String },
-    mimetype: { type: String },
-    filename: { type: String },
-    path: { type: String },
-    size: { type: Number },
+    file: { type: Schema.Types.ObjectId, ref: 'File' },
+    user: { type: Schema.Types.ObjectId, ref: 'User' },
+    title: String,
+    createdAt: { type: Date, default: new Date() }
 });
 
 const PostModel = model<IPost>('Post', postSchema);

@@ -4,7 +4,8 @@ import { authService } from "../../../services";
 import { appContextVar } from "../../../services/store";
 import { validateEmail } from "../../../utils";
 import { Input, Button, AiOutlineLogin } from "../../shared";
-
+import Form from "../../shared/form";
+import classes from '../Auth.module.css';
 
 interface LoginFormProps {
 
@@ -45,12 +46,16 @@ const LoginForm: FunctionComponent<LoginFormProps> = () => {
         }, onError)
     }
 
-    return (<form style={{ display: 'flex', width: '100%', height: "100%" }}>
-        <Input value={login.email} placeholder='Email' type='email' name='email' required handleChange={handleChange} />
-        <Input value={login.password} placeholder="Password" type='password' name='password' required handleChange={handleChange} />
-        <Button disabled={!isValid} handleClick={handleSubmit}><AiOutlineLogin />Sign in...</Button>
+    return (<Form>
+        <div>
+                <h2 className={classes.header}>Login...</h2>
+                <hr className={classes.hr} />
+            </div>
+        <Input className={classes.input} value={login.email} placeholder='Email' type='email' name='email' required handleChange={handleChange} />
+        <Input className={classes.input} value={login.password} placeholder="Password" type='password' name='password' required handleChange={handleChange} />
+        <Button className={classes.button} disabled={!isValid} handleClick={handleSubmit}><AiOutlineLogin />Sign in...</Button>
         {!!errors.length && errors.map(error => (<div>{error}</div>))}
-    </form>);
+    </Form>);
 }
 
 export default LoginForm;

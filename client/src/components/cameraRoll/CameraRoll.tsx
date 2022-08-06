@@ -1,24 +1,22 @@
 import { FunctionComponent, useCallback, useEffect, useRef, useState } from "react";
 import { appConfig } from "../../configuration";
-import { cameraService, httpService, Recorder } from "../../services";
+import { cameraService, Recorder } from "../../services";
 import { Button, RecordingIcon, VideoElement } from "../shared";
 import classes from "./CameraRoll.module.css";
 
 interface VideoProps {
-
+    onSave?: (blob: Blob) => void
 }
 
-const CameraRoll: FunctionComponent<VideoProps> = () => {
+const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const photoRef = useRef<any>(null);
     const [hasPhoto, setHasPhoto] = useState<boolean>(false);
     const [isRecording, setIsRecording] = useState<boolean>(false);
     const [recorder, serRecorder] = useState<Recorder>();
     const [stream, setStream] = useState<MediaStream>()
-    const [blob, setBlob] = useState<Blob>()
-
-    console.log('camera roll');
-
+    const [videoBlob, setVideoBlob] = useState<Blob>();
+    const [imageBlob, setImageBlob] = useState<Blob>();
 
     const handleStream = useCallback(async (stream: MediaStream) => {
         const video: any = videoRef.current;
@@ -42,10 +40,21 @@ const CameraRoll: FunctionComponent<VideoProps> = () => {
         return () => {
         }
     }, [videoRef, getUserVideo])
+
     const handleSaveImage = () => {
-        cameraService.saveImage(videoRef.current, photoRef.current, () => setHasPhoto(true))
+        cameraService.saveImage(videoRef.current, photoRef.current, (image) => {
+            setImageBlob(image)
+            setHasPhoto(true)
+        })
     }
-    const handleClearImage = () => { cameraService.clearImage(photoRef.current, () => setHasPhoto(false)) }
+
+    const handleClearImage = () => {
+        cameraService.clearImage(photoRef.current, () => {
+            setImageBlob(undefined)
+            setHasPhoto(false)
+        })
+    }
+
     const handleStop = async () => {
         if (recorder) {
             cameraService.stopRecording(recorder);
@@ -54,16 +63,21 @@ const CameraRoll: FunctionComponent<VideoProps> = () => {
     }
 
     const handleStart = async () => {
-        setBlob(undefined)
+        setVideoBlob(undefined)
         if (stream) {
-            const recorderRef = await cameraService.startRecording(stream, undefined, setBlob);
+            const recorderRef = await cameraService.startRecording(stream, undefined, setVideoBlob);
             setIsRecording(true)
             serRecorder(recorderRef)
         }
     }
-    const handleSave = async () => {
-        const url = `${appConfig.serverUrl}${appConfig.uploadEndpoint}`;
-        await cameraService.saveVideo(url, blob, )
+
+    const handleSave = async (blobToSave: Blob) => {
+        if (typeof onSave === 'function') {
+            onSave(blobToSave)
+        } else {
+            const url = `${appConfig.serverUrl}${appConfig.uploadEndpoint}`;
+            await cameraService.saveFile(url, blobToSave);
+        }
     }
 
     return (
@@ -75,7 +89,8 @@ const CameraRoll: FunctionComponent<VideoProps> = () => {
             </div>
             {isRecording && <RecordingIcon>Recording... </RecordingIcon>}
             {isRecording && <Button handleClick={handleStop}>stop recording...</Button>}
-            {!!blob && <Button handleClick={handleSave}>save video</Button>}
+            {!!videoBlob && <Button handleClick={() => handleSave(videoBlob)}>save video</Button>}
+            {!!imageBlob && <Button handleClick={() => handleSave(imageBlob)}>save Image</Button>}
             {!isRecording && <Button handleClick={handleStart}>start recording...</Button>}
             <div className={`${classes.picture} ${hasPhoto && classes.hasPhoto}`}>
                 <canvas ref={photoRef}></canvas>

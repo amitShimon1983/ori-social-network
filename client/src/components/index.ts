@@ -3,7 +3,7 @@ export { LoginButton } from './authenticate';
 export { LoginForm } from './authenticate';
 export { SignUpButton } from './authenticate';
 export { SignUpForm } from './authenticate';
-export { Home } from './home';
+export { Home } from './shared/home';
 export { Shell } from './shell';
 export { Video } from './video';
 export { VideoFooter } from './videoFooter';

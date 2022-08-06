@@ -1,22 +1,28 @@
 import { Router, Request, Response } from 'express';
-import { authenticationService, cookieService } from '../../services';
-
+import { authenticationService, fileService, cookieService } from '../../services';
+import { upload } from '../../app/middleware/uploadMiddleware';
 const authRouter = Router();
 
-authRouter.post('/signUp', async (req: Request, res: Response) => {
+authRouter.post('/signUp', upload.array("files"), async (req: Request, res: Response) => {
     let response;
-    if (req.body) {
-        response = await authenticationService.register(req.body);
+    if (req.files) {
+        const files = req.files
+        const dbFiles = await fileService.saveAll(files as Express.Multer.File[]);
+        if (req.body) {
+            response = await authenticationService.register(req.body, dbFiles[0]);
+        }
     }
     res.status(response?.status || 400).json(response)
 })
 authRouter.post('/login', async (req: Request, res: Response) => {
+
     if (req.body) {
         const { servicesRes, token, isAuthenticate } = await authenticationService.authenticate(req.body.email, req.body.password);
         cookieService.setCookie(res, token, 'user');
         res.status(servicesRes?.status).json({ servicesRes, isAuthenticate })
         return;
     }
+
     res.status(200).json({})
 })
 authRouter.post('/logout', async (req: Request, res: Response) => {

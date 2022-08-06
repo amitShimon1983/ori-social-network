@@ -15,12 +15,12 @@ export class UserService {
         })
     }
     
-    async createUser(name: string, email: string, password: string, avatar: string) {
+    async createUser(name: string, email: string, password: string, file: string) {
         return await UserModel.create({
             name,
             email,
             password,
-            avatar: avatar || ''
+            file: file || ''
         })
     }
 }

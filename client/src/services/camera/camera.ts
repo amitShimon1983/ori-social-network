@@ -32,7 +32,7 @@ class CameraService {
             }
         }
     }
-    saveImage(video: any, photo: any, onSuccess?: () => void, onError?: (error: Error) => void): void {
+    saveImage(video: any, photo: any, onSuccess?: (data: any) => void, onError?: (error: Error) => void): void {
         try {
             const width = 414;
             const height = width / (16 / 9);
@@ -40,20 +40,28 @@ class CameraService {
             photo.height = height;
             const ctx = photo.getContext('2d');
             ctx.drawImage(video, 0, 0, width, height);
-            const base64 = this._toBase64(photo);
+            // const base64 = this._toBase64(photo);
+            this._toBlob(photo, (blob) => {
 
-            if (typeof onSuccess === 'function') {
-                onSuccess();
-            }
+                if (typeof onSuccess === 'function') {
+                    onSuccess(blob);
+                }
+            });
         } catch (error: any) {
+            console.log(error.message);
+
             if (typeof onError === 'function') {
                 onError(error);
             }
         }
     }
-    async saveVideo(url: string, blob: any, onSuccess?: () => void, onError?: (error: Error) => void): Promise<void> {
+    private _toBlob(photo: any, cb: (data: any) => void) {
+        return photo.toBlob(cb);
+    }
+    async saveFile(url: string, blob: any, onSuccess?: () => void, onError?: (error: Error) => void): Promise<void> {
         try {
-            const filename = `${Date.now()}.webm`
+            const fileType = blob?.type?.split('/')?.[1]
+            const filename = `${Date.now()}.${fileType}`;
             const formData = new FormData();
             const blobFile = new File([blob!], filename);
             formData.append('files', blobFile!);

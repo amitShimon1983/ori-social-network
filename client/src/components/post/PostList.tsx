@@ -8,13 +8,17 @@ query GetRandomPosts{
     getRandomPosts{
         posts{
             _id
-            userId
-            originalname
-            encoding
-            mimetype
-            filename
-            path
-            size
+            user
+            title
+            createdAt
+            file {
+                originalname
+                encoding
+                mimetype
+                filename
+                path
+                size
+            }
         }
     }
 }
@@ -28,7 +32,8 @@ const PostList: FunctionComponent<PostListProps> = () => {
     return (<>
         {loading && <Spinner label="Loading..." />}
         {error && <div>{error?.message}</div>}
-        {!!data?.getRandomPosts.posts?.length && data?.getRandomPosts?.posts?.map((post: PostDetails) => <Post key={post._id} post={post} />)}
+        {!!data?.getRandomPosts.posts?.length && 
+        data?.getRandomPosts?.posts?.map((post: PostDetails) => <Post key={post._id} post={post} />)}
     </>);
 }
 

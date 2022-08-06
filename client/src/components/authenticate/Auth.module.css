@@ -19,8 +19,8 @@
     border: 0;
     color: black;
     text-align: center;
-    height: 1px;
-    opacity: .5;
+    height: 2px;
+    opacity: .7;
 }
 
 .input {
@@ -35,6 +35,10 @@
 
 .input::placeholder {
     color: white;
+}
+
+.camera_container {
+    height: 10%;
 }
 
 .button {

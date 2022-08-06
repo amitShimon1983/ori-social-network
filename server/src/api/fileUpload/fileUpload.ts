@@ -1,16 +1,7 @@
 import { Router, Request, Response } from 'express';
-import multer from "multer";
 import path from 'path';
-import { fileService, jwtService } from '../../services';
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/')
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname)
-    }
-});
-const upload = multer({ storage: storage })
+import { fileService, jwtService, postService } from '../../services';
+import { upload } from '../../app/middleware/uploadMiddleware';
 const router = Router();
 
 router.post('/upload', upload.array("files"), async (req: Request, res: Response) => {
@@ -18,14 +9,14 @@ router.post('/upload', upload.array("files"), async (req: Request, res: Response
     if (req.files) {
         const files = req.files
         const user = jwtService.getCookieData(req.cookies.user);
-        if (user) { await fileService.saveAll(files as Express.Multer.File[], user) }
+        if (user) {
+            const dbFiles = await fileService.saveAll(files as Express.Multer.File[]);
+            await postService.savePosts(dbFiles, user)
+        }
     }
     res.status(200).json(response)
 })
-router.get('/all', async (req: Request, res: Response) => {
-    const pathTo = path.join(__dirname, '../../../', 'uploads', '1659791809998_your_file_name.webm');
-    res.sendFile(pathTo);
-})
+
 router.get('/post/:postName', async (req: Request, res: Response) => {
     let pathTo;
     if (req.params) {
@@ -37,4 +28,5 @@ router.get('/post/:postName', async (req: Request, res: Response) => {
 
     return;
 })
+
 export default router;

@@ -1,9 +1,5 @@
-
-
-
-export class PostDetails {
+export class File {
     _id?: string;
-    userId?: string;
     originalname?: string;
     encoding?: string;
     mimetype?: string;
@@ -11,7 +7,15 @@ export class PostDetails {
     path?: string;
     size?: number;
 }
+export class PostDetails {
+    _id?: string;
+    user?: string;
+    title?: string;
+    createdAt?: string;
+    file?: File;
 
+
+}
 export class Posts {
     posts?: PostDetails[];
 }

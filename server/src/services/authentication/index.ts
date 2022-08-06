@@ -1,5 +1,6 @@
 import { ApiResponse, IUser } from '../../model';
 import { userService, hashService, jwtService } from '../';
+import { IFile } from '../../model/schema/file/type';
 
 export class AuthenticationService {
     private static instance: AuthenticationService;
@@ -27,7 +28,7 @@ export class AuthenticationService {
         return { servicesRes, token, isAuthenticate };
     }
     _onAuthenticateSuccess(user: IUser): { payload: any; newToken: string; } {
-        const payload = { name: user.name, email: user.email, avatar: user.avatar, _id: user._id }
+        const payload = { name: user.name, email: user.email, file: user.file, _id: user._id }
         const newToken = jwtService.sign(JSON.stringify(payload), 3600);
         return { payload, newToken }
     }
@@ -44,14 +45,14 @@ export class AuthenticationService {
         }
         return { servicesRes, isAuthenticate, token }
     }
-    async register(user: IUser): Promise<ApiResponse> {
+    async register(user: IUser, file: IFile): Promise<ApiResponse> {
         const res = new ApiResponse();
         const exists = await userService.findOneIfExists(user.email);
         if (exists) {
             res.setErrors(['Something went wrong please try again later.'])
         } else {
-            const newUser = await userService.createUser(user.name, user.email, await hashService.hash(user.password), user.avatar || '');
-            const payload = { name: newUser.name, email: newUser.email, avatar: newUser.avatar, _id: newUser._id }
+            const newUser = await userService.createUser(user.name, user.email, await hashService.hash(user.password), file._id || '');
+            const payload = { name: newUser.name, email: newUser.email, file: newUser.file, _id: newUser._id }
             res.setPayload(payload)
         }
         return res;

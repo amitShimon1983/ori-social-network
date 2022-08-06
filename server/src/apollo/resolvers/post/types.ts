@@ -1,11 +1,8 @@
 import { ObjectType, Field, ID } from "type-graphql";
-
 @ObjectType()
-export class Post {
+export class File {
     @Field(() => ID)
     _id?: string;
-    @Field(() => String)
-    userId?: string;
     @Field(() => String)
     originalname?: string;
     @Field(() => String)
@@ -18,6 +15,21 @@ export class Post {
     path?: string;
     @Field(() => Number)
     size?: number;
+}
+@ObjectType()
+export class Post {
+    @Field(() => ID)
+    _id?: string;
+    @Field(() => String)
+    user?: string;
+    @Field(() => String)
+    title?: string;
+    @Field(() => String)
+    createdAt?: string;
+    @Field(() => File)
+    file?: File;
+
+
 }
 @ObjectType()
 export class Posts {
