@@ -3,7 +3,7 @@ import { userService } from "../../../services";
 import { User } from "./types";
 
 @Resolver()
-export class Account {
+export class AccountResolver {
     @Query(() => User)
     async getAccount(@Ctx() context: any): Promise<User> {
         const { user } = context;

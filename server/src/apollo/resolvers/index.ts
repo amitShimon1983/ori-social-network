@@ -1,1 +1,2 @@
-export { Account } from './account'
+export { AccountResolver } from './account'
+export { PostResolver } from './post'

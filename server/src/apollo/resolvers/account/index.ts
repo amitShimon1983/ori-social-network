@@ -1,1 +1,1 @@
-export { Account } from './account';
+export { AccountResolver } from './account';
