@@ -61,20 +61,16 @@ const CameraRoll: FunctionComponent<VideoProps> = () => {
             serRecorder(r)
         }
     }
-
     const handleSave = async () => {
         const url = `${appConfig.serverUrl}${appConfig.uploadEndpoint || '/api/file/upload'}`
-        // const res: any = await httpService.post(url, blob as any);
-        debugger
         const fd = new FormData();
-        fd.append('files', blob!);
+        const blobFile = new File([blob!], 'your_file_name.webm');
+        fd.append('files', blobFile!);
+        fd.append('fileName', 'your_file_name.webm');
         const res = await fetch(url, {
-            // HTTP request type
             method: "POST",
-            // Sending our blob with our request
             body: fd
         });
-
     }
 
     return (
