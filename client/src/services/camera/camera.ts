@@ -1,3 +1,4 @@
+import { httpService } from "..";
 import { Recorder } from "../recorder/recorder";
 
 class CameraService {
@@ -40,6 +41,23 @@ class CameraService {
             const ctx = photo.getContext('2d');
             ctx.drawImage(video, 0, 0, width, height);
             const base64 = this._toBase64(photo);
+
+            if (typeof onSuccess === 'function') {
+                onSuccess();
+            }
+        } catch (error: any) {
+            if (typeof onError === 'function') {
+                onError(error);
+            }
+        }
+    }
+    async saveVideo(url: string, blob: any, onSuccess?: () => void, onError?: (error: Error) => void): Promise<void> {
+        try {
+            const formData = new FormData();
+            const blobFile = new File([blob!], 'your_file_name.webm');
+            formData.append('files', blobFile!);
+            formData.append('fileName', 'your_file_name.webm');
+            const res: any = await httpService.post(url, formData);
 
             if (typeof onSuccess === 'function') {
                 onSuccess();
