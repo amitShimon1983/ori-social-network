@@ -58,7 +58,7 @@ class CameraService {
             const blobFile = new File([blob!], filename);
             formData.append('files', blobFile!);
             formData.append('fileName', filename);
-            const res: any = await httpService.post(url, formData);
+            const res: any = await httpService.formData(url, formData);
 
             if (typeof onSuccess === 'function') {
                 onSuccess();

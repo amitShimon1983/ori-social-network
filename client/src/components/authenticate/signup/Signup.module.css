@@ -1,0 +1,46 @@
+.container {
+    display: flex;
+    height: 100%;
+    height: "100%";
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.header {
+    color: white;
+    text-align: center;
+    margin-bottom: 1vh;
+}
+
+.hr {
+    background: linear-gradient(to right, transparent, #818078, transparent);
+    border: 0;
+    color: black;
+    text-align: center;
+    height: 1px;
+    opacity: .5;
+}
+
+.input {
+    height: 4vh;
+    border: none;
+    background: black;
+    color: white;
+    outline: none;
+    padding-left: 5px;
+    border-bottom: 1px solid white;
+}
+
+.input::placeholder {
+    color: white;
+}
+
+.button {
+    height: 5vh;
+    background: white;
+    color: black;
+    font-size: 20px;
+    border: none;
+}

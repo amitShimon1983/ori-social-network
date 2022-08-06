@@ -1,6 +1,6 @@
 import { Resolver, Query, Ctx } from "type-graphql";
 import { postService } from "../../../services";
-import { Post, Posts } from "./types";
+import {  Posts } from "./types";
 
 @Resolver()
 export class PostResolver {

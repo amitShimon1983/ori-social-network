@@ -11,4 +11,5 @@ body, html, #root {
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
   height: 99%;
+  background-color: black;
 }

@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import classes from './Home.module.css';
-import { Post } from "../post";
 import { CameraRoll } from "../cameraRoll";
+import MyWall from "../myWall/MyWall";
 
 interface HomeProps {
 
@@ -9,14 +9,11 @@ interface HomeProps {
 
 const Home: FunctionComponent<HomeProps> = () => {
   return (<>
-    <CameraRoll />
-    {/* <div className={classes.container}>
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-    </div> */}
+    {/* <CameraRoll /> */}
+    <div className={classes.container}>
+      {/* <PostList /> */}
+      <MyWall/>
+    </div>
   </>
   );
 }

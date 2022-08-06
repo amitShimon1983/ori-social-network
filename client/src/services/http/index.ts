@@ -10,7 +10,7 @@ class HttpProvider {
         return HttpProvider.instance;
     }
     async callApi<TResponse>(
-        url: RequestInfo,
+       url: RequestInfo,
         options?: RequestInit
     ): Promise<TResponse | undefined> {
         const response = await fetch(url, options);
@@ -24,7 +24,14 @@ class HttpProvider {
             }
         }
         return res;
-    }
+    } 
+    async streamApi(
+       url: RequestInfo,
+        options?: RequestInit
+    ): Promise<any> {
+        const response = await fetch(url, options);
+        return await response.blob();
+    } 
 
     async get<TResponse>(
         url: RequestInfo,
@@ -36,8 +43,20 @@ class HttpProvider {
             mode: 'cors',
             redirect: 'follow',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
+            body,
+        });
+    }
+    async getStream<TResponse>(
+        url: RequestInfo,
+        body?: string
+    ): Promise<TResponse | undefined> {
+        return await this.streamApi(url, {
+            method: "GET",
+            credentials: "include",
+            mode: 'cors',
+            redirect: 'follow',
             body,
         });
     }
@@ -75,7 +94,34 @@ class HttpProvider {
 
     async post<TResponse>(
         url: RequestInfo,
-        body?: string | FormData
+        body?: string
+    ): Promise<TResponse | undefined> {
+        return await this.callApi<TResponse>(url, {
+            method: "POST",
+            credentials: "include",
+            mode: 'cors',
+            redirect: 'follow',
+            body,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+    }
+    async postWithNoHeaders<TResponse>(
+        url: RequestInfo,
+        body?: string
+    ): Promise<TResponse | undefined> {
+        return await this.callApi<TResponse>(url, {
+            method: "POST",
+            credentials: "include",
+            mode: 'cors',
+            redirect: 'follow',
+            body,
+        });
+    }
+    async formData<TResponse>(
+        url: RequestInfo,
+        body?: FormData
     ): Promise<TResponse | undefined> {
         return await this.callApi<TResponse>(url, {
             method: "POST",

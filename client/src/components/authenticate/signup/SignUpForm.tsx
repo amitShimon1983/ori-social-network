@@ -4,7 +4,7 @@ import { appConfig } from "../../../configuration";
 import { httpService } from "../../../services";
 import { validateEmail } from "../../../utils";
 import { Input, Button } from "../../shared";
-
+import classes from './Signup.module.css';
 interface SignUpFormProps {
 
 }
@@ -49,12 +49,16 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
     }
 
     return (<>
-        <form>
-            <Input handleChange={handleChange} placeholder='Email' type='email' name={'email'} value={signUp?.email} required />
-            <Input handleChange={handleChange} placeholder='Name' type='text' name={'name'} value={signUp?.name} required />
-            <Input handleChange={handleChange} placeholder='password' type='password' name='password' value={signUp?.password} required />
-            <Input handleChange={handleChange} placeholder='Confirm password' type='password' name='confirmPassword' value={signUp?.confirmPassword} required />
-            <Button disabled={!isValid} handleClick={handleSubmit}>Submit</Button>
+        <form className={classes.container}>
+            <div>
+                <h2 className={classes.header}>Sign Up!</h2>
+                <hr className={classes.hr} />
+            </div>
+            <Input className={classes.input} handleChange={handleChange} placeholder='Email' type='email' name={'email'} value={signUp?.email} required />
+            <Input className={classes.input} handleChange={handleChange} placeholder='Name' type='text' name={'name'} value={signUp?.name} required />
+            <Input className={classes.input} handleChange={handleChange} placeholder='password' type='password' name='password' value={signUp?.password} required />
+            <Input className={classes.input} handleChange={handleChange} placeholder='Confirm password' type='password' name='confirmPassword' value={signUp?.confirmPassword} required />
+            <Button className={classes.button} disabled={!isValid} handleClick={handleSubmit}>Submit</Button>
         </form>
     </>);
 }

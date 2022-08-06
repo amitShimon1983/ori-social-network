@@ -45,7 +45,7 @@ const LoginForm: FunctionComponent<LoginFormProps> = () => {
         }, onError)
     }
 
-    return (<form>
+    return (<form style={{ display: 'flex', width: '100%', height: "100%" }}>
         <Input value={login.email} placeholder='Email' type='email' name='email' required handleChange={handleChange} />
         <Input value={login.password} placeholder="Password" type='password' name='password' required handleChange={handleChange} />
         <Button disabled={!isValid} handleClick={handleSubmit}><AiOutlineLogin />Sign in...</Button>

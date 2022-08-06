@@ -26,11 +26,15 @@ router.get('/all', async (req: Request, res: Response) => {
     const pathTo = path.join(__dirname, '../../../', 'uploads', '1659791809998_your_file_name.webm');
     res.sendFile(pathTo);
 })
-router.get('/one/:name', async (req: Request, res: Response) => {
-    if (req.body) {
-        console.log(req.body);
+router.get('/post/:postName', async (req: Request, res: Response) => {
+    let pathTo;
+    if (req.params) {
+        pathTo = path.join(__dirname, '../../../', 'uploads', req.params.postName);
+        res.sendFile(pathTo);
+    } else {
+        res.status(200).json({})
     }
 
-    res.sendFile('../../../uploads');
+    return;
 })
 export default router;
