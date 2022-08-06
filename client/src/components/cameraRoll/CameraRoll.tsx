@@ -56,21 +56,14 @@ const CameraRoll: FunctionComponent<VideoProps> = () => {
     const handleStart = async () => {
         setBlob(undefined)
         if (stream) {
-            const r = await cameraService.startRecording(stream, undefined, setBlob);
+            const recorderRef = await cameraService.startRecording(stream, undefined, setBlob);
             setIsRecording(true)
-            serRecorder(r)
+            serRecorder(recorderRef)
         }
     }
     const handleSave = async () => {
-        const url = `${appConfig.serverUrl}${appConfig.uploadEndpoint || '/api/file/upload'}`
-        const fd = new FormData();
-        const blobFile = new File([blob!], 'your_file_name.webm');
-        fd.append('files', blobFile!);
-        fd.append('fileName', 'your_file_name.webm');
-        const res = await fetch(url, {
-            method: "POST",
-            body: fd
-        });
+        const url = `${appConfig.serverUrl}${appConfig.uploadEndpoint}`;
+        await cameraService.saveVideo(url, blob, )
     }
 
     return (
