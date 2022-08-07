@@ -25,14 +25,16 @@ const Me: FunctionComponent<MeProps> = () => {
         loadFile();
     }, [])
     const isVideo = type?.trim()?.toLowerCase()?.includes('video');
-    return (
+    return (<>
         <div className={classes.container}>
             {url && isVideo && <div className={classes.image}>
                 <Video videoClassName={classes.video} type={type} link={url} />
             </div>
             }
-            {url && !isVideo && <img className={classes.image} style={{ height: '100%', width: '100%', objectFit: 'cover' }} src={url} alt={'post'} />}
+            {url && !isVideo && <img className={classes.image} src={url} alt={'profilePicture'} />}
+            <p className={classes.email}>{user.email}</p>
         </div>
+    </>
     );
 }
 

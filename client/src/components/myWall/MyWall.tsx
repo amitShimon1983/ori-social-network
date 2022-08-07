@@ -9,8 +9,8 @@ interface MyWallProps {
 const MyWall: FunctionComponent<MyWallProps> = () => {
     return (<>
         <Me />
-        <div style={{ display: 'flex' }}>
-            <PostList  />
+        <div className={classes.container}>
+            <PostList postClassName={classes.post} />
         </div>
     </>
     );
