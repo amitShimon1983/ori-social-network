@@ -11,16 +11,20 @@ interface PostProps {
 const filesUri = `${appConfig.serverUrl}${'/api/file/post/'}`
 const Post: FunctionComponent<PostProps> = ({ post }) => {
     const [url, setUrl] = useState<string>('')
+    const [type, setType] = useState<string>('')
     useEffect(() => {
-        const loadPost = async () => {
+        const loadFile = async () => {
             const blob: any = await httpService.getStream(filesUri + post?.file?.originalname);
             const objectURL = URL.createObjectURL(blob);
+            setType(blob?.type)
             setUrl(objectURL)
         }
-        loadPost();
+        loadFile();
     }, [])
+    const isVideo = type?.trim()?.toLowerCase()?.includes('video')
     return (<div className={classes.container}>
-        {url && <Video type={'video/webm'} link={url} />}
+        {url && isVideo && <Video type={type} link={url} />}
+        {url && !isVideo && <img style={{ height: '100%', width: '100%', objectFit: 'cover' }} src={url} alt={'post'} />}
         <VideoFooter />
     </div>);
 }

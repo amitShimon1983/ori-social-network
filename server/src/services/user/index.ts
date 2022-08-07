@@ -12,7 +12,7 @@ export class UserService {
     async findOneIfExists(email: string) {
         return await UserModel.findOne({
             email,
-        })
+        }).populate('file')
     }
     
     async createUser(name: string, email: string, password: string, file: string) {

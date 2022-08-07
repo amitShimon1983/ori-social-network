@@ -8,6 +8,4 @@ export class User {
     name?: string;
     @Field(() => String)
     email?: string;
-    @Field(() => String)
-    avatar?: string;
 }

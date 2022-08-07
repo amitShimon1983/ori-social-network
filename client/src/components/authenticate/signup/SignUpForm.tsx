@@ -5,14 +5,13 @@ import { httpService } from "../../../services";
 import { validateEmail } from "../../../utils";
 import { CameraRoll } from "../../cameraRoll";
 import { Input, Button } from "../../shared";
-import Form from "../../shared/form";
 import classes from '../Auth.module.css';
 interface SignUpFormProps {
 
 }
 
-interface SignUp { name: string, email: string; password: string; confirmPassword: string; avatar: string; uploadedImage: string }
-const initialState = { email: '', password: '', confirmPassword: '', name: '', avatar: '', uploadedImage: '' }
+interface SignUp { name: string, email: string; password: string; confirmPassword: string; uploadedImage: string }
+const initialState = { email: '', password: '', confirmPassword: '', name: '', uploadedImage: '' }
 
 const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
 
@@ -50,7 +49,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
         const url = `${appConfig.serverUrl}${appConfig.signUpEndpoint}`;
         let formData = new FormData();
         for (let [key, val] of Object.entries(signUp)) {
-            formData.append(key, JSON.stringify(val));
+            formData.append(key, val);
         }
         const fileType = blob?.type?.split('/')?.[1]
         const filename = `${Date.now()}.${fileType}`;

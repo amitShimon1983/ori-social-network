@@ -12,8 +12,6 @@ export class AccountResolver {
             name: dbUser?.name,
             email: dbUser?.email,
             _id: dbUser?._id,
-            avatar: dbUser?.avatar
-
         } as User
     }
 }

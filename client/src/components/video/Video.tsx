@@ -5,9 +5,11 @@ import classes from './Video.module.css';
 interface VideoProps {
     type: string;
     link: string;
+    videoClassName?: string;
+    containerClassName?: string;
 }
 
-const Video: FunctionComponent<VideoProps> = ({ type, link }) => {
+const Video: FunctionComponent<VideoProps> = ({ type, link, containerClassName, videoClassName }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isPlaying, setIsPlaying] = useState(false)
 
@@ -17,8 +19,8 @@ const Video: FunctionComponent<VideoProps> = ({ type, link }) => {
     }
 
     return (
-        <div className={classes.container}>
-            <VideoElement ref={videoRef} className={classes.video} video={{
+        <div className={`${classes.container} ${containerClassName}`}>
+            <VideoElement ref={videoRef} className={`${classes.video} ${videoClassName}`} video={{
                 onClick: toggleVideoPlayingState,
                 width: "100%",
                 height: "100%"

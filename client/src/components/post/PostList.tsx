@@ -24,16 +24,16 @@ query GetRandomPosts{
 }
 `
 interface PostListProps {
-
+    className?: string;
 }
 
-const PostList: FunctionComponent<PostListProps> = () => {
+const PostList: FunctionComponent<PostListProps> = ({ className }) => {
     const { data, error, loading } = useQuery(GET_RANDOM_POSTS)
-    return (<>
+    return (< >
         {loading && <Spinner label="Loading..." />}
         {error && <div>{error?.message}</div>}
-        {!!data?.getRandomPosts.posts?.length && 
-        data?.getRandomPosts?.posts?.map((post: PostDetails) => <Post key={post._id} post={post} />)}
+        {!!data?.getRandomPosts.posts?.length &&
+            data?.getRandomPosts?.posts?.map((post: PostDetails) => <Post key={post._id} post={post} />)}
     </>);
 }
 
