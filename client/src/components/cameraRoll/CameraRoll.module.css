@@ -3,10 +3,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: 100%;
 }
 
 .video {
-    width: 25%;
+    width: 98%;
+    height: 80%;
+    object-fit: contain;
 }
 
 .picture {
@@ -15,6 +18,32 @@
 
 .buttons_panel {
     display: flex;
+}
+
+.button {
+    color: black;
+    background: whitesmoke;
+    height: 30px;
+    margin-right: 1vh;
+    padding: 1vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    border: none;
+}
+
+.recording_icon {
+    display: flex;
+    justify-content: flex-end;
+    width: 95%;
+}
+
+.button_recording {
+    background: red;
+    border-radius: 50%;
+    cursor: pointer;
+
 }
 
 .hasPhoto {

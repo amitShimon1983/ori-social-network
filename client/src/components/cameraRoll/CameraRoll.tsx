@@ -1,7 +1,7 @@
 import { FunctionComponent, useCallback, useEffect, useRef, useState } from "react";
 import { appConfig } from "../../configuration";
 import { cameraService, Recorder } from "../../services";
-import { Button, RecordingIcon, VideoElement } from "../shared";
+import { BiVideoRecording, Button, RecordingIcon, VideoElement } from "../shared";
 import classes from "./CameraRoll.module.css";
 
 interface VideoProps {
@@ -27,11 +27,15 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
     }, [videoRef])
 
     const getUserVideo = useCallback(async () => {
-        const strm = await cameraService.getCameraStream({
-            video: { width: 1920, height: 1080 }, audio: true
+        const userStream = await cameraService.getCameraStream({
+            video: { width: 500, height: 1080 }, audio: {
+                autoGainControl: false,
+                echoCancellation: false,
+                noiseSuppression: false
+            }
         }, handleStream);
-        if (strm) {
-            setStream(strm)
+        if (userStream) {
+            setStream(userStream)
         }
     }, [handleStream]);
 
@@ -79,23 +83,34 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
             await cameraService.saveFile(url, blobToSave);
         }
     }
-
+    const saveVideoHandler = () => {
+        if (videoBlob) {
+            handleSave(videoBlob);
+            setVideoBlob(undefined);
+        }
+    }
+    const saveImageHandler = () => {
+        if (imageBlob) {
+            handleSave(imageBlob);
+            setImageBlob(undefined)
+        }
+    }
     return (
         <div className={classes.camera}>
             <VideoElement className={classes.video} video={{ controls: true, muted: true }} ref={videoRef}>
             </VideoElement>
+            {isRecording && <div className={classes.recording_icon}><RecordingIcon></RecordingIcon></div>}
             <div className={classes.buttons_panel}>
-                <Button handleClick={handleSaveImage}>SNAP!</Button>
+                <Button className={classes.button} handleClick={handleSaveImage}>Task a picture</Button>
+                {isRecording && <Button className={`${classes.button} ${classes.button_recording}`} handleClick={handleStop}><BiVideoRecording /></Button>}
+                {!!videoBlob && <Button className={classes.button} handleClick={saveVideoHandler}>save video</Button>}
+                {!!imageBlob && <Button className={classes.button} handleClick={saveImageHandler}>save Image</Button>}
+                {!isRecording && <Button className={`${classes.button} ${classes.button_recording}`} handleClick={handleStart}><BiVideoRecording /></Button>}
             </div>
-            {isRecording && <RecordingIcon>Recording... </RecordingIcon>}
-            {isRecording && <Button handleClick={handleStop}>stop recording...</Button>}
-            {!!videoBlob && <Button handleClick={() => handleSave(videoBlob)}>save video</Button>}
-            {!!imageBlob && <Button handleClick={() => handleSave(imageBlob)}>save Image</Button>}
-            {!isRecording && <Button handleClick={handleStart}>start recording...</Button>}
-            <div className={`${classes.picture} ${hasPhoto && classes.hasPhoto}`}>
+            {/* <div className={`${classes.picture} ${hasPhoto && classes.hasPhoto}`}>
                 <canvas ref={photoRef}></canvas>
-                <Button handleClick={handleClearImage}>Close</Button>
-            </div>
+                <Button handleClick={handleClearImage}>Clear</Button>
+            </div> */}
         </div>
     );
 }

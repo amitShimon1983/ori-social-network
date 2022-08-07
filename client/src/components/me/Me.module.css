@@ -5,7 +5,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 1vh;
+    margin-bottom: 2vh;
+    margin-top: 2vh;
+    
 }
 
 .image {
@@ -17,6 +19,7 @@
     border-radius: 50%;
 }
 .email {
+    margin-top: 1vh;
     color: whitesmoke;
     width: 100%;
     text-align: center;

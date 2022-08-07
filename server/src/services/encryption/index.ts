@@ -26,8 +26,6 @@ class EncryptionProvider {
         }
         const res = this.verify(input);
         if (res?.data) {
-            console.log(res?.data);
-
             try {
                 const user = JSON.parse(res?.data);
                 return user;

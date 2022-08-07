@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import classes from './Recording.module.css';
 interface RecordingIconProps {
-    children: React.ReactNode
+    children?: React.ReactNode
 }
 
 const RecordingIcon: FunctionComponent<RecordingIconProps> = ({ children }) => {

@@ -3,7 +3,7 @@ import { FunctionComponent } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { authService } from "../../services";
 import { appContextVar } from "../../services/store";
-import { AiOutlineLogout, Button, FcHome } from "../shared";
+import { AiOutlineLogout, Button, FcHome, CgProfile, AiOutlineCloudUpload } from "../shared";
 import classes from './Shell.module.css';
 interface ShellProps {
 
@@ -11,8 +11,8 @@ interface ShellProps {
 const Shell: FunctionComponent<ShellProps> = () => {
     const { isAuthenticate } = useReactiveVar(appContextVar);
     const navigate = useNavigate();
-    const handleNavigate = () => {
-        navigate("/home")
+    const handleNavigate = (path: string) => {
+        navigate(path)
     }
     const handleLogout = async () => {
         if (isAuthenticate) {
@@ -28,7 +28,9 @@ const Shell: FunctionComponent<ShellProps> = () => {
 
     return (<>
         <div className={classes.header_container}>
-            <Button className={classes.button} handleClick={handleNavigate}> <FcHome /></Button>
+            <Button className={classes.button} handleClick={() => handleNavigate("/home")}> <FcHome /></Button>
+            <Button className={classes.button} handleClick={() => handleNavigate("/myWall")}><CgProfile /> </Button>
+            <Button className={classes.button} handleClick={() => handleNavigate("/post")}><AiOutlineCloudUpload /> </Button>
             <Button className={classes.button} handleClick={handleLogout}><AiOutlineLogout /> </Button>
         </div>
         <div className={classes.container}>

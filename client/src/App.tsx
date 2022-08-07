@@ -1,6 +1,8 @@
 import './App.css';
 import { Home, LoginForm, ProtectedRoute, SignUpForm, Shell, AppContainer } from './components';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import MyWall from './components/myWall/MyWall';
+import { CameraRoll } from './components/cameraRoll';
 
 
 
@@ -20,6 +22,8 @@ function App() {
             }
           >
             <Route path="/home" element={<Home />} />
+            <Route path="/myWall" element={<MyWall />} />
+            <Route path="/post" element={<CameraRoll />} />
           </Route>
         </Routes>
       </div>
