@@ -13,8 +13,7 @@ export class PostDetails {
     title?: string;
     createdAt?: string;
     file?: File;
-
-
+    likes?: any[]
 }
 export class Posts {
     posts?: PostDetails[];

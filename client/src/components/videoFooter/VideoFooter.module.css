@@ -1,3 +1,25 @@
 .container {
-    align-self: flex-end;
+    color: white;
+    position: relative;
+    bottom: 8vh;
+    padding: 1vh;
+}
+.icon_container {
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+.like_icon {
+    margin-right: 1vh;
+}
+.like_icon_selected {
+    color: red;
+}
+
+.like_icon_not_selected {
+    color: white
+}
+.comment_icon{
+    margin-right: 1vh;
 }
