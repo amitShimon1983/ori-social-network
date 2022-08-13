@@ -12,9 +12,9 @@ class LikeService {
     }
     async likePost(postId: string, userId: string, action: string) {
         const isUserLike = await LikeModel.findOne({ user: new Types.ObjectId(userId), post: new Types.ObjectId(postId) });
-        if (action === 'remove' && isUserLike) {
+        if (action === 'dislike' && isUserLike) {
             await isUserLike.remove();
-        } else if (!isUserLike && action === 'add') {
+        } else if (!isUserLike && action === 'like') {
             const like = await LikeModel.create({ user: new Types.ObjectId(userId), post: new Types.ObjectId(postId) })
             return like;
         }

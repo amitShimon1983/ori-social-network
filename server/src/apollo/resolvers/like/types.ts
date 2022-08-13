@@ -7,7 +7,7 @@ export class Like {
     @Field(() => String)
     user?: string;
     @Field(() => String)
-    Post?: string;
+    post?: string;
 }
 @ObjectType()
 export class Likes {
@@ -16,13 +16,13 @@ export class Likes {
 }
 @InputType()
 export class LikePostArgs {
-    @Field(() => ID)
+    @Field(() => String)
     postId?: string;
     @Field(() => String)
     action?:string;
 }
 @InputType()
 export class GetPostLikesArgs {
-    @Field(() => ID)
+    @Field(() => String)
     postId?: string;
 }

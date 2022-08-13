@@ -6,6 +6,7 @@ import { httpService } from "../../services";
 import { PostDetails } from "./types";
 import classes from './Post.module.css';
 import { appContextVar } from "../../services/store";
+import { useGetPostLikes } from "../../hooks";
 interface PostProps {
     post: PostDetails;
     containerClassName?: string;
@@ -15,6 +16,8 @@ const Post: FunctionComponent<PostProps> = ({ post, containerClassName }) => {
     const { user } = appContextVar();
     const [url, setUrl] = useState<string>('');
     const [type, setType] = useState<string>('');
+    const { data } = useGetPostLikes(post?._id || '');
+
     useEffect(() => {
         const loadFile = async () => {
             const blob: any = await httpService.getStream(filesUri + post?.file?.originalname);
@@ -28,7 +31,7 @@ const Post: FunctionComponent<PostProps> = ({ post, containerClassName }) => {
     return (<div className={`${classes.container} ${containerClassName}`}>
         {url && isVideo && <Video type={type} link={url} />}
         {url && !isVideo && <img className={classes.image} src={url} alt={'post'} />}
-        <VideoFooter me={user} likes={post?.likes} />
+        {!!post?._id && <VideoFooter postId={post?._id} me={user} likes={data?.getLikes?.likes} />}
     </div>);
 }
 
