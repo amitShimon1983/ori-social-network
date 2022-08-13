@@ -1,7 +1,7 @@
 import { IUser } from "../../model";
-import { IFile } from "../../model/schema/file/type";
+import { IFile } from "../../model/schema/file/types";
 import PostModel from "../../model/schema/post/schema";
-import { IPost } from "../../model/schema/post/type";
+import { IPost } from "../../model/schema/post/types";
 
 export class PostService {
     private static instance: PostService;
@@ -14,6 +14,10 @@ export class PostService {
     async getRandomPosts(user: string) {
         const posts = await PostModel.find({ user }).populate('file').lean();
         return { posts }
+    }
+    async getPost(postId: string,) {
+        const post = await PostModel.findOne({ _id: postId });
+        return { post }
     }
     async savePosts(files: IFile[], user: IUser) {
         const post: IPost = {

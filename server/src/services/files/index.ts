@@ -1,6 +1,6 @@
 
 import FileModel from "../../model/schema/file/schema";
-import { IFile } from "../../model/schema/file/type";
+import { IFile } from "../../model/schema/file/types";
 
 export class FileHandler {
     private static instance: FileHandler;

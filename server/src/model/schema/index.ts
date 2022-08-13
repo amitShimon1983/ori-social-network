@@ -1,2 +1,5 @@
-export { UserModel } from './user';
-export { IUser } from './user/type';
+export * from './comment';
+export * from './user';
+export * from './file';
+export * from './like';
+export * from './post';

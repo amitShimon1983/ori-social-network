@@ -1,6 +1,6 @@
 import { ApiResponse, IUser } from '../../model';
 import { userService, hashService, jwtService } from '../';
-import { IFile } from '../../model/schema/file/type';
+import { IFile } from '../../model/schema/file/types';
 
 export class AuthenticationService {
     private static instance: AuthenticationService;
