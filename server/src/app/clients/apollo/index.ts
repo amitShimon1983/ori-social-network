@@ -1,13 +1,14 @@
 import { Express } from 'express'
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
-import { apolloContext, AccountResolver, PostResolver, LikeResolver } from '../../../apollo';
+import { apolloContext } from '../../../apollo';
+import resolvers from './resolvers'
 
 const createApolloServer = async (app: Express) => {
     const server = new ApolloServer({
         context: apolloContext(),
         schema: await buildSchema({
-            resolvers: [AccountResolver, PostResolver, LikeResolver],
+            resolvers: resolvers as any,
             validate: false,
             emitSchemaFile: true,
             nullableByDefault: true
