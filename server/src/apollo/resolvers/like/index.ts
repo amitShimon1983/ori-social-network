@@ -1,0 +1,1 @@
+export { LikeResolver } from './like';
