@@ -6,3 +6,4 @@ export { default as cookieService } from './cookie';
 export { default as fileService } from './files';
 export { default as postService } from './posts';
 export { default as likeService } from './like';
+export { default as commentService } from './comment';
