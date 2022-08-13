@@ -25,7 +25,7 @@ const Post: FunctionComponent<PostProps> = ({ post, containerClassName }) => {
     const isVideo = type?.trim()?.toLowerCase()?.includes('video')
     return (<div className={`${classes.container} ${containerClassName}`}>
         {url && isVideo && <Video type={type} link={url} />}
-        {url && !isVideo && <img style={{ height: '100%', width: '100%', objectFit: 'cover' }} src={url} alt={'post'} />}
+        {url && !isVideo && <img className={classes.image} src={url} alt={'post'} />}
         <VideoFooter />
     </div>);
 }
