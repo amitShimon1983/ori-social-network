@@ -8,7 +8,7 @@ export class CommentResolver {
     async commentPost(@Arg('args', () => CommentPostArgs) args: CommentPostArgs, @Ctx() context: any): Promise<Comment | null | undefined> {
         const { user } = context;
         if (args.postId && user._id && args?.content) {
-            return commentService.commentPost(user._id, args.postId,  args.content, args.commentId)
+            return commentService.commentPost(user._id, args.postId, args.content, args.commentId) as Comment
         }
     }
     @Query(() => Comments)
@@ -18,5 +18,4 @@ export class CommentResolver {
         }
         return undefined;
     }
-
 }

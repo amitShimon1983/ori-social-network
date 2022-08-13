@@ -1,13 +1,20 @@
 import { Field, ObjectType, InputType } from "type-graphql";
+import { IComment } from "../../../model/schema";
 
 @ObjectType()
-export class Comment {
+export class Comment implements IComment {
     @Field(() => String)
     user?: string;
     @Field(() => String)
     post?: string;
     @Field(() => String)
-    commentId?: string;
+    comment?: string;
+    @Field(() => String)
+    content?:string
+    @Field(() => String)
+    updatedAt?: string;
+    @Field(() => String)
+    createdAt?:string
 }
 @ObjectType()
 export class Comments {
