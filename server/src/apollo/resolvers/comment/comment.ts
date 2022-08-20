@@ -14,7 +14,7 @@ export class CommentResolver {
     @Query(() => Comments)
     async getComments(@Arg('args', () => GetPostCommentsArgs) args: GetPostCommentsArgs): Promise<Comments | undefined> {
         if (args.postId) {
-            return commentService.getPostComments(args.postId) as Comments;
+            return commentService.getPostComments(args.postId, args?.commentId) as Comments;
         }
         return undefined;
     }

@@ -10,7 +10,7 @@ const port = appConfig.port;
 async function main() {
     app.listen(port, async () => {
         await configureApp(app, appConfig);
-        console.log(`Example app listening on port ${port}`)
+        console.log(`app listening on port ${port}`)
     });
 }
 

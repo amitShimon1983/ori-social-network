@@ -18,14 +18,12 @@ class CommentService {
         }
         if (commentId) {
             const dbComment = await CommentModel.findOne({
-                user: new Types.ObjectId(userId),
                 post: new Types.ObjectId(postId),
                 _id: new Types.ObjectId(commentId)
             });
             if (dbComment) {
                 newComment.comment = dbComment._id.toString()
             }
-
         }
         return await CommentModel.create(newComment)
 
