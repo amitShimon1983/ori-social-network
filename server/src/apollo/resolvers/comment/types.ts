@@ -4,17 +4,19 @@ import { IComment } from "../../../model/schema";
 @ObjectType()
 export class Comment implements IComment {
     @Field(() => String)
+    _id?: string;
+    @Field(() => String)
     user?: string;
     @Field(() => String)
     post?: string;
     @Field(() => String)
     comment?: string;
     @Field(() => String)
-    content?:string
+    content?: string
     @Field(() => String)
     updatedAt?: string;
     @Field(() => String)
-    createdAt?:string
+    createdAt?: string
 }
 @ObjectType()
 export class Comments {
