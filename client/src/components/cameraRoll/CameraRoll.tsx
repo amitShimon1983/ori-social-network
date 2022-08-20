@@ -17,7 +17,6 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
     const [stream, setStream] = useState<MediaStream>()
     const [videoBlob, setVideoBlob] = useState<Blob>();
     const [imageBlob, setImageBlob] = useState<Blob>();
-
     const handleStream = useCallback(async (stream: MediaStream) => {
         const video: any = videoRef.current;
         if (video) {
@@ -28,11 +27,7 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
 
     const getUserVideo = useCallback(async () => {
         const userStream = await cameraService.getCameraStream({
-            video: { width: 500, height: 1080 }, audio: {
-                autoGainControl: false,
-                echoCancellation: false,
-                noiseSuppression: false
-            }
+            video: { width: 500, height: 1900 }, audio: true
         }, handleStream);
         if (userStream) {
             setStream(userStream)
@@ -43,7 +38,7 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
         getUserVideo()
         return () => {
         }
-    }, [videoRef, getUserVideo])
+    }, [videoRef, getUserVideo, hasPhoto])
 
     const handleSaveImage = () => {
         cameraService.saveImage(videoRef.current, photoRef.current, (image) => {
@@ -97,8 +92,8 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
     }
     return (
         <div className={classes.camera}>
-            <VideoElement className={classes.video} video={{ controls: true, muted: true }} ref={videoRef}>
-            </VideoElement>
+            {!hasPhoto && <VideoElement className={classes.video} video={{ controls: true, muted: true }} ref={videoRef}>
+            </VideoElement>}
             {isRecording && <div className={classes.recording_icon}><RecordingIcon></RecordingIcon></div>}
             <div className={classes.buttons_panel}>
                 <Button className={classes.button} handleClick={handleSaveImage}>Task a picture</Button>
@@ -107,10 +102,10 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
                 {!!imageBlob && <Button className={classes.button} handleClick={saveImageHandler}>save Image</Button>}
                 {!isRecording && <Button className={`${classes.button} ${classes.button_recording}`} handleClick={handleStart}><BiVideoRecording /></Button>}
             </div>
-            {/* <div className={`${classes.picture} ${hasPhoto && classes.hasPhoto}`}>
+            <div className={`${classes.picture} ${hasPhoto && classes.hasPhoto}`}>
                 <canvas ref={photoRef}></canvas>
-                <Button handleClick={handleClearImage}>Clear</Button>
-            </div> */}
+                <Button className={classes.button} handleClick={handleClearImage}>Clear</Button>
+            </div>
         </div>
     );
 }
