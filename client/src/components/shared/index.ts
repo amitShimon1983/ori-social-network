@@ -5,5 +5,6 @@ export { StoreProvider } from './store';
 export { AppContainer } from './app';
 export { VideoElement } from './video';
 export { RecordingIcon } from './recording';
+export * from './tree';
 export * from './loader';
 export * from './icons';
