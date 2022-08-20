@@ -62,11 +62,8 @@ const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments,
             </div>
             <div className={classes.icon_inner_container}>
                 <FaRegComments onClick={onCommentClick} className={classes.comment_icon} />
-                {!!internalLikes?.length && <div className={`${classes.comment_icon_number}`}>{internalLikes?.length || 0}</div>}
+                {!!comments?.length && <div className={`${classes.comment_icon_number}`}>{comments?.length || 0}</div>}
             </div>
-        </div>
-        <div>
-            {!!comments?.length && <div>view {comments?.length} comments</div>}
         </div>
     </div>
     );
