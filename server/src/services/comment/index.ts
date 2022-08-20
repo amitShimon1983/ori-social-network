@@ -27,7 +27,7 @@ class CommentService {
             }
 
         }
-        return await CommentModel.create(newComment) as IComment
+        return await CommentModel.create(newComment)
 
     }
     async getPostComments(postId: string, commentId?: string) {
