@@ -31,12 +31,11 @@ class CommentService {
 
     }
     async getPostComments(postId: string, commentId?: string) {
-        return {
-            comments: await CommentModel.find({
-                post: new Types.ObjectId(postId),
-                comment: new Types.ObjectId(commentId)
-            })
-        }
+        const query = !!commentId ?
+            { post: new Types.ObjectId(postId), comment: new Types.ObjectId(commentId) } :
+            { post: new Types.ObjectId(postId) };
+        const comments = await CommentModel.find(query).lean();
+        return { comments }
     }
 }
 
