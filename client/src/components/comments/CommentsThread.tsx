@@ -2,6 +2,7 @@ import { FunctionComponent, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useCommentPost, useGetPostComments } from "../../hooks";
 import { Button, Input, Spinner, Tree } from "../shared";
+import Comment from "./Comment";
 import classes from './Comment.module.css';
 interface CommentsThreadProps {
 
@@ -11,14 +12,27 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
     const { postId } = useParams();
     const navigate = useNavigate();
     const [commentContent, setCommentContent] = useState<string>('')
+    const [comments, setComments] = useState<any[]>([])
     const { commentPostMutation } = useCommentPost();
-    const { data, error, loading, fetchMore } = useGetPostComments(postId || '');
-    const handleCommentSave = (data: any) => {
-        commentPostMutation({
+    const { loading, fetchMore } = useGetPostComments(postId || '', (data) => {
+        if (data?.getComments?.comments) {
+            setComments(data?.getComments?.comments)
+        }
+    });
+    const handleCommentSave = async (data: any) => {
+        await commentPostMutation({
             variables: {
                 postId: postId,
                 content: commentContent,
                 commentId: data?.commentId
+            },
+            onCompleted: (data) => {
+                setComments((prev) => {
+                    const newComments = [...prev];
+                    newComments.push(data.commentPost);
+                    return newComments;
+                })
+                setCommentContent('')
             }
         })
     }
@@ -31,16 +45,28 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
         const { data: fetchData } = await fetchMore({
             variables: {
                 postId,
-                commentId: data?.commentId
+                commentId: data?._id
             },
         });
         return fetchData?.getComments?.comments || []
+    }
+    const renderComment = (data: any) => {
+        return <Comment
+            key={data._id}
+            _id={data._id}
+            content={data.content}
+            user={data.user}
+            createdAt={data.createdAt} />
     }
     return (
         <div className={classes.container}>
             <Button handleClick={() => navigate(-1)}>Back</Button>
             {loading && <Spinner label="loading..." />}
-            <Tree styles={{ treeClassName: classes.comments }} data={data?.getComments?.comments || []} fetchMore={handleFetchChildren} />
+            <Tree
+                styles={{ treeClassName: classes.comments }}
+                data={comments}
+                fetchMore={handleFetchChildren} 
+                renderItem={renderComment}/>
             <div className={classes.footer}>
                 <Input handleChange={handleCommentContentChange}
                     type={'text'}
