@@ -1,4 +1,5 @@
 export interface IComment {
+    _id?: string;
     user?: string;
     content?: string;
     post?: string;
