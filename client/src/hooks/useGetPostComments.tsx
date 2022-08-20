@@ -12,12 +12,13 @@ const GET_POST_COMMENTS = gql`
     }
    }
 `;
-export const useGetPostComments = (postId: string) => {
+export const useGetPostComments = (postId: string, onCompleted?: (data: any) => void) => {
     const { data, error, loading, fetchMore } = useQuery(GET_POST_COMMENTS, {
         variables: {
             postId
         },
-        skip: !postId
+        skip: !postId,
+        onCompleted
     })
     return { data, error, loading, fetchMore }
 }
