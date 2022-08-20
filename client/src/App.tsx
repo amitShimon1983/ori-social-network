@@ -3,9 +3,7 @@ import { Home, LoginForm, ProtectedRoute, SignUpForm, Shell, AppContainer } from
 import { Routes, Route, Navigate } from 'react-router-dom';
 import MyWall from './components/myWall/MyWall';
 import { CameraRoll } from './components/cameraRoll';
-import CommentsThread from './components/comments/Comments';
-
-
+import CommentsThread from './components/comments/CommentsThread';
 
 function App() {
   return (
