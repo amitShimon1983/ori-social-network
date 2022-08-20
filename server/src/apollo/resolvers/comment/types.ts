@@ -18,9 +18,10 @@ export class Comment implements IComment {
     @Field(() => String)
     createdAt?: string
 }
+
 @ObjectType()
 export class Comments {
-    @Field(() => Comment)
+    @Field(() => [Comment])
     comments?: Comment[]
 }
 @InputType()
