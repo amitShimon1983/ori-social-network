@@ -1,4 +1,5 @@
 import { FunctionComponent, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useLikePost } from "../../hooks";
 import { BiLike, FaRegComments } from "../shared";
 import classes from './VideoFooter.module.css';
@@ -14,7 +15,7 @@ const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments,
     const { likePostMutation } = useLikePost();
     const myLikeIndex = !!internalLikes?.length ? internalLikes.findIndex((like: any) => like.user === me._id) : -1;
     const iLikeIt = myLikeIndex !== -1;
-
+    const navigate = useNavigate();
     useEffect(() => {
         if (likes?.length) {
             setLikes(likes)
@@ -51,7 +52,7 @@ const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments,
         }
     }
     const onCommentClick = () => {
-
+        navigate('/comments/' + postId)
     }
     return (<div className={classes.container}>
         <div className={classes.icon_container}>
