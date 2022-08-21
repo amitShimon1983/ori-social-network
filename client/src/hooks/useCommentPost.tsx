@@ -8,6 +8,7 @@ mutation CommentPost($postId: String, $content: String, $commentId: String){
         content
         createdAt
         updatedAt
+        comment
     }
 }
 `

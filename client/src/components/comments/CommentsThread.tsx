@@ -28,7 +28,6 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
                 commentId: replyTo?.commentId
             },
             onCompleted: (data) => {
-                debugger
                 if (!replyTo?.commentId) {
                     setComments((prev) => {
                         const newComments = [...prev];
