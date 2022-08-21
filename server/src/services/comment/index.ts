@@ -28,10 +28,17 @@ class CommentService {
                 } else {
                     dbComment.comments = [dbComment._id];
                 }
+                await dbComment.save()
             }
         }
-        return await CommentModel.create(newComment)
+        const createdComment = await (await CommentModel.create(newComment)).populate({
+            path: 'user',
+            populate: {
+                path: 'file'
+            }
+        });
 
+        return createdComment.toObject();
     }
     async getPostComments(postId: string, commentId?: string) {
         const query =
