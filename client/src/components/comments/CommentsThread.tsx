@@ -25,21 +25,17 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
             variables: {
                 postId: postId,
                 content: commentContent,
-                commentId: replyTo?.data?.commentId
+                commentId: replyTo?.data?._id
             },
             onCompleted: (data) => {
-                if (!replyTo?.data?.commentId) {
+                if (!replyTo?.data?._id) {
                     setComments((prev) => {
                         const newComments = [...prev];
                         newComments.push(data.commentPost);
                         return newComments;
                     })
                 } else if (replyTo?.setChild) {
-                    replyTo?.setChild((prev: any[]) => {
-                        const newComments = [...prev];
-                        newComments.push(data.commentPost);
-                        return newComments;
-                    })
+                    replyTo?.setChild([data.commentPost])
                 }
                 setReplyTo(undefined)
                 setCommentContent('')
@@ -55,7 +51,7 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
         const { data: fetchData } = await fetchMore({
             variables: {
                 postId,
-                commentId: data?._id
+                commentId: data?._id.toString()
             },
         });
         return fetchData?.getComments?.comments || []
@@ -68,6 +64,9 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
             user={data.user}
             createdAt={data.createdAt} />
     }
+
+    const hasMore = (data: any) => !!data?.comments?.length;
+
     return (
         <div className={classes.container}>
             <Button handleClick={() => navigate(-1)}>Back</Button>
@@ -77,14 +76,15 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
                 data={comments}
                 fetchMore={handleFetchChildren}
                 renderItem={renderComment}
-                setReplyTo={setReplyTo} />
+                setReplyTo={setReplyTo}
+                hasMore={hasMore} />
             <div className={classes.footer}>
                 <Input handleChange={handleCommentContentChange}
                     type={'text'}
                     name={'comment'}
                     className={''}
                     required={true}
-                    placeholder={(replyTo?.data?.commentId || '') + 'write a comment...'}
+                    placeholder={(replyTo?.data?._id || '') + 'write a comment...'}
                     value={commentContent}
                 />
                 <Button disabled={!commentContent} handleClick={handleCommentSave}>
