@@ -12,6 +12,7 @@ const GET_POST_COMMENTS = gql`
                 originalname
               }        
             }
+            comments
             content
             createdAt
             updatedAt
