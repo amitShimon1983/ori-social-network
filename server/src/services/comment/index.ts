@@ -40,11 +40,11 @@ class CommentService {
 
         return createdComment.toObject();
     }
-    async getPostComments(postId: string, commentId?: string) {
+    async getPostComments(postId: string, commentId?: string, skip = 0, limit = 20) {
         const query =
             { post: new Types.ObjectId(postId), comment: (!!commentId ? new Types.ObjectId(commentId) : commentId) }
 
-        const comments = await CommentModel.find(query).populate({
+        const comments = await CommentModel.find(query, {}, { skip, limit }).populate({
             path: 'user',
             populate: {
                 path: 'file'
