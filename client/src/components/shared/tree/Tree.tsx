@@ -4,12 +4,13 @@ interface TreeNodeProps {
     node: { _id: string; content: any; createdAt: string; user?: string; };
     fetchMore: (data: any) => any;
     styles: { treeClassName?: string; treeNodeClassName?: string; };
-    renderItem: (data: any) => React.ReactNode;
+    renderItem: (data: any, setChild: React.Dispatch<React.SetStateAction<any[]>>) => React.ReactNode;
+
 }
 
 interface TreeProps {
     data: any[];
-    renderItem: (data: any) => React.ReactNode;
+    renderItem: (data: any, setChild: React.Dispatch<React.SetStateAction<any[]>>) => React.ReactNode;
     fetchMore: (data: any) => any;
     styles: { treeClassName?: string; treeNodeClassName?: string; };
 }
@@ -25,8 +26,9 @@ export default React.memo(Tree);
 
 const TreeNode: FunctionComponent<TreeNodeProps> = ({ styles, node, fetchMore, renderItem }) => {
     const [isChildVisible, setChildVisibility] = useState(false)
-    const [child, setChild] = useState<TreeNodeProps[]>([]);
-    const handleFetch = async () => {
+    const [child, setChild] = useState<any[]>([]);
+    const handleFetch = async (event: any) => {
+        event.stopPropagation();
         if (!isChildVisible) {
             const childNode = await fetchMore(node);
             setChild(childNode)
@@ -36,18 +38,18 @@ const TreeNode: FunctionComponent<TreeNodeProps> = ({ styles, node, fetchMore, r
         }
     }
     return (<>
-        <div className={styles.treeNodeClassName} style={{ display: 'flex', color: 'white' }} onClick={handleFetch}>
-            {!!node && (
-                <div>
-                    {isChildVisible ? '-' : '+'}
-                </div>
-            )}
+        <div className={styles.treeNodeClassName} style={{ display: 'flex', color: 'white' }}>
             <div style={{ color: 'white' }}>
-                {renderItem(node)}
+                {renderItem(node, setChild)}
             </div>
         </div>
-        {!!node && isChildVisible && <div>
-            <Tree renderItem={renderItem} styles={styles} fetchMore={fetchMore} key={node._id + 'tree'} data={child} />
+        {!!node && (
+            <div style={{ color: 'white' }} onClick={handleFetch}>
+                {isChildVisible ? 'See less' : 'See more'}
+            </div>
+        )}
+        {!!node && isChildVisible && <div style={{ paddingLeft: '20px' }}>
+            <span style={{ color: 'white' }}>-</span> <Tree renderItem={renderItem} styles={styles} fetchMore={fetchMore} key={node._id + 'tree'} data={child} />
         </div>}
     </>);
 }
