@@ -22,7 +22,12 @@ class CommentService {
                 _id: new Types.ObjectId(commentId)
             });
             if (dbComment) {
-                newComment.comment = dbComment._id.toString()
+                newComment.comment = dbComment._id.toString();
+                if (dbComment.comments) {
+                    dbComment.comments.push(dbComment._id)
+                } else {
+                    dbComment.comments = [dbComment._id];
+                }
             }
         }
         return await CommentModel.create(newComment)
@@ -32,7 +37,12 @@ class CommentService {
         const query =
             { post: new Types.ObjectId(postId), comment: (!!commentId ? new Types.ObjectId(commentId) : commentId) }
 
-        const comments = await CommentModel.find(query).lean();
+        const comments = await CommentModel.find(query).populate({
+            path: 'user',
+            populate: {
+                path: 'file'
+            }
+        }).lean();
         return { comments }
     }
 }
