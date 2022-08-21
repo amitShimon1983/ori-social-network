@@ -5,7 +5,8 @@ const commentSchema = new Schema<IComment>({
     user: { type: Schema.Types.ObjectId, ref: 'User' },
     post: { type: Schema.Types.ObjectId, ref: 'Post' },
     content: String,
-    comment: { type: Schema.Types.ObjectId, ref: 'Comment' }
+    comment: { type: Schema.Types.ObjectId, ref: 'Comment' },
+    comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
 }, { timestamps: true });
 
 const CommentModel = model<IComment>('Comment', commentSchema);
