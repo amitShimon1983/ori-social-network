@@ -1,5 +1,5 @@
 import { ObjectType, ID, Field } from "type-graphql";
-
+import { File } from '../post/types'
 @ObjectType()
 export class User {
     @Field(() => ID)
@@ -8,4 +8,6 @@ export class User {
     name?: string;
     @Field(() => String)
     email?: string;
+    @Field(() => File)
+    file?: File;
 }
