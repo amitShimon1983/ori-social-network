@@ -1,19 +1,19 @@
-import { useReactiveVar } from "@apollo/client";
 import { FunctionComponent, useEffect, useState } from "react";
 import { appConfig } from "../../configuration";
 import { httpService } from "../../services";
-import { appContextVar } from "../../services/store";
 import { Video } from "../video";
 import classes from './Me.module.css';
 
 interface MeProps {
-
+    user: any;
+    displayDetails: boolean;
+    imageClass?: string;
 }
 const filesUri = `${appConfig.serverUrl}${'/api/file/post/'}`
-const Me: FunctionComponent<MeProps> = () => {
+const Me: FunctionComponent<MeProps> = ({ user, displayDetails = true, imageClass }) => {
     const [url, setUrl] = useState<string>('');
     const [type, setType] = useState<string>('');
-    const { user } = appContextVar();
+
 
     useEffect(() => {
         const loadFile = async () => {
@@ -27,12 +27,12 @@ const Me: FunctionComponent<MeProps> = () => {
     const isVideo = type?.trim()?.toLowerCase()?.includes('video');
     return (<>
         <div className={classes.container}>
-            {url && isVideo && <div className={classes.image}>
+            {url && isVideo && <div className={imageClass}>
                 <Video videoClassName={classes.video} type={type} link={url} />
             </div>
             }
-            {url && !isVideo && <img className={classes.image} src={url} alt={'profilePicture'} />}
-            <p className={classes.email}>{user.email}</p>
+            {url && !isVideo && <img className={imageClass} src={url} alt={'profilePicture'} />}
+            {displayDetails && <p className={classes.email}>{user.email}</p>}
         </div>
     </>
     );

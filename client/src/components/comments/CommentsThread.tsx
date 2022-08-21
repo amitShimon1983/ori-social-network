@@ -12,7 +12,7 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
     const { postId } = useParams();
     const navigate = useNavigate();
     const [commentContent, setCommentContent] = useState<string>('');
-    const [replyTo, setReplyTo] = useState<{ commentId?: string, setChild?: React.Dispatch<React.SetStateAction<any[]>> }>();
+    const [replyTo, setReplyTo] = useState<{ data?: any, setChild?: React.Dispatch<React.SetStateAction<any[]>> }>();
     const [comments, setComments] = useState<any[]>([]);
     const { commentPostMutation } = useCommentPost();
     const { loading, fetchMore } = useGetPostComments(postId || '', (data) => {
@@ -25,10 +25,10 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
             variables: {
                 postId: postId,
                 content: commentContent,
-                commentId: replyTo?.commentId
+                commentId: replyTo?.data?.commentId
             },
             onCompleted: (data) => {
-                if (!replyTo?.commentId) {
+                if (!replyTo?.data?.commentId) {
                     setComments((prev) => {
                         const newComments = [...prev];
                         newComments.push(data.commentPost);
@@ -60,10 +60,8 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
         });
         return fetchData?.getComments?.comments || []
     }
-    const renderComment = (data: any, setChild: (data: any[]) => void) => {
+    const renderComment = (data: any) => {
         return <Comment
-            setChild={setChild}
-            setReplyTo={setReplyTo}
             key={data._id}
             _id={data._id}
             content={data.content}
@@ -78,14 +76,15 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
                 styles={{ treeClassName: classes.comments }}
                 data={comments}
                 fetchMore={handleFetchChildren}
-                renderItem={renderComment} />
+                renderItem={renderComment}
+                setReplyTo={setReplyTo} />
             <div className={classes.footer}>
                 <Input handleChange={handleCommentContentChange}
                     type={'text'}
                     name={'comment'}
                     className={''}
                     required={true}
-                    placeholder={(replyTo?.commentId || '') + 'write a comment...'}
+                    placeholder={(replyTo?.data?.commentId || '') + 'write a comment...'}
                     value={commentContent}
                 />
                 <Button disabled={!commentContent} handleClick={handleCommentSave}>
