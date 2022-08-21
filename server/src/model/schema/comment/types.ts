@@ -4,4 +4,5 @@ export interface IComment {
     content?: string;
     post?: string;
     comment?: string;
+    comments?: [string];
 }
