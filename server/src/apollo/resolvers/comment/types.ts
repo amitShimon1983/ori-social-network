@@ -11,6 +11,8 @@ export class Comment {
     post?: string;
     @Field(() => String)
     comment?: string;
+    @Field(() => [String])
+    comments?: string[];
     @Field(() => String)
     content?: string
     @Field(() => String)
