@@ -29,9 +29,9 @@ class CommentService {
 
     }
     async getPostComments(postId: string, commentId?: string) {
-        const query = !!commentId ?
-            { post: new Types.ObjectId(postId), comment: new Types.ObjectId(commentId) } :
-            { post: new Types.ObjectId(postId) };
+        const query =
+            { post: new Types.ObjectId(postId), comment: (!!commentId ? new Types.ObjectId(commentId) : commentId) }
+
         const comments = await CommentModel.find(query).lean();
         return { comments }
     }
