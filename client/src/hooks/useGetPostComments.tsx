@@ -1,10 +1,17 @@
 import { gql, useQuery } from "@apollo/client"
 const GET_POST_COMMENTS = gql`
    query GetComments($postId: String, $commentId: String){
-    getComments(args:{ postId: $postId, commentId: $commentId}){
-        comments{
+    getComments(args: { postId: $postId, commentId: $commentId }){
+        comments {
             _id
-            user
+            user {
+              _id
+              name
+              email
+              file {
+                originalname
+              }        
+            }
             content
             createdAt
             updatedAt
