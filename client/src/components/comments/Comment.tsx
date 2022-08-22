@@ -48,7 +48,7 @@ const Comment: FunctionComponent<CommentProps> = ({ _id,
         </div>
         <div ref={contentRef} className={`${classes.content} ${toggle && classes.content_overflow}`}>{content}</div>
         {isContentOverflow && <div className={classes.read_more_button_container}>
-            <Button className={classes.read_more_button} handleClick={toggleReadMore}>read {toggle ? 'less...' : 'More...'}</Button>
+            <Button className={classes.read_more_button} handleClick={toggleReadMore}>read {toggle ? 'less...' : 'more...'}</Button>
         </div>}
     </div>);
 }
