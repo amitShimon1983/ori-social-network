@@ -6,11 +6,10 @@ import classes from './Me.module.css';
 
 interface MeProps {
     user: any;
-    displayDetails: boolean;
     styles: { imageClass?: string; containerClassName?: string; emailClassName?: string; };
 }
 const filesUri = `${appConfig.serverUrl}${'/api/file/post/'}`
-const Me: FunctionComponent<MeProps> = ({ user, displayDetails = true, styles }) => {
+const Me: FunctionComponent<MeProps> = ({ user, styles }) => {
     const [url, setUrl] = useState<string>('');
     const [type, setType] = useState<string>('');
 
@@ -32,7 +31,7 @@ const Me: FunctionComponent<MeProps> = ({ user, displayDetails = true, styles })
             </div>
             }
             {url && !isVideo && <img className={styles.imageClass} src={url} alt={'profilePicture'} />}
-            {!displayDetails && <p className={`${classes.email} ${styles.emailClassName}`}>{user.email}</p>}
+            {<p className={`${classes.email} ${styles.emailClassName}`}>{user.email}</p>}
         </div>
     </>
     );
