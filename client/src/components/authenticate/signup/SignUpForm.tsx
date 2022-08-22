@@ -5,6 +5,7 @@ import { httpService } from "../../../services";
 import { validateEmail } from "../../../utils";
 import { CameraRoll } from "../../cameraRoll";
 import { Input, Button } from "../../shared";
+import { Hr } from "../../styles/styles";
 import classes from '../Auth.module.css';
 interface SignUpFormProps {
 
@@ -66,7 +67,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
         <div className={classes.container}>
             <div>
                 <h2 className={classes.header}>Sign Up!</h2>
-                <hr className={classes.hr} />
+                <Hr />
             </div>
             <Input className={classes.input} handleChange={handleChange} placeholder='Email' type='email' name={'email'} value={signUp?.email} required />
             <Input className={classes.input} handleChange={handleChange} placeholder='Name' type='text' name={'name'} value={signUp?.name} required />

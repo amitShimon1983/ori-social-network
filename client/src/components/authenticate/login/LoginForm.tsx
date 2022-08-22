@@ -5,6 +5,7 @@ import { appContextVar } from "../../../services/store";
 import { validateEmail } from "../../../utils";
 import { Input, Button, AiOutlineLogin } from "../../shared";
 import Form from "../../shared/form";
+import { Hr } from "../../styles/styles";
 import classes from '../Auth.module.css';
 
 interface LoginFormProps {
@@ -49,7 +50,7 @@ const LoginForm: FunctionComponent<LoginFormProps> = () => {
     return (<Form>
         <div>
                 <h2 className={classes.header}>Login...</h2>
-                <hr className={classes.hr} />
+                <Hr/>
             </div>
         <Input className={classes.input} value={login.email} placeholder='Email' type='email' name='email' required handleChange={handleChange} />
         <Input className={classes.input} value={login.password} placeholder="Password" type='password' name='password' required handleChange={handleChange} />
