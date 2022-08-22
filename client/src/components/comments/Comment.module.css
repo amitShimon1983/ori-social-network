@@ -1,6 +1,6 @@
 .container {
     width: 100%;
-    height: 94%;
+    height: 95%;
     display: flex;
     flex-direction: column;
 }
@@ -42,15 +42,25 @@
 
 }
 
+.comment_thread_input_button {
+    margin-right: 1.5vh;
+    border: none;
+    outline: none;
+    color: white;
+    background: transparent;
+}
+
 .content_overflow {
     max-height: 100%;
 }
-.read_more_button_container{
+
+.read_more_button_container {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: end;
 }
+
 .read_more_button {
     padding-top: .5vh;
     background: transparent;
@@ -84,6 +94,39 @@
     overflow: scroll;
 }
 
+.back_button_container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 1vh;
+}
+.back_button{
+    width: 3vh;
+    color: aliceblue;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+}
+
+.comment_thread_input {
+    height: 40%;
+    width: 85%;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+.comment_thread_input::placeholder {
+    text-align: center;
+    font-size: 14px;
+}
+
 .footer {
+    height: 10vh;
     margin-top: auto;
+    display: flex;
+    align-items: center;
+    padding-left: 1.5vh;
+    justify-content: space-between;
 }
