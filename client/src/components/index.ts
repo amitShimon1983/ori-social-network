@@ -9,3 +9,4 @@ export { Video } from './video';
 export { VideoFooter } from './videoFooter';
 export * from './shared';
 export * from './post';
+export * from './styles';
