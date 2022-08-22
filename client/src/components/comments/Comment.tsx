@@ -17,12 +17,22 @@ const Comment: FunctionComponent<CommentProps> = ({ _id,
     const diff = getPostDate(date)
     return (<div className={classes.comment_container}>
         <div className={classes.comment_header}>
-            <div>
-                <Me imageClass={classes.image} displayDetails={false} user={user} />
+            <div className={classes.comment_details}>
+                <div className={classes.comment_me}>
+                    <Me
+                        styles={{
+                            imageClass: classes.me_image,
+                            containerClassName: classes.me_container,
+                            emailClassName: classes.me_email
+                        }}
+                        displayDetails={false}
+                        user={user}
+                    />
+                </div>
+                <div className={classes.date}> {diff}</div>
             </div>
-            <div className={classes.date}> {diff}</div>
         </div>
-        <div>{content}</div>
+        <div className={classes.content}>{content}</div>
     </div>);
 }
 
