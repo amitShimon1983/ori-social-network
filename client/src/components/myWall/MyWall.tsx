@@ -10,7 +10,7 @@ interface MyWallProps {
 const MyWall: FunctionComponent<MyWallProps> = () => {
     const { user } = appContextVar();
     return (<>
-        <Me styles={{ imageClass: classes.image }} user={user} displayDetails={true} />
+        <Me styles={{ imageClass: classes.image }} user={user} />
         <div className={classes.container}>
             <PostList postClassName={classes.post} />
         </div>
