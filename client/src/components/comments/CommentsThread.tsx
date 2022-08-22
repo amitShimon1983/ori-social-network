@@ -2,6 +2,7 @@ import { FunctionComponent, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useCommentPost, useGetPostComments } from "../../hooks";
 import { Button, Input, Spinner, Tree } from "../shared";
+import { TreeNode } from "../shared/tree/Tree";
 import Comment from "./Comment";
 import classes from './Comment.module.css';
 interface CommentsThreadProps {
@@ -71,13 +72,22 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
         <div className={classes.container}>
             <Button handleClick={() => navigate(-1)}>Back</Button>
             {loading && <Spinner label="loading..." />}
-            <Tree
+            <div style={{ overflow: 'scroll' }}>
+                {comments.map(comment => <TreeNode
+                    styles={{ treeClassName: classes.comments }}
+                    node={comment}
+                    fetchMore={handleFetchChildren}
+                    renderItem={renderComment}
+                    setReplyTo={setReplyTo}
+                    hasMore={hasMore} />)}
+            </div>
+            {/* <Tree
                 styles={{ treeClassName: classes.comments }}
                 data={comments}
                 fetchMore={handleFetchChildren}
                 renderItem={renderComment}
                 setReplyTo={setReplyTo}
-                hasMore={hasMore} />
+                hasMore={hasMore} /> */}
             <div className={classes.footer}>
                 <Input handleChange={handleCommentContentChange}
                     type={'text'}
