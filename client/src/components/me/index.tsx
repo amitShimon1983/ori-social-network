@@ -7,10 +7,10 @@ import classes from './Me.module.css';
 interface MeProps {
     user: any;
     displayDetails: boolean;
-    imageClass?: string;
+    styles: { imageClass?: string; containerClassName?: string; emailClassName?: string; };
 }
 const filesUri = `${appConfig.serverUrl}${'/api/file/post/'}`
-const Me: FunctionComponent<MeProps> = ({ user, displayDetails = true, imageClass }) => {
+const Me: FunctionComponent<MeProps> = ({ user, displayDetails = true, styles }) => {
     const [url, setUrl] = useState<string>('');
     const [type, setType] = useState<string>('');
 
@@ -26,13 +26,13 @@ const Me: FunctionComponent<MeProps> = ({ user, displayDetails = true, imageClas
     }, [])
     const isVideo = type?.trim()?.toLowerCase()?.includes('video');
     return (<>
-        <div className={classes.container}>
-            {url && isVideo && <div className={imageClass}>
+        <div className={`${classes.container} ${styles.containerClassName}`}>
+            {url && isVideo && <div className={styles.imageClass}>
                 <Video videoClassName={classes.video} type={type} link={url} />
             </div>
             }
-            {url && !isVideo && <img className={imageClass} src={url} alt={'profilePicture'} />}
-            {displayDetails && <p className={classes.email}>{user.email}</p>}
+            {url && !isVideo && <img className={styles.imageClass} src={url} alt={'profilePicture'} />}
+            {!displayDetails && <p className={`${classes.email} ${styles.emailClassName}`}>{user.email}</p>}
         </div>
     </>
     );
