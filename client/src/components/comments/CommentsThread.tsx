@@ -81,13 +81,6 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
                     setReplyTo={setReplyTo}
                     hasMore={hasMore} />)}
             </div>
-            {/* <Tree
-                styles={{ treeClassName: classes.comments }}
-                data={comments}
-                fetchMore={handleFetchChildren}
-                renderItem={renderComment}
-                setReplyTo={setReplyTo}
-                hasMore={hasMore} /> */}
             <div className={classes.footer}>
                 <Input handleChange={handleCommentContentChange}
                     type={'text'}
