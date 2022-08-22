@@ -70,7 +70,9 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
 
     return (
         <div className={classes.container}>
-            <Button handleClick={() => navigate(-1)}>Back</Button>
+            <div className={classes.back_button_container}>
+                <Button className={classes.back_button} handleClick={() => navigate(-1)}>{'<'}</Button>
+            </div>
             {loading && <Spinner label="loading..." />}
             <div style={{ overflow: 'scroll' }}>
                 {comments.map(comment => <TreeNode
@@ -85,13 +87,13 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
                 <Input handleChange={handleCommentContentChange}
                     type={'text'}
                     name={'comment'}
-                    className={''}
+                    className={classes.comment_thread_input}
                     required={true}
-                    placeholder={(replyTo?.data?._id || '') + 'write a comment...'}
+                    placeholder={replyTo?.data?.user?.email ? `reply to ` + replyTo?.data?.user?.email : 'write a comment...'}
                     value={commentContent}
                 />
-                <Button disabled={!commentContent} handleClick={handleCommentSave}>
-                    Save comment
+                <Button className={classes.comment_thread_input_button} disabled={!commentContent} handleClick={handleCommentSave}>
+                    Save
                 </Button>
             </div>
         </div>
