@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
+import { Hr } from "../../styles";
 import classes from "./Tree.module.css";
 interface TreeNodeProps {
     node: { _id: string; content: any; createdAt: string; user?: string; };
@@ -83,6 +84,7 @@ export const TreeNode: FunctionComponent<TreeNodeProps> = ({ hasMore, setReplyTo
                 }}>Reply</div>
             </div>
             )}
+            <Hr/>
         </div>
         {!!treeNode && isChildVisible && <div>
             <Tree hasMore={hasMore} setReplyTo={setReplyTo} renderItem={renderItem} styles={styles} fetchMore={fetchMore} key={node._id + 'tree'} data={child} />
