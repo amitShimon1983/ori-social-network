@@ -28,7 +28,7 @@ interface TreeProps {
 const Tree: FunctionComponent<TreeProps> = ({ hasMore, data = [], fetchMore, styles, renderItem, setReplyTo }) => {
     return (
         <div className={` ${styles.treeClassName}`}>
-            {data?.map((tree) => (<div className={classes.node_child}>
+            {data?.map((tree) => (<div>
                 <TreeNode hasMore={hasMore} setReplyTo={setReplyTo} renderItem={renderItem} styles={styles} fetchMore={fetchMore} key={tree._id + 'treeNode'} node={tree} />
             </div>)
             )}
@@ -37,7 +37,7 @@ const Tree: FunctionComponent<TreeProps> = ({ hasMore, data = [], fetchMore, sty
 }
 export default React.memo(Tree);
 
-const TreeNode: FunctionComponent<TreeNodeProps> = ({ hasMore, setReplyTo, styles, node, fetchMore, renderItem }) => {
+export const TreeNode: FunctionComponent<TreeNodeProps> = ({ hasMore, setReplyTo, styles, node, fetchMore, renderItem }) => {
     const [isChildVisible, setChildVisibility] = useState(false);
     const [treeNode, setTreeNode] = useState<any>();
     const [child, setChild] = useState<any[]>([]);
@@ -84,7 +84,7 @@ const TreeNode: FunctionComponent<TreeNodeProps> = ({ hasMore, setReplyTo, style
             </div>
             )}
         </div>
-        {!!treeNode && isChildVisible && <div className={classes.node_child}>
+        {!!treeNode && isChildVisible && <div>
             <Tree hasMore={hasMore} setReplyTo={setReplyTo} renderItem={renderItem} styles={styles} fetchMore={fetchMore} key={node._id + 'tree'} data={child} />
         </div>}
     </>);
