@@ -12,8 +12,6 @@ const filesUri = `${appConfig.serverUrl}${'/api/file/post/'}`
 const Me: FunctionComponent<MeProps> = ({ user, styles }) => {
     const [url, setUrl] = useState<string>('');
     const [type, setType] = useState<string>('');
-
-
     useEffect(() => {
         const loadFile = async () => {
             const blob: any = await httpService.getStream(filesUri + user.file.originalname);
@@ -31,7 +29,7 @@ const Me: FunctionComponent<MeProps> = ({ user, styles }) => {
             </div>
             }
             {url && !isVideo && <img className={styles.imageClass} src={url} alt={'profilePicture'} />}
-            {<p className={`${classes.email} ${styles.emailClassName}`}>{user.email}</p>}
+            {<p className={`${classes.email} ${styles.emailClassName}`}>{user?.email}</p>}
         </div>
     </>
     );
