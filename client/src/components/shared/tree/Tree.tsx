@@ -55,8 +55,9 @@ export const TreeNode: FunctionComponent<TreeNodeProps> = ({ hasMore, setReplyTo
         })
         setTreeNode((prev: any) => ({
             ...prev,
-            comments: [...prev.comments, ...data]
+            comments: [...(prev?.comments || []), ...data]
         }))
+        setChildVisibility(true)
     }
 
 
@@ -84,7 +85,7 @@ export const TreeNode: FunctionComponent<TreeNodeProps> = ({ hasMore, setReplyTo
                 }}>Reply</div>
             </div>
             )}
-            <Hr/>
+            <Hr />
         </div>
         {!!treeNode && isChildVisible && <div>
             <Tree hasMore={hasMore} setReplyTo={setReplyTo} renderItem={renderItem} styles={styles} fetchMore={fetchMore} key={node._id + 'tree'} data={child} />
