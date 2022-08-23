@@ -1,23 +1,26 @@
 import { FunctionComponent, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useCommentPost, useGetPostComments } from "../../hooks";
-import { Button, Input, Spinner, Tree } from "../shared";
+import { Button, Input, Spinner } from "../shared";
+import InfiniteScroll from "../shared/infiniteScrolling/InfiniteScroll";
 import { TreeNode } from "../shared/tree/Tree";
 import Comment from "./Comment";
 import classes from './Comment.module.css';
 interface CommentsThreadProps {
 
 }
-
+const limit = 20;
 const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
     const { postId } = useParams();
     const navigate = useNavigate();
     const [commentContent, setCommentContent] = useState<string>('');
     const [replyTo, setReplyTo] = useState<{ data?: any, setChild?: React.Dispatch<React.SetStateAction<any[]>> }>();
     const [comments, setComments] = useState<any[]>([]);
+    const [hasMore, setHasMore] = useState<boolean>(false);
     const { commentPostMutation } = useCommentPost();
     const { loading, fetchMore } = useGetPostComments(postId || '', (data) => {
         if (data?.getComments?.comments) {
+            setHasMore(data?.getComments?.hasMore)
             setComments(data?.getComments?.comments)
         }
     });
@@ -48,6 +51,20 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
         setCommentContent(value)
     }
 
+    const handleCommentFetch = async (skip: number) => {
+        const emptyFetchState = { items: [], hasMore: false }
+        if (hasMore) {
+            const { data: newData } = await fetchMore({
+                variables: {
+                    postId: postId,
+                    limit,
+                    skip
+                }
+            });
+            return { items: newData?.getComments?.comments, hasMore: newData?.getComments.hasMore } || emptyFetchState
+        }
+        return emptyFetchState
+    }
     const handleFetchChildren = async (data: any) => {
         const { data: fetchData } = await fetchMore({
             variables: {
@@ -65,8 +82,16 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
             user={data.user}
             createdAt={data.createdAt} />
     }
-
-    const hasMore = (data: any) => !!data?.comments?.length;
+    const renderTreeNode = (comment: any) => {
+        return (<TreeNode
+            styles={{ treeClassName: classes.comments }}
+            node={comment}
+            fetchMore={handleFetchChildren}
+            renderItem={renderComment}
+            setReplyTo={setReplyTo}
+            hasMore={hasMoreComments} />)
+    }
+    const hasMoreComments = (data: any) => !!data?.comments?.length;
 
     return (
         <div className={classes.container}>
@@ -74,15 +99,11 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
                 <Button className={classes.back_button} handleClick={() => navigate(-1)}>{'<'}</Button>
             </div>
             {loading && <Spinner label="loading..." />}
-            <div style={{ overflow: 'scroll' }}>
-                {comments.map(comment => <TreeNode
-                    styles={{ treeClassName: classes.comments }}
-                    node={comment}
-                    fetchMore={handleFetchChildren}
-                    renderItem={renderComment}
-                    setReplyTo={setReplyTo}
-                    hasMore={hasMore} />)}
-            </div>
+            {!loading && comments?.length && <InfiniteScroll
+                initialHasMore={hasMore}
+                renderItem={renderTreeNode}
+                initialData={comments}
+                fetchMore={handleCommentFetch} />}
             <div className={classes.footer}>
                 <Input handleChange={handleCommentContentChange}
                     type={'text'}

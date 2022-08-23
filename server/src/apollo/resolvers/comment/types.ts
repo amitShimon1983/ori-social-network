@@ -1,4 +1,4 @@
-import { Field, ObjectType, InputType } from "type-graphql";
+import { Field, ObjectType, InputType, Int } from "type-graphql";
 import { User } from "../account/types";
 
 @ObjectType()
@@ -25,6 +25,10 @@ export class Comment {
 export class Comments {
     @Field(() => [Comment])
     comments?: Comment[];
+    @Field(() => Boolean)
+    hasMore: boolean;
+    @Field(() => Int)
+    count: number;
 }
 @InputType()
 export class CommentPostArgs {
@@ -41,8 +45,8 @@ export class GetPostCommentsArgs {
     postId?: string;
     @Field(() => String)
     commentId?: string;
-    @Field(() => Number)
+    @Field(() => Int)
     skip?: number;
-    @Field(() => Number)
+    @Field(() => Int)
     limit?: number;
 }

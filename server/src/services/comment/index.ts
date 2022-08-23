@@ -1,5 +1,6 @@
 
 import { Types } from "mongoose";
+import { Comments } from "../../apollo/resolvers/comment/types";
 import { CommentModel, IComment } from "../../model/schema";
 
 class CommentService {
@@ -43,14 +44,15 @@ class CommentService {
     async getPostComments(postId: string, commentId?: string, skip = 0, limit = 20) {
         const query =
             { post: new Types.ObjectId(postId), comment: (!!commentId ? new Types.ObjectId(commentId) : commentId) }
-
+        const count = await CommentModel.count(query);
         const comments = await CommentModel.find(query, {}, { skip, limit }).populate({
             path: 'user',
             populate: {
                 path: 'file'
             }
         }).lean();
-        return { comments }
+        const hasMore = (comments?.length || 0) + skip < count;
+        return { comments, hasMore, count } as Comments;
     }
 }
 
