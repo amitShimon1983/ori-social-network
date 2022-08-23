@@ -1,6 +1,6 @@
 import { FunctionComponent, useCallback, useEffect, useRef, useState } from "react";
 import { Spinner } from "../loader";
-
+import classes from './InfiniteScroll.module.css';
 interface InfiniteScrollProps {
     fetchMore: (skip: number) => Promise<{ items: any[], hasMore: boolean }>;
     initialData: any[];
@@ -54,10 +54,8 @@ const InfiniteScroll: FunctionComponent<InfiniteScrollProps> = ({ initialHasMore
             setHasMore(initialHasMore)
         }
     }, [initialData, initialHasMore])
-
-
-
-    return (<div style={{ overflow: 'scroll' }}>
+    
+    return (<div className={classes.container}>
         {!!listItems.length && listItems.map((item: any, idx: number) => {
             const isLast = idx === listItems.length - 1;
             return isLast ? <span ref={lastItemRef} key={item._id}>{renderItem(item)}</span> : renderItem(item);
