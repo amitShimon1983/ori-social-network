@@ -79,7 +79,7 @@ export const TreeNode: FunctionComponent<TreeNodeProps> = ({ hasMore, setReplyTo
                 {!!treeNode && hasMore(treeNode) && <div className={`${classes.node_link} ${isChildVisible && classes.node_link_active}`} onClick={handleFetch}>
                     {isChildVisible ? 'See less' : 'See more '}
                 </div>}
-                <div onClick={(event) => {
+                <div  onClick={(event) => {
                     event.stopPropagation();
                     setReplyTo({ data: treeNode, setChild: handleDataAdded });
                 }}>Reply</div>
@@ -87,7 +87,7 @@ export const TreeNode: FunctionComponent<TreeNodeProps> = ({ hasMore, setReplyTo
             )}
             <Hr />
         </div>
-        {!!treeNode && isChildVisible && <div>
+        {!!treeNode && isChildVisible && <div className={classes.node_child}>
             <Tree hasMore={hasMore} setReplyTo={setReplyTo} renderItem={renderItem} styles={styles} fetchMore={fetchMore} key={node._id + 'tree'} data={child} />
         </div>}
     </>);
