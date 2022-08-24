@@ -21,7 +21,9 @@ const LoginForm: FunctionComponent<LoginFormProps> = () => {
     const [isValid, setIsValid] = useState<boolean>(false)
     const [errors, setErrors] = useState<string[]>([])
     const navigate = useNavigate();
-
+    const handleNavigateToSignUp = () => {
+        navigate(`/sign-up`)
+    };
     const handleChange = ({ target }: { target: any }) => {
         setLogin((prev) => {
             const newState = { ...prev, [target?.name]: target?.value };
@@ -49,12 +51,15 @@ const LoginForm: FunctionComponent<LoginFormProps> = () => {
 
     return (<Form>
         <div>
-                <h2 className={classes.header}>Login...</h2>
-                <Hr/>
-            </div>
+            <h2 className={classes.header}>Login...</h2>
+            <Hr />
+        </div>
         <Input className={classes.input} value={login.email} placeholder='Email' type='email' name='email' required handleChange={handleChange} />
         <Input className={classes.input} value={login.password} placeholder="Password" type='password' name='password' required handleChange={handleChange} />
-        <Button className={classes.button} disabled={!isValid} handleClick={handleSubmit}><AiOutlineLogin />Sign in...</Button>
+        <div className={classes.button_panel}>
+            <Button className={classes.button} disabled={!isValid} handleClick={handleSubmit}><AiOutlineLogin />Sign in...</Button>
+            <Button className={classes.button} handleClick={handleNavigateToSignUp}><AiOutlineLogin />Sign up...</Button>
+        </div>
         {!!errors.length && errors.map(error => (<div>{error}</div>))}
     </Form>);
 }

@@ -7,7 +7,6 @@ import CommentsThread from './components/comments/CommentsThread';
 import Others from './components/shared/wall/Others';
 
 function App() {
-  debugger
   return (
     <AppContainer>
       <div className="app">

@@ -23,7 +23,12 @@
     padding-left: 5px;
     border-bottom: 1px solid white;
 }
-
+.button_panel{
+    display: flex;
+    height: 15vh;
+    flex-direction: column;
+    justify-content: space-between;
+}
 .input::placeholder {
     color: white;
 }
