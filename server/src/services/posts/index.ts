@@ -11,11 +11,12 @@ export class PostService {
         }
         return this.instance;
     }
-    async getRandomPosts(user: string) {
-        const posts = await PostModel.find({ user }).populate('file').lean();
+    async getPosts(user?: string) {
+        const query = user ? { user } : {}
+        const posts = await PostModel.find(query).populate('file').lean();
         return { posts }
     }
-    async getPost(postId: string,) {
+    async getPost(postId: string) {
         const post = await PostModel.findOne({ _id: postId });
         return { post }
     }
