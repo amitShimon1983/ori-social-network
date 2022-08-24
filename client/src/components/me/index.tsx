@@ -1,4 +1,5 @@
 import { FunctionComponent, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { appConfig } from "../../configuration";
 import { httpService } from "../../services";
 import { Video } from "../video";
@@ -12,6 +13,8 @@ const filesUri = `${appConfig.serverUrl}${'/api/file/post/'}`
 const Me: FunctionComponent<MeProps> = ({ user, styles }) => {
     const [url, setUrl] = useState<string>('');
     const [type, setType] = useState<string>('');
+    const navigate = useNavigate();
+    const handleNavigateToUser = () => navigate(`/other/${user._id}`);
     useEffect(() => {
         const loadFile = async () => {
             const blob: any = await httpService.getStream(filesUri + user.file.originalname);
@@ -29,7 +32,7 @@ const Me: FunctionComponent<MeProps> = ({ user, styles }) => {
             </div>
             }
             {url && !isVideo && <img className={styles.imageClass} src={url} alt={'profilePicture'} />}
-            {<p className={`${classes.email} ${styles.emailClassName}`}>{user?.email}</p>}
+            {<p onClick={handleNavigateToUser} className={`${classes.email} ${styles.emailClassName}`}>{user?.email}</p>}
         </div>
     </>
     );
