@@ -4,8 +4,10 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import MyWall from './components/myWall/MyWall';
 import { CameraRoll } from './components/cameraRoll';
 import CommentsThread from './components/comments/CommentsThread';
+import Others from './components/shared/wall/Others';
 
 function App() {
+  debugger
   return (
     <AppContainer>
       <div className="app">
@@ -23,6 +25,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/comments/:postId" element={<CommentsThread />} />
             <Route path="/myWall" element={<MyWall />} />
+            <Route path="/other/:userId" element={<Others />} />
             <Route path="/post" element={<CameraRoll />} />
           </Route>
         </Routes>
