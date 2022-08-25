@@ -1,6 +1,6 @@
-import { Resolver, Query, Ctx } from "type-graphql";
+import { Resolver, Query, Arg } from "type-graphql";
 import { postService } from "../../../services";
-import { Posts } from "./types";
+import { GetOtherPosts, Posts } from "./types";
 
 @Resolver()
 export class PostResolver {
@@ -8,9 +8,9 @@ export class PostResolver {
     async getRandomPosts(): Promise<Posts> {
         return postService.getPosts() as Posts
     }
+
     @Query(() => Posts)
-    async getMyPosts(@Ctx() context: any): Promise<Posts> {
-        const { user } = context;
-        return postService.getPosts(user._id) as Posts
+    async getMyPosts(@Arg('args', () => GetOtherPosts) args: GetOtherPosts): Promise<Posts> {
+        return postService.getPosts(args.userId) as Posts
     }
 }
