@@ -7,8 +7,8 @@ interface WallProps {
     user: any;
 }
 const GET_My_POSTS = gql`
-query GetMyPosts{
-    getMyPosts{
+query GetMyPosts($userId: String){
+    getMyPosts(args:{ userId: $userId }){
         posts{
             _id
             user
@@ -27,7 +27,7 @@ query GetMyPosts{
 }
 `
 const Wall: FunctionComponent<WallProps> = ({ user }) => {
-    const { data, error, loading } = useQuery(GET_My_POSTS)
+    const { data, loading } = useQuery(GET_My_POSTS, { variables: { userId: user._id } })
     return (<>
         <Me styles={{ imageClass: classes.image }} user={user} />
         <div className={classes.container}>
