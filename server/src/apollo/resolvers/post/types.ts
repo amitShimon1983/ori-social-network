@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID } from "type-graphql";
+import { ObjectType, Field, ID, InputType } from "type-graphql";
 @ObjectType()
 export class File {
     @Field(() => ID)
@@ -28,11 +28,16 @@ export class Post {
     createdAt?: string;
     @Field(() => File)
     file?: File;
-
-
 }
+
 @ObjectType()
 export class Posts {
     @Field(() => [Post])
     posts?: Post[];
+}
+
+@InputType()
+export class GetOtherPosts {
+    @Field(() => String)
+    userId: string;
 }

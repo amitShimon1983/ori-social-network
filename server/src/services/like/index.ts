@@ -15,7 +15,7 @@ class LikeService {
         if (action === 'dislike' && isUserLike) {
             await isUserLike.remove();
         } else if (!isUserLike && action === 'like') {
-            const like = await LikeModel.create({ user: new Types.ObjectId(userId), post: new Types.ObjectId(postId) })
+            const like = (await LikeModel.create({ user: new Types.ObjectId(userId), post: new Types.ObjectId(postId) })).toObject()
             return like;
         }
     }
