@@ -10,10 +10,19 @@ export class User {
     email?: string;
     @Field(() => File)
     file?: File;
+    @Field(() => String)
+    followers: string[]
+    @Field(() => String)
+    following: string[]
 }
 
 @InputType()
-export class GetUserArgs{
+export class GetUserArgs {
+    @Field(() => String)
+    userId: string;
+}
+@InputType()
+export class FollowArgs {
     @Field(() => String)
     userId: string;
 }

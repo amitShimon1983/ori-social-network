@@ -4,4 +4,6 @@ export interface IUser {
     email: string;
     password: string;
     file?: string;
+    followers?: string[];
+    following?: string[];
 }
