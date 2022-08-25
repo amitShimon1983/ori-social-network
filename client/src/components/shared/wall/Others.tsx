@@ -11,7 +11,6 @@ interface OthersProps {
 const Others: FunctionComponent<OthersProps> = () => {
     const { userId } = useParams();
     const { data, loading } = useGetUser(userId);
-    console.log({ data });
 
     return (<>
         {!loading && <Wall user={data.getUser} />}
