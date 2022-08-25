@@ -36,7 +36,6 @@ const InfiniteScroll: FunctionComponent<InfiniteScrollProps> = ({ initialHasMore
 
         observer.current = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting) {
-                console.log('visible', { loading });
                 if (!loading && hasMore) {
                     handleFetch();
                 }

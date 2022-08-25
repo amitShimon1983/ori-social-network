@@ -18,7 +18,7 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
     const [comments, setComments] = useState<any[]>([]);
     const [hasMore, setHasMore] = useState<boolean>(false);
     const { commentPostMutation } = useCommentPost();
-    const { loading, fetchMore } = useGetPostComments(postId || '', (data) => {
+    const { loading, fetchMore, getLazyComment } = useGetPostComments(postId || '', (data) => {
         if (data?.getComments?.comments) {
             setHasMore(data?.getComments?.hasMore)
             setComments(data?.getComments?.comments)
@@ -61,17 +61,24 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
                     skip
                 }
             });
+            setHasMore(newData?.getComments.hasMore)
             return { items: newData?.getComments?.comments, hasMore: newData?.getComments.hasMore } || emptyFetchState
         }
         return emptyFetchState
     }
-    const handleFetchChildren = async (data: any) => {
-        const { data: fetchData } = await fetchMore({
+    const handleFetchChildren = async (data: any, skip: number) => {
+        console.log({ skip, data });
+
+        const { data: fetchData } = await getLazyComment({
             variables: {
-                postId,
-                commentId: data?._id.toString()
+                postId: postId!,
+                commentId: data?._id.toString(),
+                skip,
+                limit
             },
-        });
+        })
+        console.log({ fetchData });
+
         return fetchData?.getComments?.comments || []
     }
     const renderComment = (data: any) => {

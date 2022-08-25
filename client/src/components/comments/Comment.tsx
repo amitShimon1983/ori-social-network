@@ -20,7 +20,7 @@ const Comment: FunctionComponent<CommentProps> = ({ _id,
     const [toggle, setToggle] = useState<boolean>(false);
     let contentRef = useRef(null);
     const date = new Date(+createdAt);
-    const diff = getPostDate(date)
+    const diff = getPostDate(date);
 
     useEffect(() => {
         if (contentRef?.current && isOverflow(contentRef.current)) {
