@@ -8,6 +8,8 @@ const GET_USER = gql`
             file {
                 originalname
             }
+            followers
+            following
         }
     }
 `
