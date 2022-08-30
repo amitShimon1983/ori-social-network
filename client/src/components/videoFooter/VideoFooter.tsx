@@ -1,6 +1,7 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLikePost } from "../../hooks";
+import Me from "../me";
 import { BiLike, FaRegComments } from "../shared";
 import classes from './VideoFooter.module.css';
 interface VideoFooterProps {
@@ -63,6 +64,9 @@ const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments,
             <div className={classes.icon_inner_container}>
                 <FaRegComments onClick={onCommentClick} className={classes.comment_icon} />
                 {!!comments?.length && <div className={`${classes.comment_icon_number}`}>{comments?.length || 0}</div>}
+            </div>
+            <div className={classes.icon_inner_container}>
+                <Me user={me} styles={{ emailClassName: classes.me_email, imageClass: classes.me_image, containerClassName: classes.me_container }} />
             </div>
         </div>
     </div>
