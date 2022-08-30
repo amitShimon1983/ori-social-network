@@ -5,15 +5,36 @@
     padding: 1vh;
 }
 
+.me_email {
+    display: none;
+}
+
+.me_image {
+    width: 40px;
+    height: 40px;
+}
+
+.me_container {
+    margin: 0;
+}
+
+.me_video {
+    width: 40px;
+    height: 40px;
+}
+
 .icon_container {
     color: white;
     display: flex;
     align-items: center;
+    justify-content: space-around;
 }
-.icon_inner_container{
+
+.icon_inner_container {
     width: 40px;
     height: 40px;
 }
+
 .like_icon_number {
     position: relative;
     top: 20px;
@@ -29,6 +50,7 @@
     justify-content: center;
     align-items: center;
 }
+
 .comment_icon_number {
     position: relative;
     top: 20px;
