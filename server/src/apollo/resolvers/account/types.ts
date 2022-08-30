@@ -10,9 +10,9 @@ export class User {
     email?: string;
     @Field(() => File)
     file?: File;
-    @Field(() => String)
+    @Field(() => [String])
     followers: string[]
-    @Field(() => String)
+    @Field(() => [String])
     following: string[]
 }
 
