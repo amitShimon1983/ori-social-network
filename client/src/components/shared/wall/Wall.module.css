@@ -4,12 +4,35 @@
     justify-content: space-between;
     padding-left: 5px;
     padding-right: 5px;
+    color: white;
 }
+
+.following_container {
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.following_link {
+    color: blue;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    height: 3vh;
+}
+
+.following {
+    margin-left: 1vh;
+}
+
 .image {
     width: 100px;
     height: 100px;
     border-radius: 50%;
 }
+
 .post {
     width: 30%;
     height: 150px;
