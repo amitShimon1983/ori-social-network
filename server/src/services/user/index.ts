@@ -42,12 +42,12 @@ export class UserService {
             } else {
                 otherUser.followers = [meUser._id];
             }
-            if (otherUser?.following) {
-                if (!otherUser.following.find(follow => follow === otherUser._id)) {
-                    otherUser.following.push(otherUser._id);
+            if (meUser?.following) {
+                if (!meUser.following.find(follow => follow === otherUser._id)) {
+                    meUser.following.push(otherUser._id);
                 }
             } else {
-                otherUser.following = [otherUser._id];
+                meUser.following = [otherUser._id];
             }
             await meUser.save()
             await otherUser.save()
