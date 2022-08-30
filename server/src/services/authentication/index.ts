@@ -28,7 +28,13 @@ export class AuthenticationService {
         return { servicesRes, token, isAuthenticate };
     }
     _onAuthenticateSuccess(user: IUser): { payload: any; newToken: string; } {
-        const payload = { name: user.name, email: user.email, file: user.file, _id: user._id }
+        const payload = {
+            name: user.name, email: user.email,
+            file: user.file,
+            _id: user._id,
+            followers: user.followers,
+            following: user.following
+        };
         const newToken = jwtService.sign(JSON.stringify(payload), 3600);
         return { payload, newToken }
     }
