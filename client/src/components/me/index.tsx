@@ -7,7 +7,7 @@ import classes from './Me.module.css';
 
 interface MeProps {
     user: any;
-    styles: { imageClass?: string; containerClassName?: string; emailClassName?: string; };
+    styles?: { imageClass?: string; containerClassName?: string; emailClassName?: string; };
 }
 const filesUri = `${appConfig.serverUrl}${'/api/file/post/'}`
 const Me: FunctionComponent<MeProps> = ({ user, styles }) => {
@@ -26,13 +26,13 @@ const Me: FunctionComponent<MeProps> = ({ user, styles }) => {
     }, [])
     const isVideo = type?.trim()?.toLowerCase()?.includes('video');
     return (<>
-        <div className={`${classes.container} ${styles.containerClassName}`}>
-            {url && isVideo && <div className={styles.imageClass}>
+        <div className={`${classes.container} ${styles?.containerClassName}`}>
+            {url && isVideo && <div className={styles?.imageClass}>
                 <Video videoClassName={classes.video} type={type} link={url} />
             </div>
             }
-            {url && !isVideo && <img className={styles.imageClass} src={url} alt={'profilePicture'} />}
-            {<p onClick={handleNavigateToUser} className={`${classes.email} ${styles.emailClassName}`}>{user?.email}</p>}
+            {url && !isVideo && <img className={styles?.imageClass} src={url} alt={'profilePicture'} />}
+            {<p onClick={handleNavigateToUser} className={`${classes.email} ${styles?.emailClassName}`}>{user?.email}</p>}
         </div>
     </>
     );
