@@ -4,14 +4,17 @@
 }
 
 .header_container {
-    position: sticky;
-    top: 0;
+    position: fixed;
+    bottom: 0%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 5px;
     height: 5%;
+    width: 95%;
+    background-color: black;
+    z-index: 3;
 }
 
 .button {
