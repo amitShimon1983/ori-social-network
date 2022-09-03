@@ -8,6 +8,8 @@ interface PostListProps {
             containerClassName: string;
             iconContainerClassName?: string;
             iconInnerContainerClassName?: string;
+            iconNumberClassName?: string;
+            icon?: string;
         }
     }
     posts: any[];

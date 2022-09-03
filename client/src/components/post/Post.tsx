@@ -17,6 +17,8 @@ interface PostProps {
             containerClassName?: string;
             iconContainerClassName?: string;
             iconInnerContainerClassName?: string;
+            iconNumberClassName?: string;
+            icon?: string;
         }
     };
 }
@@ -37,8 +39,8 @@ const Post: FunctionComponent<PostProps> = ({ post, styles, displayPostPersona }
         }
         loadFile();
     }, [])
+    
     const isVideo = type?.trim()?.toLowerCase()?.includes('video');
-    console.log(styles?.footerStyles);
 
     return (<div className={`${classes.container} ${styles?.containerClassName}`}>
         {url && isVideo && <Video type={type} link={url} />}

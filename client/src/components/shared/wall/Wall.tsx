@@ -30,10 +30,10 @@ query GetMyPosts($userId: String){
 }
 `
 const Wall: FunctionComponent<WallProps> = ({ user }) => {
-    const [userState, setUserState] = useState<any>();
-    useEffect(() => {
-        setUserState(user)
-    }, [user])
+    // const [userState, setUserState] = useState<any>();
+    // useEffect(() => {
+    //     setUserState(user)
+    // }, [user])
 
     const { data, loading } = useQuery(GET_My_POSTS, { variables: { userId: user._id } })
     const { user: me } = appContextVar();
@@ -41,11 +41,9 @@ const Wall: FunctionComponent<WallProps> = ({ user }) => {
     const isMe = me._id === user._id
 
     const isFollowedByMe = !!me?.following?.find((follower: any) => {
-        console.log({ isMe, follower, me: user._id });
         return follower === user._id
     });
 
-    console.log({ isFollowedByMe });
     const handleFollow = async () => {
         followMutation({
             variables: {
@@ -58,7 +56,7 @@ const Wall: FunctionComponent<WallProps> = ({ user }) => {
         });
     }
     return (<>
-        <Me styles={{ imageClass: classes.image }} user={user} />
+        <Me styles={{ imageClass: classes.image__wall }} user={user} />
         <div className={`${classes.following_container}`}>
             <div className={`${classes.following}`}>
                 followers {user?.followers?.length || 0}
@@ -72,7 +70,13 @@ const Wall: FunctionComponent<WallProps> = ({ user }) => {
         <div className={classes.container}>
             {!loading && <PostList posts={data?.getMyPosts?.posts} styles={{
                 postContainerClassName: classes.post,
-                footerStyles: { containerClassName: classes.video_footer_wall }
+                footerStyles: {
+                    containerClassName: classes.video_footer_wall,
+                    iconNumberClassName: classes.icon_number__wall,
+                    icon: classes.video_footer_icon_wall,
+                    iconInnerContainerClassName:classes.video_footer_inner_icon_container_wall,
+                    iconContainerClassName:classes.video_footer_icon_container_wall
+                }
             }} />}
         </div>
     </>
