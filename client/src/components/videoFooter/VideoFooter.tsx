@@ -9,9 +9,16 @@ interface VideoFooterProps {
     comments?: any[];
     me: { [key: string]: any }
     postId: string;
+    styles?: {
+        containerClassName?: string;
+        iconContainerClassName?: string;
+        iconInnerContainerClassName?: string;
+    }
 }
 
-const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments, postId }) => {
+const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments, postId, styles }) => {
+    console.log(styles);
+
     const [internalLikes, setLikes] = useState<any[]>([]);
     const { likePostMutation } = useLikePost();
     const myLikeIndex = !!internalLikes?.length ? internalLikes.findIndex((like: any) => like.user === me._id) : -1;
@@ -55,17 +62,17 @@ const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments,
     const onCommentClick = () => {
         navigate('/comments/' + postId)
     }
-    return (<div className={classes.container}>
-        <div className={classes.icon_container}>
-            <div className={classes.icon_inner_container}>
-                <BiLike onClick={onLikeClick} className={`${classes.like_icon} ${iLikeIt ? classes.like_icon_selected : classes.like_icon_not_selected}`} />
-                {!!internalLikes?.length && <div className={`${classes.like_icon_number}`}>{internalLikes?.length || 0}</div>}
+    return (<div className={`${styles?.containerClassName} ${classes.container}`}>
+        <div className={`${classes.icon_container} ${styles?.iconContainerClassName}`}>
+            <div className={`${classes.icon_inner_container} ${styles?.iconInnerContainerClassName}`}>
+                <BiLike onClick={onLikeClick} className={`${classes.icon} ${iLikeIt ? classes.like_icon_selected : classes.like_icon_not_selected}`} />
+                {!!internalLikes?.length && <div className={`${classes.icon_number}`}>{internalLikes?.length || 0}</div>}
             </div>
-            <div className={classes.icon_inner_container}>
-                <FaRegComments onClick={onCommentClick} className={classes.comment_icon} />
-                {!!comments?.length && <div className={`${classes.comment_icon_number}`}>{comments?.length || 0}</div>}
+            <div className={`${classes.icon_inner_container} ${styles?.iconInnerContainerClassName}`}>
+                <FaRegComments onClick={onCommentClick} className={classes.icon} />
+                {!!comments?.length && <div className={`${classes.icon_number}`}>{comments?.length || 0}</div>}
             </div>
-            <div className={classes.icon_inner_container}>
+            <div className={`${classes.icon_inner_container} ${styles?.iconInnerContainerClassName}`}>
                 <Me user={me} styles={{ emailClassName: classes.me_email, imageClass: classes.me_image, containerClassName: classes.me_container }} />
             </div>
         </div>

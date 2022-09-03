@@ -29,9 +29,18 @@ query GetRandomPosts{
 `
 const Home: FunctionComponent<HomeProps> = () => {
   const { data, error, loading } = useQuery(GET_RANDOM_POSTS)
+  console.log(classes.post_footer__home);
+
   return (<>
     <div className={classes.container}>
-      {!loading && <PostList posts={data?.getRandomPosts.posts} />}
+      {!loading && <PostList posts={data?.getRandomPosts.posts} styles={{
+        postContainerClassName: classes.post_container__home,
+        footerStyles: {
+          containerClassName: classes.post_footer_container__home,
+          iconContainerClassName: classes.post_footer_icon_container__home,
+          iconInnerContainerClassName: classes.icon_inner_container__home
+        }
+      }} />}
       {loading && <Spinner label="Loading..." />}
       {error && <div>{error?.message}</div>}
     </div>

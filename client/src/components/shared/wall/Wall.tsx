@@ -44,7 +44,7 @@ const Wall: FunctionComponent<WallProps> = ({ user }) => {
         console.log({ isMe, follower, me: user._id });
         return follower === user._id
     });
-    
+
     console.log({ isFollowedByMe });
     const handleFollow = async () => {
         followMutation({
@@ -70,7 +70,7 @@ const Wall: FunctionComponent<WallProps> = ({ user }) => {
         {!isMe && !isFollowedByMe &&
             <div onClick={handleFollow} className={`${classes.following_link}`}>Follow me...</div>}
         <div className={classes.container}>
-            {!loading && <PostList posts={data?.getMyPosts?.posts} postClassName={classes.post} />}
+            {!loading && <PostList posts={data?.getMyPosts?.posts} styles={{ postContainerClassName: classes.post }} />}
         </div>
     </>
     );

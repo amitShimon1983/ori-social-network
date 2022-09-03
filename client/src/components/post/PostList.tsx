@@ -1,16 +1,22 @@
 import { FunctionComponent } from "react";
-import { Spinner } from "../shared";
 import Post from "./Post";
 import { PostDetails } from "./types";
 interface PostListProps {
-    postClassName?: string;
+    styles?: {
+        postContainerClassName?: string;
+        footerStyles?: {
+            containerClassName: string;
+            iconContainerClassName?: string;
+            iconInnerContainerClassName?: string;
+        }
+    }
     posts: any[];
 }
 
-const PostList: FunctionComponent<PostListProps> = ({ posts, postClassName }) => {
+const PostList: FunctionComponent<PostListProps> = ({ posts, styles }) => {
     return (<>
         {!!posts?.length &&
-            posts?.map((post: PostDetails) => <Post containerClassName={postClassName} key={post._id} post={post} />)}
+            posts?.map((post: PostDetails) => <Post styles={{ containerClassName: styles?.postContainerClassName, footerStyles: styles?.footerStyles }} key={post._id} post={post} />)}
     </>);
 }
 

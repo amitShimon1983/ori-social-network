@@ -3,3 +3,20 @@
     height: 95%;
     overflow: scroll;
 }
+
+.post_container__home {
+    position: relative;
+}
+
+.post_footer_container__home {
+    position: absolute;
+    height: 50%;
+}
+
+.post_footer_icon_container__home {
+    flex-direction: column;
+    height: 70%;
+}
+.icon_inner_container__home {
+    position: relative;
+}
