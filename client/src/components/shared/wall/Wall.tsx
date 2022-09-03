@@ -71,12 +71,13 @@ const Wall: FunctionComponent<WallProps> = ({ user }) => {
             {!loading && <PostList posts={data?.getMyPosts?.posts} styles={{
                 postContainerClassName: classes.post,
                 footerStyles: {
-                    containerClassName: classes.video_footer_wall,
+                    containerClassName: classes.video_footer__wall,
                     iconNumberClassName: classes.icon_number__wall,
-                    icon: classes.video_footer_icon_wall,
-                    iconInnerContainerClassName:classes.video_footer_inner_icon_container_wall,
-                    iconContainerClassName:classes.video_footer_icon_container_wall
-                }
+                    icon: classes.video_footer_icon__wall,
+                    iconInnerContainerClassName: classes.video_footer_inner_icon_container__wall,
+                    iconContainerClassName: classes.video_footer_icon_container__wall
+                },
+                videoStyles: { videoClassName: classes.video__wall }
             }} />}
         </div>
     </>

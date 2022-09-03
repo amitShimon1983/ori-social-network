@@ -17,22 +17,24 @@
     margin-bottom: 2vh;
 }
 
-.video_footer_inner_icon_container_wall {
+.video_footer_inner_icon_container__wall {
     position: relative;
     width: 30px;
     height: 30px;
     margin-left: 1vh;
 }
-.video_footer_icon_container_wall{
+
+.video_footer_icon_container__wall {
     justify-content: initial;
 }
-.video_footer_wall {
+
+.video_footer__wall {
     position: relative;
     padding: 0px;
     bottom: 30px;
 }
 
-.video_footer_icon_wall {
+.video_footer_icon__wall {
     position: relative;
     top: initial;
     font-size: 30px;
@@ -65,4 +67,8 @@
     width: 30%;
     margin-bottom: 2vh;
     height: 150px;
+}
+
+.video__wall {
+    border-radius: 10px;
 }

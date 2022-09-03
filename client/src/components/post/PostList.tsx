@@ -10,7 +10,8 @@ interface PostListProps {
             iconInnerContainerClassName?: string;
             iconNumberClassName?: string;
             icon?: string;
-        }
+        },
+        videoStyles?: { videoClassName?: string }
     }
     posts: any[];
     displayPostPersona?: boolean;
@@ -19,7 +20,11 @@ interface PostListProps {
 const PostList: FunctionComponent<PostListProps> = ({ posts, styles, displayPostPersona }) => {
     return (<>
         {!!posts?.length &&
-            posts?.map((post: PostDetails) => <Post displayPostPersona={displayPostPersona} styles={{ containerClassName: styles?.postContainerClassName, footerStyles: styles?.footerStyles }} key={post._id} post={post} />)}
+            posts?.map((post: PostDetails) => <Post displayPostPersona={displayPostPersona} styles={{
+                containerClassName: styles?.postContainerClassName,
+                footerStyles: styles?.footerStyles,
+                videoStyles: styles?.videoStyles
+            }} key={post._id} post={post} />)}
     </>);
 }
 
