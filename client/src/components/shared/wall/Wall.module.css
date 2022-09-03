@@ -74,3 +74,7 @@
 .video__wall {
     border-radius: 10px;
 }
+
+.video_container__wall {
+    width: 100%;
+}

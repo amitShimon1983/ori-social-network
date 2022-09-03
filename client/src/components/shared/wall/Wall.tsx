@@ -77,7 +77,7 @@ const Wall: FunctionComponent<WallProps> = ({ user }) => {
                     iconInnerContainerClassName: classes.video_footer_inner_icon_container__wall,
                     iconContainerClassName: classes.video_footer_icon_container__wall
                 },
-                videoStyles: { videoClassName: classes.video__wall }
+                videoStyles: { videoClassName: classes.video__wall, containerClassName: classes.video_container__wall }
             }} />}
         </div>
     </>

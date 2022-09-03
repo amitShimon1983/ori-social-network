@@ -20,7 +20,10 @@ interface PostProps {
             iconNumberClassName?: string;
             icon?: string;
         },
-        videoStyles?: { videoClassName?: string }
+        videoStyles?: { 
+            videoClassName?: string; 
+            containerClassName?: string; 
+        }
     };
 }
 const filesUri = `${appConfig.serverUrl}${'/api/file/post/'}`
@@ -44,7 +47,10 @@ const Post: FunctionComponent<PostProps> = ({ post, styles, displayPostPersona }
     const isVideo = type?.trim()?.toLowerCase()?.includes('video');
 
     return (<div className={`${classes.container} ${styles?.containerClassName}`}>
-        {url && isVideo && <Video videoClassName={styles?.videoStyles?.videoClassName} type={type} link={url} />}
+        {url && isVideo && <Video 
+        videoClassName={styles?.videoStyles?.videoClassName}
+        containerClassName={styles?.videoStyles?.containerClassName}
+         type={type} link={url} />}
         {url && !isVideo && <img className={`${classes.image} ${styles?.imageClassName}`} src={url} alt={'post'} />}
         {!!post?._id && <VideoFooter
             postId={post?._id}

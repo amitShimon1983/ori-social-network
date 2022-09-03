@@ -11,7 +11,10 @@ interface PostListProps {
             iconNumberClassName?: string;
             icon?: string;
         },
-        videoStyles?: { videoClassName?: string }
+        videoStyles?: {
+            videoClassName?: string;
+            containerClassName?: string;
+        }
     }
     posts: any[];
     displayPostPersona?: boolean;
