@@ -13,4 +13,5 @@ body, html, #root {
   height: 100%;
   background: white;
   color: black;
+  overflow: hidden;
 }

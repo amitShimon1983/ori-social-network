@@ -26,17 +26,17 @@ const Shell: FunctionComponent<ShellProps> = () => {
         }
     }
 
-    return (<>
+    return (<div className={classes.container}>
+        <div className={classes.outlet_container}>
+            <Outlet />
+        </div>
         <div className={classes.header_container}>
             <Button className={classes.button} handleClick={() => handleNavigate("/home")}> <FcHome /></Button>
             <Button className={classes.button} handleClick={() => handleNavigate("/myWall")}><CgProfile /> </Button>
             <Button className={classes.button} handleClick={() => handleNavigate("/post")}><AiOutlineCloudUpload /> </Button>
             <Button className={classes.button} handleClick={handleLogout}><AiOutlineLogout /> </Button>
         </div>
-        <div className={classes.container}>
-            <Outlet />
-        </div>
-    </>);
+    </div>);
 }
 
 export default Shell;

@@ -1,11 +1,14 @@
-.container {
+.outlet_container {
     width: 100%;
-    height: 100%;
+    height: 95%;
+    overflow: hidden;
+    overflow-x: hidden;
 }
-
+.container{
+    height: 100%;
+    overflow: hidden;
+}
 .header_container {
-    position: fixed;
-    bottom: 0%;
     display: flex;
     justify-content: space-around;
     padding-left: 10px;
