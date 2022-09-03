@@ -36,8 +36,8 @@
 
 .icon_number {
     position: absolute;
-    bottom: -5px;
-    right: 5px;
+    bottom: -10px;
+    right: 0px;
     background-color: white;
     color: black;
     border-radius: 50%;
@@ -55,7 +55,7 @@
 .icon {
     top: 10px;
     margin-right: 1vh;
-    font-size: 32px;
+    font-size: 40px;
     position: absolute;
     z-index: 1;
 }
