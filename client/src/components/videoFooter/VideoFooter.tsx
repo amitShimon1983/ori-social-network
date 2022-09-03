@@ -66,7 +66,7 @@ const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments,
     return (<div className={`${styles?.containerClassName} ${classes.container}`}>
         <div className={`${classes.icon_container} ${styles?.iconContainerClassName}`}>
             <div className={`${classes.icon_inner_container} ${styles?.iconInnerContainerClassName}`}>
-                <FcLike color={'white'}onClick={onLikeClick} className={`${classes.icon} ${styles?.icon} ${iLikeIt ? classes.like_icon_selected : classes.like_icon_not_selected}`} />
+                <FcLike onClick={onLikeClick} className={`${classes.icon} ${styles?.icon} ${iLikeIt ? classes.like_icon_selected : classes.like_icon_not_selected}`} />
                 {!!internalLikes?.length && <div className={`${classes.icon_number} ${styles?.iconNumberClassName}`}>{internalLikes?.length || 0}</div>}
             </div>
             <div className={`${classes.icon_inner_container} ${styles?.iconInnerContainerClassName}`}>
