@@ -4,19 +4,26 @@
     overflow: hidden;
     overflow-x: hidden;
 }
-.container{
+
+.container {
     height: 100%;
     overflow: hidden;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
+
 .header_container {
     display: flex;
     justify-content: space-around;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 5px;
     height: 5%;
-    width: 95%;
+    width: 98%;
+    margin-top: .5vh;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    border-radius: 10px 10px 0 0;
     z-index: 3;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .button {
