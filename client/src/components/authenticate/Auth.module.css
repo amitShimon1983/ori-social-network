@@ -1,7 +1,7 @@
 .container {
     display: flex;
     height: 100%;
-    height: "100%";
+    height: 100%;
     flex-direction: column;
     justify-content: space-evenly;
     padding-left: 10px;
@@ -9,7 +9,6 @@
 }
 
 .header {
-    color: white;
     text-align: center;
     margin-bottom: 1vh;
 }
@@ -17,20 +16,15 @@
 .input {
     height: 4vh;
     border: none;
-    background: black;
-    color: white;
     outline: none;
     padding-left: 5px;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid black;
 }
 .button_panel{
     display: flex;
     height: 15vh;
     flex-direction: column;
     justify-content: space-between;
-}
-.input::placeholder {
-    color: white;
 }
 
 .camera_container {
@@ -39,8 +33,6 @@
 
 .button {
     height: 5vh;
-    background: white;
-    color: black;
     font-size: 20px;
     border: none;
 }

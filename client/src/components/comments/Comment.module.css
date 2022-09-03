@@ -46,7 +46,6 @@
     margin-right: 1.5vh;
     border: none;
     outline: none;
-    color: white;
     background: transparent;
 }
 
@@ -64,7 +63,6 @@
 .read_more_button {
     padding-top: .5vh;
     background: transparent;
-    color: rgb(166, 163, 163);
     border: none;
     outline: none;
 }
@@ -103,7 +101,6 @@
 }
 .back_button{
     width: 3vh;
-    color: aliceblue;
     background: transparent;
     border: none;
     font-size: 20px;
