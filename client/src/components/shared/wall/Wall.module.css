@@ -66,15 +66,17 @@
 .post {
     width: 30%;
     margin-bottom: 2vh;
+    padding: 1px;
     height: 150px;
-    border-radius: 10px;
+    border-radius: 5px;
     box-shadow: rgb(9 30 66 / 25%) 0px 1px 1px, rgb(9 30 66 / 13%) 0px 0px 1px 1px;
 }
 
 .video__wall {
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .video_container__wall {
     width: 100%;
+    margin-left: 0;
 }
