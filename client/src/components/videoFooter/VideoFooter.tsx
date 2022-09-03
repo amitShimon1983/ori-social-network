@@ -9,6 +9,7 @@ interface VideoFooterProps {
     comments?: any[];
     me: { [key: string]: any }
     postId: string;
+    displayPersona?: boolean;
     styles?: {
         containerClassName?: string;
         iconContainerClassName?: string;
@@ -16,7 +17,7 @@ interface VideoFooterProps {
     }
 }
 
-const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments, postId, styles }) => {
+const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments, postId, styles, displayPersona }) => {
     console.log(styles);
 
     const [internalLikes, setLikes] = useState<any[]>([]);
@@ -72,9 +73,9 @@ const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments,
                 <FaRegComments onClick={onCommentClick} className={classes.icon} />
                 {!!comments?.length && <div className={`${classes.icon_number}`}>{comments?.length || 0}</div>}
             </div>
-            <div className={`${classes.icon_inner_container} ${styles?.iconInnerContainerClassName}`}>
+            {displayPersona && <div className={`${classes.icon_inner_container} ${styles?.iconInnerContainerClassName}`}>
                 <Me user={me} styles={{ emailClassName: classes.me_email, imageClass: classes.me_image, containerClassName: classes.me_container }} />
-            </div>
+            </div>}
         </div>
     </div>
     );

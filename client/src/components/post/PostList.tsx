@@ -11,12 +11,13 @@ interface PostListProps {
         }
     }
     posts: any[];
+    displayPostPersona?: boolean;
 }
 
-const PostList: FunctionComponent<PostListProps> = ({ posts, styles }) => {
+const PostList: FunctionComponent<PostListProps> = ({ posts, styles, displayPostPersona }) => {
     return (<>
         {!!posts?.length &&
-            posts?.map((post: PostDetails) => <Post styles={{ containerClassName: styles?.postContainerClassName, footerStyles: styles?.footerStyles }} key={post._id} post={post} />)}
+            posts?.map((post: PostDetails) => <Post displayPostPersona={displayPostPersona} styles={{ containerClassName: styles?.postContainerClassName, footerStyles: styles?.footerStyles }} key={post._id} post={post} />)}
     </>);
 }
 

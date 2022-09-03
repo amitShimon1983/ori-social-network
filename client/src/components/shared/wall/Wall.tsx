@@ -70,7 +70,10 @@ const Wall: FunctionComponent<WallProps> = ({ user }) => {
         {!isMe && !isFollowedByMe &&
             <div onClick={handleFollow} className={`${classes.following_link}`}>Follow me...</div>}
         <div className={classes.container}>
-            {!loading && <PostList posts={data?.getMyPosts?.posts} styles={{ postContainerClassName: classes.post }} />}
+            {!loading && <PostList posts={data?.getMyPosts?.posts} styles={{
+                postContainerClassName: classes.post,
+                footerStyles: { containerClassName: classes.video_footer_wall }
+            }} />}
         </div>
     </>
     );

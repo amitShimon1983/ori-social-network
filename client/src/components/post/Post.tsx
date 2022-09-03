@@ -9,6 +9,7 @@ import { appContextVar } from "../../services/store";
 import { useGetPostComments, useGetPostLikes } from "../../hooks";
 interface PostProps {
     post: PostDetails;
+    displayPostPersona?: boolean;
     styles?: {
         containerClassName?: string;
         imageClassName?: string;
@@ -20,7 +21,7 @@ interface PostProps {
     };
 }
 const filesUri = `${appConfig.serverUrl}${'/api/file/post/'}`
-const Post: FunctionComponent<PostProps> = ({ post, styles }) => {
+const Post: FunctionComponent<PostProps> = ({ post, styles, displayPostPersona }) => {
     const { data: commentsData, } = useGetPostComments(post?._id || '');
     const { user } = appContextVar();
     const [url, setUrl] = useState<string>('');
@@ -44,6 +45,7 @@ const Post: FunctionComponent<PostProps> = ({ post, styles }) => {
         {url && !isVideo && <img className={`${classes.image} ${styles?.imageClassName}`} src={url} alt={'post'} />}
         {!!post?._id && <VideoFooter
             postId={post?._id}
+            displayPersona={displayPostPersona}
             me={user}
             likes={likesData?.getLikes?.likes}
             comments={commentsData?.getComments?.comments} styles={styles?.footerStyles} />}
