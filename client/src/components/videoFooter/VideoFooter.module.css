@@ -60,9 +60,10 @@
 }
 
 .like_icon_selected {
-    color: red;
+    /* color: red; */
+    color: white;
 }
 
 .like_icon_not_selected {
-    color: white
+    color: white;
 }

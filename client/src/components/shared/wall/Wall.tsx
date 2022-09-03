@@ -30,11 +30,7 @@ query GetMyPosts($userId: String){
 }
 `
 const Wall: FunctionComponent<WallProps> = ({ user }) => {
-    // const [userState, setUserState] = useState<any>();
-    // useEffect(() => {
-    //     setUserState(user)
-    // }, [user])
-
+   
     const { data, loading } = useQuery(GET_My_POSTS, { variables: { userId: user._id } })
     const { user: me } = appContextVar();
     const { followMutation } = useFollow()
@@ -55,6 +51,7 @@ const Wall: FunctionComponent<WallProps> = ({ user }) => {
             following: [...me.following, user._id]
         });
     }
+
     return (<>
         <Me styles={{ imageClass: classes.image__wall }} user={user} />
         <div className={`${classes.following_container}`}>

@@ -2,7 +2,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLikePost } from "../../hooks";
 import Me from "../me";
-import { BiLike, FaRegComments } from "../shared";
+import { FcLike, FaRegComments } from "../shared";
 import classes from './VideoFooter.module.css';
 interface VideoFooterProps {
     likes?: any[];
@@ -66,7 +66,7 @@ const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments,
     return (<div className={`${styles?.containerClassName} ${classes.container}`}>
         <div className={`${classes.icon_container} ${styles?.iconContainerClassName}`}>
             <div className={`${classes.icon_inner_container} ${styles?.iconInnerContainerClassName}`}>
-                <BiLike onClick={onLikeClick} className={`${classes.icon} ${styles?.icon} ${iLikeIt ? classes.like_icon_selected : classes.like_icon_not_selected}`} />
+                <FcLike color={'white'}onClick={onLikeClick} className={`${classes.icon} ${styles?.icon} ${iLikeIt ? classes.like_icon_selected : classes.like_icon_not_selected}`} />
                 {!!internalLikes?.length && <div className={`${classes.icon_number} ${styles?.iconNumberClassName}`}>{internalLikes?.length || 0}</div>}
             </div>
             <div className={`${classes.icon_inner_container} ${styles?.iconInnerContainerClassName}`}>
