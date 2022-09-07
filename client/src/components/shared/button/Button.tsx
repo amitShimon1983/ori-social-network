@@ -1,3 +1,4 @@
+import Button from '@mui/material/Button';
 import { FunctionComponent } from "react";
 
 interface ButtonProps {
@@ -5,10 +6,11 @@ interface ButtonProps {
     children: React.ReactNode;
     disabled?: boolean;
     className?: string;
+    variant?: 'contained' | 'text' | 'outlined';
 }
 
-const Button: FunctionComponent<ButtonProps> = ({ handleClick, children, disabled, className }) => {
-    return (<button className={className} disabled={disabled} onClick={handleClick}>{children}</button>);
+const ButtonMUI: FunctionComponent<ButtonProps> = ({ handleClick, children, disabled, className, variant }) => {
+    return (<Button variant={variant || 'contained'} className={className} disabled={disabled} onClick={handleClick}>{children}</Button>);
 }
 
-export default Button;
+export default ButtonMUI;
