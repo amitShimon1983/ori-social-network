@@ -13,7 +13,7 @@ const Spinner: FunctionComponent<SpinnerProps> = ({ label, color, styles }) => {
         <div className={`${classes.circular_progress} ${styles?.circularProgressClassName}`}>
             <CircularProgress color={color || 'primary'} title={label} />
         </div>
-        <p className={`${classes.loading} ${styles?.labelClassName}`}>Loading
+        <p className={`${classes.loading} ${styles?.labelClassName}`}>{label || 'Loading'}
             <span className={classes.dots_cont}>
                 <span className={`${classes.dot} ${classes.dot_1}`}></span>
                 <span className={`${classes.dot} ${classes.dot_2}`}></span>
