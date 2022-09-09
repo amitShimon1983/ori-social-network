@@ -8,9 +8,9 @@ interface SkeletonProps {
 
 const Skeleton: FunctionComponent<SkeletonProps> = ({ className }) => {
     return (<Stack spacing={1} height={'100%'}>
+        <SkeletonMUI width="100%" variant="rounded" />
+        <SkeletonMUI width="100%" variant="rounded" />
         <SkeletonMUI width="100%" height={'100%'} variant="rounded" />
-        <SkeletonMUI width="100%" variant="rounded" />
-        <SkeletonMUI width="100%" variant="rounded" />
         <SkeletonMUI width="100%" variant="rounded" />
         <SkeletonMUI width="100%" variant="rounded" />
         <SkeletonMUI width="100%" variant="rectangular" />
