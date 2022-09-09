@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { authService } from "../../../services";
 import { appContextVar } from "../../../services/store";
 import { validateEmail } from "../../../utils";
-import { Input, Button, AiOutlineLogin } from "../../shared";
+import { Input, Button, AiOutlineLogin, Spinner } from "../../shared";
 import Form from "../../shared/form";
 import { Hr } from "../../styles/styles";
 import classes from '../Auth.module.css';
@@ -18,6 +18,7 @@ interface Login {
 }
 const LoginForm: FunctionComponent<LoginFormProps> = () => {
     const [login, setLogin] = useState<Login>(initialState);
+    const [loading, setLoading] = useState<boolean>(false);
     const [isValid, setIsValid] = useState<boolean>(false)
     const [errors, setErrors] = useState<string[]>([])
     const navigate = useNavigate();
@@ -43,25 +44,33 @@ const LoginForm: FunctionComponent<LoginFormProps> = () => {
     }
 
     const handleSubmit = async (event: any) => {
+        setLoading(true)
         event.preventDefault();
         await authService.login(login, (payload) => {
             onSuccess(payload)
+            setLoading(false)
         }, onError)
     }
 
-    return (<Form>
-        <div>
-            <h2 className={classes.header}>Login...</h2>
-            <Hr />
-        </div>
-        <Input className={classes.input} value={login.email} placeholder='Email' type='email' name='email' required handleChange={handleChange} />
-        <Input className={classes.input} value={login.password} placeholder="Password" type='password' name='password' required handleChange={handleChange} />
-        <div className={classes.button_panel}>
-            <Button className={classes.button} disabled={!isValid} handleClick={handleSubmit}><AiOutlineLogin />Sign in...</Button>
-            <Button className={classes.button} handleClick={handleNavigateToSignUp}><AiOutlineLogin />Sign up...</Button>
-        </div>
-        {!!errors.length && errors.map(error => (<div>{error}</div>))}
-    </Form>);
+    return (<>
+        {loading && <div className={classes.container_loading}>
+            <Spinner label='loading...' />
+        </div>}
+        {!loading && <Form>
+            <div>
+                <h2 className={classes.header}>Login...</h2>
+                <Hr />
+            </div>
+            <Input className={classes.input} value={login.email} placeholder='Email' type='email' name='email' required handleChange={handleChange} />
+            <Input className={classes.input} value={login.password} placeholder="Password" type='password' name='password' required handleChange={handleChange} />
+            <div className={classes.button_panel}>
+                <Button className={classes.button} disabled={!isValid} handleClick={handleSubmit}><AiOutlineLogin />Sign in...</Button>
+                <Button className={classes.button} handleClick={handleNavigateToSignUp}><AiOutlineLogin />Sign up...</Button>
+            </div>
+            {!!errors.length && errors.map(error => (<div>{error}</div>))}
+        </Form>}
+    </>
+    );
 }
 
 export default LoginForm;

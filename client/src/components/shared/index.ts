@@ -5,6 +5,7 @@ export { StoreProvider } from './store';
 export { AppContainer } from './app';
 export { VideoElement } from './video';
 export { RecordingIcon } from './recording';
+export { default as ToolbarButton } from './toolbarButton/ToolbarButton';
 export * from './tree';
 export * from './loader';
 export * from './icons';

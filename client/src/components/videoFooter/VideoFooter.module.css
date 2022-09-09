@@ -1,8 +1,3 @@
-.container {
-    bottom: 50px;
-    padding: 1vh;
-}
-
 .me_email {
     display: none;
 }
@@ -25,38 +20,31 @@
     color: white;
     display: flex;
     align-items: center;
-    justify-content: space-around;
 }
 
 .icon_inner_container {
-    width: 40px;
-    height: 40px;
+    height: 20px;
 }
 
 .icon_number {
-    position: absolute;
-    bottom: -10px;
-    right: 0px;
+    position: relative;
+    bottom: 10px;
+    left: 0px;
     background: white;
     color: black;
     border-radius: 50%;
     width: 12px;
     height: 12px;
     padding: 1px;
-    font-size: 16px;
+    font-size: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1
 }
 
 
 .icon {
-    top: 10px;
-    margin-right: 1vh;
-    font-size: 40px;
-    position: absolute;
-    z-index: 1;
+    font-size: 2vh;
 }
 
 .like_icon_selected {

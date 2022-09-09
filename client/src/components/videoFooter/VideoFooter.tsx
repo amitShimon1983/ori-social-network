@@ -2,14 +2,13 @@ import { FunctionComponent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLikePost } from "../../hooks";
 import Me from "../me";
-import { FcLike, FaRegComments } from "../shared";
+import { FcLike, FaRegComments, GiArrowDunk, BsCloudDownload, ToolbarButton } from "../shared";
 import classes from './VideoFooter.module.css';
 interface VideoFooterProps {
     likes?: any[];
     comments?: any[];
     me: { [key: string]: any }
     postId: string;
-    displayPersona?: boolean;
     styles?: {
         containerClassName?: string;
         iconContainerClassName?: string;
@@ -19,7 +18,7 @@ interface VideoFooterProps {
     }
 }
 
-const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments, postId, styles, displayPersona }) => {
+const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments, postId, styles }) => {
     const [internalLikes, setLikes] = useState<any[]>([]);
     const { likePostMutation } = useLikePost();
     const myLikeIndex = !!internalLikes?.length ? internalLikes.findIndex((like: any) => like.user === me._id) : -1;
@@ -63,21 +62,26 @@ const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments,
     const onCommentClick = () => {
         navigate('/comments/' + postId)
     }
-    return (<div className={`${styles?.containerClassName} ${classes.container}`}>
-        <div className={`${classes.icon_container} ${styles?.iconContainerClassName}`}>
-            <div className={`${classes.icon_inner_container} ${styles?.iconInnerContainerClassName}`}>
-                <FcLike onClick={onLikeClick} className={`${classes.icon} ${styles?.icon} ${iLikeIt ? classes.like_icon_selected : classes.like_icon_not_selected}`} />
-                {!!internalLikes?.length && <div className={`${classes.icon_number} ${styles?.iconNumberClassName}`}>{internalLikes?.length || 0}</div>}
-            </div>
-            <div className={`${classes.icon_inner_container} ${styles?.iconInnerContainerClassName}`}>
-                <FaRegComments onClick={onCommentClick} className={`${classes.icon} ${styles?.icon}`} />
-                {!!comments?.length && <div className={`${classes.icon_number} ${styles?.iconNumberClassName}`}>{comments?.length || 0}</div>}
-            </div>
-            {displayPersona && <div className={`${classes.icon_inner_container} ${styles?.iconInnerContainerClassName}`}>
-                <Me user={me} styles={{ emailClassName: classes.me_email, imageClass: classes.me_image, containerClassName: classes.me_container }} />
-            </div>}
-        </div>
-    </div>
+    return (
+        <ToolbarButton actions={[
+            { icon: <Me user={me} styles={{ emailClassName: classes.me_email, imageClass: classes.me_image, containerClassName: classes.me_container }} />, name: 'Avatar' },
+            {
+                icon: <div className={`${classes.icon_inner_container} ${styles?.iconInnerContainerClassName}`}>
+                    <FaRegComments onClick={onCommentClick} className={`${classes.icon} ${styles?.icon}`} />
+                    {!!comments?.length && <div className={`${classes.icon_number} ${styles?.iconNumberClassName}`}>{comments?.length || 0}</div>}
+                </div>,
+                name: 'Comments'
+            },
+            {
+                icon: <div className={`${classes.icon_inner_container} ${styles?.iconInnerContainerClassName}`}>
+                    <FcLike onClick={onLikeClick} className={`${classes.icon} ${styles?.icon} ${iLikeIt ? classes.like_icon_selected : classes.like_icon_not_selected}`} />
+                    {!!internalLikes?.length && <div className={`${classes.icon_number} ${styles?.iconNumberClassName}`}>{internalLikes?.length || 0}</div>}
+                </div>,
+                name: 'Liks'
+            },
+            { icon: <BsCloudDownload />, name: 'Download' },
+            { icon: <GiArrowDunk />, name: 'Share' },
+        ]} />
     );
 }
 

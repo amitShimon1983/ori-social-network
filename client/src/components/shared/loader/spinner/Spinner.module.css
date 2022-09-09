@@ -1,0 +1,60 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    font-size: 20px;
+}
+
+.circular_progress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2vh;
+}
+
+.dot {
+    width: 4px;
+    height: 4px;
+    background: #22303e;
+    display: inline-block;
+    border-radius: 50%;
+    right: 0px;
+    bottom: 0px;
+    margin: 0px 2px;
+    position: relative;
+    animation: jump 1s infinite;
+}
+
+.dots_cont {}
+
+.dots_cont .dot_1 {
+    -webkit-animation-delay: 50ms;
+    animation-delay: 50ms;
+}
+
+.dots_cont .dot_2 {
+    -webkit-animation-delay: 100ms;
+    animation-delay: 100ms;
+}
+
+.dots-cont .dot_3 {
+    -webkit-animation-delay: 150ms;
+    animation-delay: 150ms;
+}
+
+@keyframes jump {
+    0% {
+        bottom: 0px;
+    }
+
+    20% {
+        bottom: 5px;
+    }
+
+    40% {
+        bottom: 0px;
+    }
+}

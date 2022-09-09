@@ -7,3 +7,12 @@
     width: 100%;
     object-fit: cover;
 }
+
+.speedDaild_container {
+    position: absolute;
+    width: 200px;
+    height: 100%;
+    top: 10px;
+    right: 10px;
+    z-index: 10000;
+}

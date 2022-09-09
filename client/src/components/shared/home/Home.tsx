@@ -35,7 +35,7 @@ const Home: FunctionComponent<HomeProps> = () => {
     <div className={classes.container}>
       {!loading &&
         <PostList
-          displayPostPersona={true}
+          displayToolbar={true}
           posts={data?.getRandomPosts.posts}
           styles={{
             postContainerClassName: classes.post_container__home,

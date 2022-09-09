@@ -4,3 +4,5 @@ export { FcHome, FcLike } from 'react-icons/fc';
 export { FaRegComments, } from 'react-icons/fa';
 export { CgProfile } from 'react-icons/cg';
 export { BiVideoRecording, BiLike } from 'react-icons/bi';
+export { GiArrowDunk } from 'react-icons/gi';
+export { BsCloudDownload } from 'react-icons/bs';

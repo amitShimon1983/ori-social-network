@@ -17,13 +17,13 @@ interface PostListProps {
         }
     }
     posts: any[];
-    displayPostPersona?: boolean;
+    displayToolbar?: boolean;
 }
 
-const PostList: FunctionComponent<PostListProps> = ({ posts, styles, displayPostPersona }) => {
+const PostList: FunctionComponent<PostListProps> = ({ posts, styles, displayToolbar }) => {
     return (<>
         {!!posts?.length &&
-            posts?.map((post: PostDetails) => <Post displayPostPersona={displayPostPersona} styles={{
+            posts?.map((post: PostDetails) => <Post displayToolbar={displayToolbar} styles={{
                 containerClassName: styles?.postContainerClassName,
                 footerStyles: styles?.footerStyles,
                 videoStyles: styles?.videoStyles
