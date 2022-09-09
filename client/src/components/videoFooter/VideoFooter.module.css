@@ -16,42 +16,7 @@
     height: 40px;
 }
 
-.icon_container {
-    color: white;
-    display: flex;
-    align-items: center;
-}
-
-.icon_inner_container {
-    height: 20px;
-}
-
-.icon_number {
-    position: relative;
-    bottom: 10px;
-    left: 0px;
-    background: white;
-    color: black;
-    border-radius: 50%;
-    width: 12px;
-    height: 12px;
-    padding: 1px;
-    font-size: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-
 .icon {
-    font-size: 2vh;
-}
-
-.like_icon_selected {
-    /* color: red; */
-    color: white;
-}
-
-.like_icon_not_selected {
-    color: white;
+    width: 22px;
+    height: 22px;
 }
