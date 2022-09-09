@@ -3,7 +3,7 @@ import { FunctionComponent } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { authService } from "../../services";
 import { appContextVar } from "../../services/store";
-import { AiOutlineLogout, Button, FcHome, CgProfile, AiOutlineCloudUpload } from "../shared";
+import { AiOutlineLogout, FcHome, CgProfile, AiOutlineCloudUpload, Toolbar } from "../shared";
 import classes from './Shell.module.css';
 interface ShellProps {
 
@@ -25,17 +25,18 @@ const Shell: FunctionComponent<ShellProps> = () => {
             })
         }
     }
+    const navigateHome = () => handleNavigate("/home");
+    const navigateMyWall = () => handleNavigate("/myWall");
+    const navigatePost = () => handleNavigate("/post");
 
     return (<div className={classes.container}>
         <div className={classes.outlet_container}>
             <Outlet />
         </div>
-        <div className={classes.header_container}>
-            <Button className={classes.button} handleClick={() => handleNavigate("/home")}> <FcHome /></Button>
-            <Button className={classes.button} handleClick={() => handleNavigate("/myWall")}><CgProfile /> </Button>
-            <Button className={classes.button} handleClick={() => handleNavigate("/post")}><AiOutlineCloudUpload /> </Button>
-            <Button className={classes.button} handleClick={handleLogout}><AiOutlineLogout /> </Button>
-        </div>
+        <Toolbar actions={[{ function: handleLogout, icon: <AiOutlineLogout /> },
+        { function: navigatePost, icon: <AiOutlineCloudUpload /> },
+        { function: navigateHome, icon: <FcHome /> },
+        { function: navigateMyWall, icon: <CgProfile /> }]} />
     </div>);
 }
 
