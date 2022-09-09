@@ -11,7 +11,7 @@ interface ButtonListProps {
 
 const ButtonList: FunctionComponent<ButtonListProps> = ({ styles, items }) => {
     return (<div className={styles.containerClassName}>
-        {items.map((item: ButtonAction) => <Button disabled={item.disabled} className={item.className} key={item.key} handleClick={item.handleClick} >{item.children}</Button>)}
+        {items.map((item: ButtonAction) => <Button disabled={item.disabled} className={item.className} key={`${item.key}_buttonList`} handleClick={item.handleClick} >{item.children}</Button>)}
     </div>);
 }
 
