@@ -4,7 +4,7 @@ import { appConfig } from "../../../configuration";
 import { httpService } from "../../../services";
 import { validateEmail } from "../../../utils";
 import { CameraRoll } from "../../cameraRoll";
-import { Input, Button } from "../../shared";
+import { Input, Button, ButtonList } from "../../shared";
 import { Hr } from "../../styles/styles";
 import classes from '../Auth.module.css';
 interface SignUpFormProps {
@@ -28,7 +28,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
         localStorage.setItem('user', JSON.stringify(payload));
         navigate("/home");
     }
-    const handleTakePhoto: any = async () => {
+    const handleTakePhoto = async () => {
         setTakePhoto((prev) => !prev)
     }
     const handleChange = ({ target }: { target: any }) => {
@@ -62,23 +62,47 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
             onSuccess(res.payload);
         }
     }
-
+    const handleNavigateToSignIn = () => {
+        navigate(`/login`)
+    };
     return (<>
+        <div className={classes.sign_up_header}>
+            <h2 className={classes.header}>Sign Up!</h2>
+            <Hr />
+        </div>
         <div className={classes.container}>
-            <div>
-                <h2 className={classes.header}>Sign Up!</h2>
-                <Hr />
-            </div>
             <Input className={classes.input} handleChange={handleChange} placeholder='Email' type='email' name={'email'} value={signUp?.email} required />
             <Input className={classes.input} handleChange={handleChange} placeholder='Name' type='text' name={'name'} value={signUp?.name} required />
             <Input className={classes.input} handleChange={handleChange} placeholder='password' type='password' name='password' value={signUp?.password} required />
             <Input className={classes.input} handleChange={handleChange} placeholder='Confirm password' type='password' name='confirmPassword' value={signUp?.confirmPassword} required />
-            {!takePhoto && <Input className={classes.input} handleChange={handleChange} placeholder='Upload Profile Image' type='file' name='uploadedImage' value={signUp?.uploadedImage} required />}
+            {!takePhoto && <Input className={classes.input} handleChange={handleChange} placeholder='' type='file' name='uploadedImage' value={signUp?.uploadedImage} required />}
             {takePhoto && <div className={classes.camera_container}><CameraRoll onSave={(b) => {
                 setBlob(b)
             }} /></div>}
-            <Button className={classes.button} handleClick={handleTakePhoto}>{!takePhoto ? 'Take Photo' : 'Upload Image'}</Button>
-            <Button className={classes.button} disabled={!isValid} handleClick={handleSubmit}>Submit</Button>
+            <ButtonList
+                styles={{ containerClassName: classes.sign_up_buttons_panel }}
+                items={[
+                    {
+                        className: classes.button,
+                        handleClick: handleTakePhoto,
+                        children: !takePhoto ? 'Take Photo' : 'Upload Image',
+                        key: !takePhoto ? 'Take Photo' : 'Upload Image'
+                    },
+                    {
+                        className: classes.button,
+                        handleClick: handleNavigateToSignIn,
+                        children: 'Sign in',
+                        key: 'Sign_in_form'
+                    },
+                    {
+                        className: classes.button,
+                        handleClick: handleSubmit,
+                        disabled: !isValid,
+                        children: 'Submit',
+                        key: 'Submit_sign_in'
+                    }
+                ]}
+            />
         </div>
     </>);
 }
