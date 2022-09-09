@@ -15,3 +15,4 @@ export { default as Skeleton } from './skeleton';
 export * from './tree';
 export * from './loader';
 export * from './icons';
+export * from './mui';

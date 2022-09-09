@@ -7,8 +7,7 @@ import { PostDetails } from "./types";
 import classes from './Post.module.css';
 import { appContextVar } from "../../services/store";
 import { useGetPostComments, useGetPostLikes } from "../../hooks";
-import { Skeleton, Spinner } from "../shared";
-
+import { Paper, Skeleton } from "../shared";
 interface PostProps {
     post: PostDetails;
     displayToolbar?: boolean;
@@ -58,22 +57,24 @@ const Post: FunctionComponent<PostProps> = ({ post, styles, displayToolbar }) =>
 
     const isVideo = type?.trim()?.toLowerCase()?.includes('video');
 
-    return (<div className={`${classes.container} ${styles?.containerClassName}`}>
-        {url && isVideo && !loading && <Video
-            videoClassName={`${styles?.videoStyles?.videoClassName} ${displaySkeleton && classes.skeleton}`}
-            containerClassName={`${styles?.videoStyles?.containerClassName} ${displaySkeleton && classes.skeleton}`}
-            type={type} link={url} />}
-        {url && !isVideo && !loading && <img className={`${classes.image} ${styles?.imageClassName}`} src={url} alt={'post'} />}
-        {displaySkeleton && <Skeleton />}
-        {!!post?._id && displayToolbar && <div className={classes.speedDaild_container}>
-            <VideoFooter
-                postId={post?._id}
-                me={user}
-                likes={likesData?.getLikes?.likes}
-                comments={commentsData?.getComments?.comments} styles={styles?.footerStyles} />
-        </div>}
+    return (
+        <Paper elevation={3} className={`${classes.container} ${styles?.containerClassName}`}>
+            {url && isVideo && !loading && <Video
+                videoClassName={`${styles?.videoStyles?.videoClassName} ${displaySkeleton && classes.skeleton}`}
+                containerClassName={`${styles?.videoStyles?.containerClassName} ${displaySkeleton && classes.skeleton}`}
+                type={type} link={url} />}
+            {url && !isVideo && !loading && <img className={`${classes.image} ${styles?.imageClassName}`} src={url} alt={'post'} />}
+            {displaySkeleton && <Skeleton />}
+            {!!post?._id && displayToolbar && <div className={classes.speedDaild_container}>
+                <VideoFooter
+                    postId={post?._id}
+                    me={user}
+                    likes={likesData?.getLikes?.likes}
+                    comments={commentsData?.getComments?.comments} styles={styles?.footerStyles} />
+            </div>}
+        </Paper>
 
-    </div>);
+    );
 }
 
 export default Post;
