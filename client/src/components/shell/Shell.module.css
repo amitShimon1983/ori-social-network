@@ -12,22 +12,3 @@
     justify-content: center;
     align-items: center;
 }
-
-.header_container {
-    display: flex;
-    justify-content: space-around;
-    height: 5%;
-    width: 98%;
-    margin-top: .5vh;
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-    border-radius: 10px 10px 0 0;
-    z-index: 3;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.button {
-    background: none;
-    border: none;
-    font-size: 20px;
-}

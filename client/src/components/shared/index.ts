@@ -6,6 +6,7 @@ export { AppContainer } from './app';
 export { VideoElement } from './video';
 export { RecordingIcon } from './recording';
 export { default as ToolbarButton } from './toolbarButton/ToolbarButton';
+export { default as Toolbar } from './toolbar/Toolbar';
 export * from './tree';
 export * from './loader';
 export * from './icons';
