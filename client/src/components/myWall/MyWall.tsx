@@ -12,7 +12,7 @@ const MyWall: FunctionComponent<MyWallProps> = () => {
     const { data, loading } = useGetUser(user._id);
     return (<>
         {!loading && <Wall user={data?.getUser} />}
-        {loading && <Spinner label="loading" />}
+        {loading && <Spinner label="Loading" />}
     </>);
 }
 

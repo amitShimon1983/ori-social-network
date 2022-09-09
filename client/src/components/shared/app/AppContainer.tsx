@@ -10,7 +10,7 @@ interface AppContainerProps {
 const AppContainer: FunctionComponent<AppContainerProps> = ({ children }) => {
     const { loading } = useReactiveVar(appContextVar);
     return (<StoreProvider>
-        {!loading ? children : <Spinner label={'Loading...'} />}
+        {!loading ? children : <Spinner label={'Loading'} />}
     </StoreProvider>);
 
 }

@@ -54,7 +54,7 @@ const LoginForm: FunctionComponent<LoginFormProps> = () => {
 
     return (<>
         {loading && <div className={classes.container_loading}>
-            <Spinner label='loading...' />
+            <Spinner label='Loading' />
         </div>}
         {!loading && <Form>
             <div>

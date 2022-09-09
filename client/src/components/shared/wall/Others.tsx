@@ -14,7 +14,7 @@ const Others: FunctionComponent<OthersProps> = () => {
 
     return (<>
         {!loading && <Wall user={data.getUser} />}
-        {loading && <Spinner label="loading..." />}
+        {loading && <Spinner label="loading" />}
     </>);
 }
 

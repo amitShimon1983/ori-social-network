@@ -43,7 +43,7 @@ const Home: FunctionComponent<HomeProps> = () => {
               iconInnerContainerClassName: classes.icon_inner_container__home
             }
           }} />}
-      {loading && <Spinner label="Loading..." />}
+      {loading && <Spinner label="Loading" />}
       {error && <div>{error?.message}</div>}
     </div>
   </>

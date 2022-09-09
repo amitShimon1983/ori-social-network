@@ -59,7 +59,7 @@ const InfiniteScroll: FunctionComponent<InfiniteScrollProps> = ({ initialHasMore
             const isLast = idx === listItems.length - 1;
             return isLast ? <span ref={lastItemRef} key={item._id}>{renderItem(item)}</span> : renderItem(item);
         })}
-        {loading && <Spinner label='loading...' />}
+        {loading && <Spinner label='loading' />}
     </div>);
 }
 

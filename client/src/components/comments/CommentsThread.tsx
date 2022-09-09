@@ -1,7 +1,7 @@
 import { FunctionComponent, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useCommentPost, useGetPostComments } from "../../hooks";
-import { Button, Input, Spinner } from "../shared";
+import { AiFillBackward, Button, Input, Spinner } from "../shared";
 import InfiniteScroll from "../shared/infiniteScrolling/InfiniteScroll";
 import { TreeNode } from "../shared/tree/Tree";
 import Comment from "./Comment";
@@ -77,7 +77,6 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
                 limit
             },
         })
-        console.log({ fetchData });
 
         return fetchData?.getComments?.comments || []
     }
@@ -103,9 +102,9 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
     return (
         <div className={classes.container}>
             <div className={classes.back_button_container}>
-                <Button className={classes.back_button} handleClick={() => navigate(-1)}>{'<'}</Button>
+                <Button className={classes.back_button} variant="text" handleClick={() => navigate(-1)}><AiFillBackward className={classes.back_icon} /></Button>
             </div>
-            {loading && <Spinner label="loading..." />}
+            {loading && <Spinner label="Loading" />}
             {!loading && comments?.length && <InfiniteScroll
                 initialHasMore={hasMore}
                 renderItem={renderTreeNode}
@@ -120,7 +119,7 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
                     placeholder={replyTo?.data?.user?.email ? `reply to ` + replyTo?.data?.user?.email : 'write a comment...'}
                     value={commentContent}
                 />
-                <Button className={classes.comment_thread_input_button} disabled={!commentContent} handleClick={handleCommentSave}>
+                <Button variant="text" className={classes.comment_thread_input_button} disabled={!commentContent} handleClick={handleCommentSave}>
                     Save
                 </Button>
             </div>
