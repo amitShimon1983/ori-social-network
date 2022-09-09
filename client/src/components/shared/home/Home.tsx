@@ -29,8 +29,6 @@ query GetRandomPosts{
 `
 const Home: FunctionComponent<HomeProps> = () => {
   const { data, error, loading } = useQuery(GET_RANDOM_POSTS)
-  console.log(classes.post_footer__home);
-
   return (<>
     <div className={classes.container}>
       {!loading &&
