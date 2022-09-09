@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button';
 import { FunctionComponent } from "react";
 
-interface ButtonProps {
+export interface ButtonProps {
     handleClick: ({ target }: { target: any }) => void;
     children: React.ReactNode;
     disabled?: boolean;
