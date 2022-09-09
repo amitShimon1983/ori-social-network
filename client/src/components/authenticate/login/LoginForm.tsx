@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { authService } from "../../../services";
 import { appContextVar } from "../../../services/store";
 import { validateEmail } from "../../../utils";
-import { Input, Button, AiOutlineLogin, Spinner } from "../../shared";
+import { Input, Button, Spinner } from "../../shared";
 import Form from "../../shared/form";
 import { Hr } from "../../styles/styles";
 import classes from '../Auth.module.css';
@@ -64,8 +64,8 @@ const LoginForm: FunctionComponent<LoginFormProps> = () => {
             <Input className={classes.input} value={login.email} placeholder='Email' type='email' name='email' required handleChange={handleChange} />
             <Input className={classes.input} value={login.password} placeholder="Password" type='password' name='password' required handleChange={handleChange} />
             <div className={classes.button_panel}>
-                <Button className={classes.button} disabled={!isValid} handleClick={handleSubmit}><AiOutlineLogin />Sign in...</Button>
-                <Button className={classes.button} handleClick={handleNavigateToSignUp}><AiOutlineLogin />Sign up...</Button>
+                <Button className={classes.button} disabled={!isValid} handleClick={handleSubmit}>Sign in</Button>
+                <Button className={classes.button} handleClick={handleNavigateToSignUp}>Sign up</Button>
             </div>
             {!!errors.length && errors.map(error => (<div>{error}</div>))}
         </Form>}
