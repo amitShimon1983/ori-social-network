@@ -7,7 +7,7 @@ import { PostDetails } from "./types";
 import classes from './Post.module.css';
 import { appContextVar } from "../../services/store";
 import { useGetPostComments, useGetPostLikes } from "../../hooks";
-import { Spinner } from "../shared";
+import { Skeleton, Spinner } from "../shared";
 
 interface PostProps {
     post: PostDetails;
@@ -34,30 +34,37 @@ const Post: FunctionComponent<PostProps> = ({ post, styles, displayToolbar }) =>
     const { user } = appContextVar();
     const [url, setUrl] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
+    const [displaySkeleton, setDisplaySkeleton] = useState<boolean>(false);
     const [type, setType] = useState<string>('');
     const { data: likesData } = useGetPostLikes(post?._id || '');
 
     useEffect(() => {
-        setLoading(true)
+        setLoading(true);
+        setDisplaySkeleton(true);
+        let timer: any;
         const loadFile = async () => {
             const blob: any = await httpService.getStream(filesUri + post?.file?.originalname);
             const objectURL = URL.createObjectURL(blob);
             setType(blob?.type);
             setUrl(objectURL);
             setLoading(false);
+            timer = setTimeout(() => { setDisplaySkeleton(false) }, 300)
         }
         loadFile();
+        return () => {
+            timer && clearTimeout(timer)
+        }
     }, [])
 
     const isVideo = type?.trim()?.toLowerCase()?.includes('video');
 
     return (<div className={`${classes.container} ${styles?.containerClassName}`}>
         {url && isVideo && !loading && <Video
-            videoClassName={styles?.videoStyles?.videoClassName}
-            containerClassName={styles?.videoStyles?.containerClassName}
+            videoClassName={`${styles?.videoStyles?.videoClassName} ${displaySkeleton && classes.skeleton}`}
+            containerClassName={`${styles?.videoStyles?.containerClassName} ${displaySkeleton && classes.skeleton}`}
             type={type} link={url} />}
         {url && !isVideo && !loading && <img className={`${classes.image} ${styles?.imageClassName}`} src={url} alt={'post'} />}
-        {loading && <Spinner />}
+        {displaySkeleton && <Skeleton />}
         {!!post?._id && displayToolbar && <div className={classes.speedDaild_container}>
             <VideoFooter
                 postId={post?._id}

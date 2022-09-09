@@ -23,11 +23,13 @@ interface PostListProps {
 const PostList: FunctionComponent<PostListProps> = ({ posts, styles, displayToolbar }) => {
     return (<>
         {!!posts?.length &&
-            posts?.map((post: PostDetails) => <Post displayToolbar={displayToolbar} styles={{
-                containerClassName: styles?.postContainerClassName,
-                footerStyles: styles?.footerStyles,
-                videoStyles: styles?.videoStyles
-            }} key={post._id} post={post} />)}
+            posts?.map((post: PostDetails) =>
+                <Post displayToolbar={displayToolbar} styles={{
+                    containerClassName: styles?.postContainerClassName,
+                    footerStyles: styles?.footerStyles,
+                    videoStyles: styles?.videoStyles
+                }} key={post._id} post={post} />
+            )}
     </>);
 }
 
