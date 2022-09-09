@@ -2,7 +2,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLikePost } from "../../hooks";
 import Me from "../me";
-import { FcLike, FaRegComments, GiArrowDunk, BsCloudDownload, ToolbarButton } from "../shared";
+import { FcLike, FaRegComments, GiArrowDunk, BsCloudDownload, ToolbarButton, Badge } from "../shared";
 import classes from './VideoFooter.module.css';
 interface VideoFooterProps {
     likes?: any[];
@@ -66,17 +66,15 @@ const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments,
         <ToolbarButton actions={[
             { icon: <Me user={me} styles={{ emailClassName: classes.me_email, imageClass: classes.me_image, containerClassName: classes.me_container }} />, name: 'Avatar' },
             {
-                icon: <div className={`${classes.icon_inner_container} ${styles?.iconInnerContainerClassName}`}>
-                    <FaRegComments onClick={onCommentClick} className={`${classes.icon} ${styles?.icon}`} />
-                    {!!comments?.length && <div className={`${classes.icon_number} ${styles?.iconNumberClassName}`}>{comments?.length || 0}</div>}
-                </div>,
+                icon: <Badge max={99} count={comments?.length || 0}>
+                    <FaRegComments className={classes.icon} onClick={onCommentClick} />
+                </Badge>,
                 name: 'Comments'
             },
             {
-                icon: <div className={`${classes.icon_inner_container} ${styles?.iconInnerContainerClassName}`}>
+                icon: <Badge max={99} count={internalLikes?.length || 0}>
                     <FcLike onClick={onLikeClick} className={`${classes.icon} ${styles?.icon} ${iLikeIt ? classes.like_icon_selected : classes.like_icon_not_selected}`} />
-                    {!!internalLikes?.length && <div className={`${classes.icon_number} ${styles?.iconNumberClassName}`}>{internalLikes?.length || 0}</div>}
-                </div>,
+                </Badge>,
                 name: 'Liks'
             },
             { icon: <BsCloudDownload />, name: 'Download' },
