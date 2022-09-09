@@ -8,6 +8,7 @@ export { RecordingIcon } from './recording';
 export { default as ToolbarButton } from './toolbarButton/ToolbarButton';
 export { default as Toolbar } from './toolbar/Toolbar';
 export { default as Badge } from './badge/Badge';
+export { default as Switch } from './switch';
 export * from './tree';
 export * from './loader';
 export * from './icons';

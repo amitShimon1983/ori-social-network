@@ -24,10 +24,30 @@
     height: 100%;
 }
 
+.form_control_switch {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.video_buttons_container {
+    display: flex;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+}
+
+.video_buttons_container_finish_recording {
+    justify-content: space-between;
+}
+
 .buttons_panel {
     display: flex;
+    flex-direction: column;
     position: absolute;
     bottom: 5%;
+    width: 90%;
+    justify-content: center;
+    align-items: center;
 }
 
 .button {
@@ -42,20 +62,17 @@
     border: none;
 }
 
+.video_buttons_container_start_recording {
+    padding-left: 3vh;
+}
+
 .recording_icon {
     display: flex;
     justify-content: flex-end;
-    width: 95%;
-}
-
-.button_recording {
-    background: red;
-    border-radius: 50%;
-    cursor: pointer;
-
+    margin-left: 2vh;
 }
 
 .hasPhoto {
     visibility: visible;
-    height: 90%;
+    height: 100%;
 }
