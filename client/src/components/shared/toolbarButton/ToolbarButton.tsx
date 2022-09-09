@@ -9,7 +9,6 @@ const ToolbarButton: FunctionComponent<ToolbarButtonProps> = ({ actions }) => {
     return (
         <Box sx={{ height: '100%', transform: 'translateZ(0px)', flexGrow: 1 }}>
             <SpeedDial
-                open={true}
                 ariaLabel="Toolbar"
                 sx={{ position: 'absolute', bottom: 16, right: 16 }}
                 icon={<SpeedDialIcon />}
