@@ -23,12 +23,13 @@ export class UserService {
         }).populate('file').lean() as User
     }
 
-    async createUser(name: string, email: string, password: string, file: string) {
+    async createUser(name: string, email: string, password: string, file: string, dateOfBirth: Date) {
         return await UserModel.create({
             name,
             email,
             password,
-            file: file || ''
+            file: file || '',
+            dateOfBirth
         })
     }
     async follow(me: string, other: string) {

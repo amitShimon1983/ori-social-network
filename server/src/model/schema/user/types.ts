@@ -6,4 +6,5 @@ export interface IUser {
     file?: string;
     followers?: string[];
     following?: string[];
+    dateOfBirth: Date;
 }

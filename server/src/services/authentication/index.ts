@@ -29,11 +29,13 @@ export class AuthenticationService {
     }
     _onAuthenticateSuccess(user: IUser): { payload: any; newToken: string; } {
         const payload = {
-            name: user.name, email: user.email,
+            name: user.name,
+            email: user.email,
             file: user.file,
             _id: user._id,
             followers: user.followers,
-            following: user.following
+            following: user.following,
+            dateOfBirth: user.dateOfBirth
         };
         const newToken = jwtService.sign(JSON.stringify(payload), 3600);
         return { payload, newToken }
@@ -57,8 +59,8 @@ export class AuthenticationService {
         if (exists) {
             res.setErrors(['Something went wrong please try again later.'])
         } else {
-            const newUser = await userService.createUser(user.name, user.email, await hashService.hash(user.password), file._id || '');
-            const payload = { name: newUser.name, email: newUser.email, file: newUser.file, _id: newUser._id }
+            const newUser = await userService.createUser(user.name, user.email, await hashService.hash(user.password), file._id || '', user.dateOfBirth);
+            const payload = { name: newUser.name, email: newUser.email, file: newUser.file, _id: newUser._id, dateOfBirth: newUser.dateOfBirth }
             res.setPayload(payload)
         }
         return res;

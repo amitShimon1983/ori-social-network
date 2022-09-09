@@ -7,7 +7,8 @@ const userSchema = new Schema<IUser>({
     password: { type: String, required: true },
     file: { type: Schema.Types.ObjectId, ref: 'File' },
     followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    following: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+    following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    dateOfBirth: { type: Date, required: true }
 });
 
 const UserModel = model<IUser>('User', userSchema);
