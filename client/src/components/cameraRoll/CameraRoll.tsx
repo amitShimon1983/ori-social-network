@@ -95,16 +95,16 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
             {!hasPhoto && <VideoElement className={classes.video} video={{ controls: true, muted: true }} ref={videoRef}>
             </VideoElement>}
             {isRecording && <div className={classes.recording_icon}><RecordingIcon></RecordingIcon></div>}
-            <div className={classes.buttons_panel}>
-                <Button className={classes.button} handleClick={handleSaveImage}>Task a picture</Button>
-                {isRecording && <Button className={`${classes.button} ${classes.button_recording}`} handleClick={handleStop}><BiVideoRecording /></Button>}
-                {!!videoBlob && <Button className={classes.button} handleClick={saveVideoHandler}>save video</Button>}
-                {!!imageBlob && <Button className={classes.button} handleClick={saveImageHandler}>save Image</Button>}
-                {!isRecording && <Button className={`${classes.button} ${classes.button_recording}`} handleClick={handleStart}><BiVideoRecording /></Button>}
-            </div>
             <div className={`${classes.picture} ${hasPhoto && classes.hasPhoto}`}>
-                <canvas ref={photoRef}></canvas>
+                <canvas className={`${classes.canvas}`} ref={photoRef}></canvas>
                 <Button className={classes.button} handleClick={handleClearImage}>Clear</Button>
+            </div>
+            <div className={classes.buttons_panel}>
+                {!videoBlob && !hasPhoto && <Button className={classes.button} handleClick={handleSaveImage}>Take a picture</Button>}
+                {isRecording && <Button className={`${classes.button} ${classes.button_recording}`} handleClick={handleStop}><BiVideoRecording /></Button>}
+                {!!videoBlob && !hasPhoto && <Button className={classes.button} handleClick={saveVideoHandler}>save video</Button>}
+                {!!imageBlob && <Button className={classes.button} handleClick={saveImageHandler}>save Image</Button>}
+                {!isRecording && !hasPhoto && <Button className={`${classes.button} ${classes.button_recording}`} handleClick={handleStart}><BiVideoRecording /></Button>}
             </div>
         </div>
     );
