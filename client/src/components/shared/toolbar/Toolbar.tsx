@@ -10,7 +10,7 @@ interface ToolbarProps {
 
 const Toolbar: FunctionComponent<ToolbarProps> = ({ actions }) => {
     return (<div className={classes.header_container}>
-        {actions.map((action: Action) => <Button className={classes.button} handleClick={action.function}> {action.icon}</Button>)}
+        {actions.map((action: Action) => <Button variant="text" className={classes.button} handleClick={action.function}> {action.icon}</Button>)}
     </div>);
 }
 
