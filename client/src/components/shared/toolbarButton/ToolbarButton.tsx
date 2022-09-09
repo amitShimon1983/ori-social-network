@@ -4,13 +4,14 @@ import { FunctionComponent } from "react";
 interface ToolbarButtonProps {
     actions: { icon: React.ReactNode; name: string }[]
 }
-
+const boxStyles = { height: '100%', transform: 'translateZ(0px)', flexGrow: 1 };
+const speedDialStyles = { position: 'absolute', bottom: 16, right: 16 };
 const ToolbarButton: FunctionComponent<ToolbarButtonProps> = ({ actions }) => {
     return (
-        <Box sx={{ height: '100%', transform: 'translateZ(0px)', flexGrow: 1 }}>
+        <Box sx={boxStyles}>
             <SpeedDial
                 ariaLabel="Toolbar"
-                sx={{ position: 'absolute', bottom: 16, right: 16 }}
+                sx={speedDialStyles}
                 icon={<SpeedDialIcon />}
             >
                 {actions.map((action: any) => (
