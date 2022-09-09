@@ -1,3 +1,4 @@
+import { Fab } from "@mui/material";
 import { FunctionComponent, useCallback, useEffect, useRef, useState } from "react";
 import { appConfig } from "../../configuration";
 import { cameraService, Recorder } from "../../services";
@@ -27,7 +28,8 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
 
     const getUserVideo = useCallback(async () => {
         const userStream = await cameraService.getCameraStream({
-            video: { width: 500, height: 1900 }, audio: true
+
+            video: { width: 500, height: 2560 }, audio: true
         }, handleStream);
         if (userStream) {
             setStream(userStream)
@@ -92,19 +94,20 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
     }
     return (
         <div className={classes.camera}>
-            {!hasPhoto && <VideoElement className={classes.video} video={{ controls: true, muted: true }} ref={videoRef}>
+            {!hasPhoto && <VideoElement className={classes.video} video={{ controls: false, muted: true, }} ref={videoRef}>
             </VideoElement>}
             {isRecording && <div className={classes.recording_icon}><RecordingIcon></RecordingIcon></div>}
             <div className={`${classes.picture} ${hasPhoto && classes.hasPhoto}`}>
                 <canvas className={`${classes.canvas}`} ref={photoRef}></canvas>
-                <Button className={classes.button} handleClick={handleClearImage}>Clear</Button>
             </div>
             <div className={classes.buttons_panel}>
-                {!videoBlob && !hasPhoto && <Button className={classes.button} handleClick={handleSaveImage}>Take a picture</Button>}
-                {isRecording && <Button className={`${classes.button} ${classes.button_recording}`} handleClick={handleStop}><BiVideoRecording /></Button>}
                 {!!videoBlob && !hasPhoto && <Button className={classes.button} handleClick={saveVideoHandler}>save video</Button>}
+                {hasPhoto && <Button className={classes.button} handleClick={handleClearImage}>Clear</Button>}
                 {!!imageBlob && <Button className={classes.button} handleClick={saveImageHandler}>save Image</Button>}
-                {!isRecording && !hasPhoto && <Button className={`${classes.button} ${classes.button_recording}`} handleClick={handleStart}><BiVideoRecording /></Button>}
+                {!hasPhoto && <Fab className={`${classes.button} ${classes.button_recording}`} onClick={isRecording ? handleStop : handleStart} color="error" aria-label="edit">
+                    <BiVideoRecording />
+                </Fab>}
+                {!videoBlob && !hasPhoto && <Button className={classes.button} handleClick={handleSaveImage}>Take a picture</Button>}
             </div>
         </div>
     );

@@ -33,10 +33,10 @@ const Shell: FunctionComponent<ShellProps> = () => {
         <div className={classes.outlet_container}>
             <Outlet />
         </div>
-        <Toolbar actions={[{ function: handleLogout, icon: <AiOutlineLogout /> },
-        { function: navigatePost, icon: <AiOutlineCloudUpload /> },
-        { function: navigateHome, icon: <FcHome /> },
-        { function: navigateMyWall, icon: <CgProfile /> }]} />
+        <Toolbar actions={[{ function: handleLogout, icon: <AiOutlineLogout />, id: 'AiOutlineLogout-handleLogout' },
+        { function: navigatePost, icon: <AiOutlineCloudUpload />, id: 'AiOutlineCloudUpload-navigatePost' },
+        { function: navigateHome, icon: <FcHome />, id: 'FcHome-navigateHome' },
+        { function: navigateMyWall, icon: <CgProfile />, id: 'CgProfile-navigateMyWall' }]} />
     </div>);
 }
 

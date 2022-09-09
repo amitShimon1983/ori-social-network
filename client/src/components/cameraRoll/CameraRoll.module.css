@@ -4,13 +4,13 @@
     justify-content: center;
     align-items: center;
     height: 100%;
-    margin-top: 2vh;
+    position: relative;
 }
 
 .video {
     width: 98%;
-    height: 80%;
-    object-fit: contain;
+    height: 100%;
+    object-fit: fill;
 }
 
 .picture {
@@ -26,6 +26,8 @@
 
 .buttons_panel {
     display: flex;
+    position: absolute;
+    bottom: 5%;
 }
 
 .button {
