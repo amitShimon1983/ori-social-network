@@ -1,34 +1,15 @@
 import { FunctionComponent } from "react";
 import classes from './Home.module.css';
 import PostList from "../../post/PostList";
-import { gql, useQuery } from "@apollo/client";
 import { Spinner } from "../loader";
+import { useGetRandomPosts } from "../../../hooks";
 
 interface HomeProps {
 
 }
-const GET_RANDOM_POSTS = gql`
-query GetRandomPosts{
-    getRandomPosts{
-        posts{
-            _id
-            user
-            title
-            createdAt
-            file {
-                originalname
-                encoding
-                mimetype
-                filename
-                path
-                size
-            }
-        }
-    }
-}
-`
+
 const Home: FunctionComponent<HomeProps> = () => {
-  const { data, error, loading } = useQuery(GET_RANDOM_POSTS)
+  const { data, error, loading } = useGetRandomPosts()
   return (<>
     <div className={classes.container}>
       {!loading &&

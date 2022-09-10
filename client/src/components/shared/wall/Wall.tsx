@@ -1,5 +1,5 @@
-import { gql, useQuery } from '@apollo/client';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent } from 'react';
+import { useGetMyPosts } from '../../../hooks';
 import useFollow from '../../../hooks/useFollow';
 import { appContextVar } from '../../../services/store';
 import Me from '../../me';
@@ -8,30 +8,9 @@ import classes from './Wall.module.css';
 interface WallProps {
     user: any;
 }
-const GET_My_POSTS = gql`
-query GetMyPosts($userId: String){
-    getMyPosts(args:{ userId: $userId }){
-        posts{
-            _id
-            user
-            title
-            createdAt
-            file {
-                originalname
-                encoding
-                mimetype
-                filename
-                path
-                size
-            }
-            
-        }
-    }
-}
-`
+
 const Wall: FunctionComponent<WallProps> = ({ user }) => {
-   
-    const { data, loading } = useQuery(GET_My_POSTS, { variables: { userId: user._id } })
+    const { data, loading } = useGetMyPosts(user._id)
     const { user: me } = appContextVar();
     const { followMutation } = useFollow()
     const isMe = me._id === user._id
@@ -53,7 +32,7 @@ const Wall: FunctionComponent<WallProps> = ({ user }) => {
     }
 
     return (<>
-        <Me styles={{ imageClass: classes.image__wall }} user={user} />
+        <Me displaySpinner={true} styles={{ imageClass: classes.image__wall }} user={user} />
         <div className={`${classes.following_container}`}>
             <div className={`${classes.following}`}>
                 followers {user?.followers?.length || 0}
