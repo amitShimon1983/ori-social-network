@@ -26,9 +26,9 @@ const AutoComplete: FunctionComponent<AutoCompleteProps> = ({ loading, fetchMore
                 setOpen(false);
                 setOptions([]);
             }}
-            onSelect={(event: any) => {
-                console.log({ event });
-                onSelectHandler(event)
+            onChange={(event: any, values: any) => {
+                console.log({ event, values });
+                onSelectHandler(values)
             }}
             isOptionEqualToValue={(option, value) => option.title === value.title}
             getOptionLabel={(option: any) => option.title}
