@@ -7,7 +7,8 @@ import classes from './VideoFooter.module.css';
 interface VideoFooterProps {
     likes?: any[];
     comments?: any[];
-    me: { [key: string]: any }
+    me: { [key: string]: any };
+    creator: { [key: string]: any };
     postId: string;
     styles?: {
         containerClassName?: string;
@@ -18,7 +19,7 @@ interface VideoFooterProps {
     }
 }
 
-const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments, postId, styles }) => {
+const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments, postId, styles, creator }) => {
     const [internalLikes, setLikes] = useState<any[]>([]);
     const { likePostMutation } = useLikePost();
     const myLikeIndex = !!internalLikes?.length ? internalLikes.findIndex((like: any) => like.user === me._id) : -1;
@@ -64,7 +65,7 @@ const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments,
     }
     return (
         <ToolbarButton actions={[
-            { icon: <Me user={me} styles={{ emailClassName: classes.me_email, imageClass: classes.me_image, containerClassName: classes.me_container }} />, name: 'Avatar' },
+            { icon: <Me displaySpinner={false} user={creator} styles={{ emailClassName: classes.me_email, imageClass: classes.me_image, containerClassName: classes.me_container }} />, name: 'Avatar' },
             {
                 icon: <Badge max={99} count={comments?.length || 0}>
                     <FaRegComments className={classes.icon} onClick={onCommentClick} />
