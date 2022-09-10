@@ -1,0 +1,16 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 2.5% 10px;
+    padding-bottom: 0;
+    width: 95%;
+    height: 100%;
+}
+
+.text_area {
+    margin-top: 10px;
+    border-radius: 4px;
+    height: 80%;
+    overflow: scroll;
+    border: 1px solid #d1cbcb;
+}

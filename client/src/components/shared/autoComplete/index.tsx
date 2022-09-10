@@ -36,7 +36,7 @@ const AutoComplete: FunctionComponent<AutoCompleteProps> = ({ loading, fetchMore
             loading={loading}
             renderInput={(params) => (
                 <TextField {...params}
-                    label="Asynchronous"
+                    label="Contacts"
                     placeholder="Contacts"
                     onChange={ev => {
                         if (ev.target.value !== "" || ev.target.value !== null) {

@@ -1,6 +1,7 @@
 import { FunctionComponent, useState } from "react";
 import AutoComplete from "../autoComplete";
 import { InputButtonPanel } from "..";
+import classes from './index.module.css';
 interface MessageFormProps {
     loading: boolean;
     fetchMore: (value: any) => any[] | Promise<any[]>
@@ -16,7 +17,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ loading, fetchMore, 
     const handleMessageSave = async () => {
         handleSave({ inputData, selectedUsers })
     }
-    return (<div>
+    return (<div className={classes.container}>
         <AutoComplete
             onSelectHandler={(data: any) => {
                 console.log(data);
@@ -25,7 +26,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ loading, fetchMore, 
             loading={loading}
             fetchMore={fetchMore}
         />
-        <div>
+        <div className={classes.text_area}>
             {inputData}
         </div>
         <InputButtonPanel
