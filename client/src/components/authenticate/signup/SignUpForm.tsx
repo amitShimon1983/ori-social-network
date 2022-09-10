@@ -4,15 +4,16 @@ import { appConfig } from "../../../configuration";
 import { httpService } from "../../../services";
 import { validateEmail } from "../../../utils";
 import { CameraRoll } from "../../cameraRoll";
-import { Input, Button, ButtonList } from "../../shared";
+import { Input, ButtonList, DatePicker } from "../../shared";
 import { Hr } from "../../styles/styles";
 import classes from '../Auth.module.css';
+
 interface SignUpFormProps {
 
 }
 
-interface SignUp { name: string, email: string; password: string; confirmPassword: string; uploadedImage: string }
-const initialState = { email: '', password: '', confirmPassword: '', name: '', uploadedImage: '' }
+interface SignUp { name: string, email: string; password: string; confirmPassword: string; uploadedImage: string; dateOfBirth?: Date; }
+const initialState = { email: '', password: '', confirmPassword: '', name: '', uploadedImage: '', dateOfBirth: undefined }
 
 const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
 
@@ -65,6 +66,17 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
     const handleNavigateToSignIn = () => {
         navigate(`/login`)
     };
+    const handleDateChange: (value: any) => void | Promise<void> = (value) => {
+        const target = { name: 'dateOfBirth', value };
+        // const today = new Date();
+        // const age = today.getFullYear() - value.getFullYear();
+        // if (age > 18) {
+        //     handleChange({ target });
+        // } else {
+        //     // display age error
+        // }
+        handleChange({ target });
+    };
     return (<>
         <div className={classes.sign_up_header}>
             <h2 className={classes.header}>Sign Up!</h2>
@@ -75,6 +87,8 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
             <Input className={classes.input} handleChange={handleChange} placeholder='Name' type='text' name={'name'} value={signUp?.name} required />
             <Input className={classes.input} handleChange={handleChange} placeholder='password' type='password' name='password' value={signUp?.password} required />
             <Input className={classes.input} handleChange={handleChange} placeholder='Confirm password' type='password' name='confirmPassword' value={signUp?.confirmPassword} required />
+            <DatePicker handlePickerChange={handleDateChange}
+            />
             {!takePhoto && <Input className={classes.input} handleChange={handleChange} placeholder='' type='file' name='uploadedImage' value={signUp?.uploadedImage} required />}
             {takePhoto && <div className={classes.camera_container}><CameraRoll onSave={(b) => {
                 setBlob(b)
