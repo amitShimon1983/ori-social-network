@@ -3,7 +3,7 @@ import { FunctionComponent } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { authService } from "../../services";
 import { appContextVar } from "../../services/store";
-import { AiOutlineLogout, FcHome, CgProfile, AiOutlineCloudUpload, Toolbar } from "../shared";
+import { AiOutlineLogout, FcHome, CgProfile, AiOutlineCloudUpload, Toolbar, FiInbox } from "../shared";
 import classes from './Shell.module.css';
 interface ShellProps {
 
@@ -28,6 +28,7 @@ const Shell: FunctionComponent<ShellProps> = () => {
     const navigateHome = () => handleNavigate("/home");
     const navigateMyWall = () => handleNavigate("/myWall");
     const navigatePost = () => handleNavigate("/post");
+    const navigateInbox = () => handleNavigate("/inbox");
 
     return (<div className={classes.container}>
         <div className={classes.outlet_container}>
@@ -36,7 +37,10 @@ const Shell: FunctionComponent<ShellProps> = () => {
         <Toolbar actions={[{ function: handleLogout, icon: <AiOutlineLogout />, id: 'AiOutlineLogout-handleLogout' },
         { function: navigatePost, icon: <AiOutlineCloudUpload />, id: 'AiOutlineCloudUpload-navigatePost' },
         { function: navigateHome, icon: <FcHome />, id: 'FcHome-navigateHome' },
-        { function: navigateMyWall, icon: <CgProfile />, id: 'CgProfile-navigateMyWall' }]} />
+        { function: navigateInbox, icon: <FiInbox />, id: 'FcHome-navigateInbox' },
+        { function: navigateMyWall, icon: <CgProfile />, id: 'CgProfile-navigateMyWall' }
+        ]}
+        />
     </div>);
 }
 
