@@ -2,7 +2,7 @@ import { ObjectType, Int, Field, InputType } from "type-graphql";
 import { IMessage } from "../../../model/schema/message";
 
 @ObjectType()
-export class GetMessages {
+export class GetMessageThreads {
     @Field(() => [Message], { nullable: true })
     threads: Message[];
     @Field(() => Int, { nullable: true })
@@ -11,13 +11,13 @@ export class GetMessages {
     hasMore: boolean;
 }
 @InputType()
-export class GetMessagesArgs {
+export class GetMessageThreadsArgs {
     @Field(() => Int, { nullable: true })
     skip?: number;
     @Field(() => Int, { nullable: true })
     limit?: number;
 }
-
+@ObjectType()
 export class Message implements IMessage {
     @Field(() => Boolean)
     isRead: boolean;

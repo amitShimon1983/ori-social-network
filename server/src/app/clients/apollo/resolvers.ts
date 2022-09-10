@@ -1,2 +1,2 @@
-import { AccountResolver, PostResolver, LikeResolver, CommentResolver } from '../../../apollo';
-export default [AccountResolver, PostResolver, LikeResolver, CommentResolver]
+import { AccountResolver, PostResolver, LikeResolver, CommentResolver, MessageResolver } from '../../../apollo';
+export default [AccountResolver, PostResolver, LikeResolver, CommentResolver, MessageResolver]
