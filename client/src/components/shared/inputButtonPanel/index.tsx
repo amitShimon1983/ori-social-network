@@ -3,10 +3,10 @@ import { Button } from "..";
 import Input from "../input/Input";
 import classes from './index.module.css';
 interface InputButtonProps {
-    handleChange: (event: any) => void;
+    handleChange: (event: any) => Promise<void> | void;
     placeholder: string;
     inputValue: string;
-    handleSave: (event: any) => Promise<void>
+    handleSave: (event: any) => Promise<void> | void
 }
 const InputButtonPanel: FunctionComponent<InputButtonProps> = ({ handleChange, placeholder, inputValue, handleSave }) => {
     return <div className={classes.container}>

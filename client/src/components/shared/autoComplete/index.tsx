@@ -2,10 +2,11 @@ import { FunctionComponent, useState } from "react";
 import { TextField, Autocomplete as AutocompleteMUI, CircularProgress } from '../mui'
 interface AutoCompleteProps {
     loading: boolean;
-    fetchMore: (value: any) => any[] | Promise<any[]>
+    fetchMore: (value: any) => any[] | Promise<any[]>;
+    onSelectHandler: (data: any) => void | Promise<void>
 }
 
-const AutoComplete: FunctionComponent<AutoCompleteProps> = ({ loading, fetchMore }) => {
+const AutoComplete: FunctionComponent<AutoCompleteProps> = ({ loading, fetchMore, onSelectHandler }) => {
     const [open, setOpen] = useState<boolean>(false);
     const [options, setOptions] = useState<any[]>([]);
     const handleInputChange = async (value: any) => {
@@ -24,6 +25,10 @@ const AutoComplete: FunctionComponent<AutoCompleteProps> = ({ loading, fetchMore
             onClose={() => {
                 setOpen(false);
                 setOptions([]);
+            }}
+            onSelect={(event: any) => {
+                console.log({ event });
+                onSelectHandler(event)
             }}
             isOptionEqualToValue={(option, value) => option.title === value.title}
             getOptionLabel={(option: any) => option.title}
