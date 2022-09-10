@@ -42,11 +42,6 @@
 
 }
 
-.comment_thread_input_button {
-    width: 25% !important;
-    height: 100% !important;
-}
-
 .content_overflow {
     max-height: 100%;
 }
@@ -103,15 +98,4 @@
 
 .back_button {
     justify-content: flex-start !important;
-}
-
-.comment_thread_input {
-    height: 100% !important;
-    width: 75% !important;
-}
-
-.footer {
-    display: flex;
-    align-items: center;
-    padding-left: 1.5vh;
 }

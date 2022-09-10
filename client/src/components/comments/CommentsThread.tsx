@@ -1,7 +1,7 @@
 import { FunctionComponent, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useCommentPost, useGetPostComments } from "../../hooks";
-import { AiFillBackward, Button, Input, Spinner } from "../shared";
+import { AiFillBackward, Button, Input, InputButtonPanel, Spinner } from "../shared";
 import InfiniteScroll from "../shared/infiniteScrolling/InfiniteScroll";
 import { TreeNode } from "../shared/tree/Tree";
 import Comment from "./Comment";
@@ -88,6 +88,7 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
     }
     const renderTreeNode = (comment: any) => {
         return (<TreeNode
+            key={'treeNode' + comment._id}
             styles={{ treeClassName: classes.comments }}
             node={comment}
             fetchMore={handleFetchChildren}
@@ -108,19 +109,11 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
                 renderItem={renderTreeNode}
                 initialData={comments}
                 fetchMore={handleCommentFetch} />}
-            <div className={classes.footer}>
-                <Input handleChange={handleCommentContentChange}
-                    type={'text'}
-                    name={'comment'}
-                    className={classes.comment_thread_input}
-                    required={true}
-                    placeholder={replyTo?.data?.user?.email ? `reply to ` + replyTo?.data?.user?.email : 'write a comment...'}
-                    value={commentContent}
-                />
-                <Button variant="text" className={classes.comment_thread_input_button} disabled={!commentContent} handleClick={handleCommentSave}>
-                    Save
-                </Button>
-            </div>
+            <InputButtonPanel
+                handleChange={handleCommentContentChange}
+                inputValue={commentContent}
+                handleSave={handleCommentSave}
+                placeholder={replyTo?.data?.user?.email ? `reply to ` + replyTo?.data?.user?.email : 'write a comment...'} />
         </div>
     );
 }
