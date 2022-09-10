@@ -9,22 +9,23 @@ import classes from './Me.module.css';
 interface MeProps {
     user: any;
     styles?: { imageClass?: string; containerClassName?: string; emailClassName?: string; };
+    displaySpinner: boolean;
 }
 const filesUri = `${appConfig.serverUrl}${'/api/file/post/'}`
-const Me: FunctionComponent<MeProps> = ({ user, styles }) => {
+const Me: FunctionComponent<MeProps> = ({ user, styles, displaySpinner }) => {
     const [url, setUrl] = useState<string>('');
     const [type, setType] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
     const handleNavigateToUser = () => navigate(`/other/${user._id}`);
     useEffect(() => {
-        setLoading(true);
+        if (displaySpinner) { setLoading(true); }
         const loadFile = async () => {
             const blob: any = await httpService.getStream(filesUri + user.file.originalname);
             const objectURL = URL.createObjectURL(blob);
             setType(blob?.type)
             setUrl(objectURL)
-            setLoading(false);
+            if (displaySpinner) { setLoading(false) };
         }
         loadFile();
     }, [])

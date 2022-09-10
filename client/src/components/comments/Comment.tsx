@@ -29,12 +29,13 @@ const Comment: FunctionComponent<CommentProps> = ({ _id,
     }, [contentRef])
 
     const toggleReadMore = () => setToggle(prev => !prev);
-  
+
     return (<div className={classes.comment_container}>
         <div className={classes.comment_header}>
             <div className={classes.comment_details}>
                 <div className={classes.comment_me}>
                     <Me
+                        displaySpinner={false}
                         styles={{
                             imageClass: classes.me_image,
                             containerClassName: classes.me_container,
