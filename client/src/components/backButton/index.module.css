@@ -1,0 +1,14 @@
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.button {
+    justify-content: flex-start !important;
+}
+
+.back_icon {
+    font-size: 22px;
+}

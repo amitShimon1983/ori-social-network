@@ -6,3 +6,4 @@ export { useGetUser } from './useGetUser';
 export { useGetRandomPosts } from './useGetRandomPosts';
 export { useGetMyPosts } from './useGetMyPosts';
 export { useGetContacts } from './useGetContacts';
+export { useGetMessageThreads } from './useGetMessageThreads';
