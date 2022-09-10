@@ -1,4 +1,5 @@
 import { ObjectType, Field, ID, InputType } from "type-graphql";
+import { User } from "../account/types";
 @ObjectType()
 export class File {
     @Field(() => ID)
@@ -20,8 +21,8 @@ export class File {
 export class Post {
     @Field(() => ID)
     _id?: string;
-    @Field(() => String)
-    user?: string;
+    @Field(() => User)
+    user?: User;
     @Field(() => String)
     title?: string;
     @Field(() => String)
