@@ -9,7 +9,7 @@ export class File {
 }
 export class PostDetails {
     _id?: string;
-    user?: string;
+    user?: { [key: string]: any };
     title?: string;
     createdAt?: string;
     file?: File;
