@@ -13,7 +13,15 @@ export class PostService {
     }
     async getPosts(user?: string) {
         const query = user ? { user } : {}
-        const posts = await PostModel.find(query).populate('file').lean();
+        const posts = await PostModel.find(query).populate([{
+            path: 'file',
+
+        }, {
+            path: 'user',
+            populate: {
+                path: 'file'
+            }
+        }]).lean();
         return { posts }
     }
     async getPost(postId: string) {
