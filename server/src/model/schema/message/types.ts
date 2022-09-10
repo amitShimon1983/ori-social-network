@@ -9,6 +9,7 @@ export interface IMessage {
 }
 export interface IMessageThread {
     _id: string;
+    lastUpdated: Date;
     owners?: string[];
     messages?: string[];
 }
