@@ -2,6 +2,7 @@ import { FunctionComponent, useState } from "react";
 import AutoComplete from "../autoComplete";
 import { InputButtonPanel } from "..";
 import classes from './index.module.css';
+import SpeechBubble from "../speechBubble";
 interface MessageFormProps {
     loading: boolean;
     fetchMore: (value: any) => any[] | Promise<any[]>
@@ -27,7 +28,9 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ loading, fetchMore, 
             fetchMore={fetchMore}
         />
         <div className={classes.text_area}>
-            {inputData}
+            {inputData && <SpeechBubble fromMe={true} content={inputData} />}
+            {inputData && <SpeechBubble fromMe={false} content={inputData} />}
+
         </div>
         <InputButtonPanel
             handleChange={handleInputChange}
