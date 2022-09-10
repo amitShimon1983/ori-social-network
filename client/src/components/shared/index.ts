@@ -13,6 +13,8 @@ export { default as Badge } from './badge/Badge';
 export { default as Switch } from './switch';
 export { default as Skeleton } from './skeleton';
 export { default as DatePicker } from './datePicker';
+export { default as SendMessage } from './sendMessage/SendMessage';
+export { default as AutoComplete } from './autoComplete';
 export * from './tree';
 export * from './loader';
 export * from './icons';

@@ -3,7 +3,7 @@ import { FunctionComponent } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { authService } from "../../services";
 import { appContextVar } from "../../services/store";
-import { AiOutlineLogout, FcHome, CgProfile, AiOutlineCloudUpload, Toolbar } from "../shared";
+import { AiOutlineLogout, FcHome, CgProfile, AiOutlineCloudUpload, Toolbar, SendMessage } from "../shared";
 import classes from './Shell.module.css';
 interface ShellProps {
 
@@ -31,6 +31,10 @@ const Shell: FunctionComponent<ShellProps> = () => {
 
     return (<div className={classes.container}>
         <div className={classes.outlet_container}>
+            <SendMessage loading={true} fetchMore={(value: any) => {
+                console.log(value);
+                return []
+            }} />
             <Outlet />
         </div>
         <Toolbar actions={[{ function: handleLogout, icon: <AiOutlineLogout />, id: 'AiOutlineLogout-handleLogout' },

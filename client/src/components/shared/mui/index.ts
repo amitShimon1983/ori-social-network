@@ -1,4 +1,4 @@
-export { Paper } from '@mui/material';
+export { Paper, Autocomplete, CircularProgress } from '@mui/material';
 export { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 export { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 export { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
