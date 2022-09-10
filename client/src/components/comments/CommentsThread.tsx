@@ -1,7 +1,8 @@
 import { FunctionComponent, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { useCommentPost, useGetPostComments } from "../../hooks";
-import { AiFillBackward, Button, InputButtonPanel, Spinner } from "../shared";
+import { BackButton } from "../backButton";
+import { InputButtonPanel, Spinner } from "../shared";
 import InfiniteScroll from "../shared/infiniteScrolling/InfiniteScroll";
 import { TreeNode } from "../shared/tree/Tree";
 import Comment from "./Comment";
@@ -12,7 +13,6 @@ interface CommentsThreadProps {
 const limit = 20;
 const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
     const { postId } = useParams();
-    const navigate = useNavigate();
     const [commentContent, setCommentContent] = useState<string>('');
     const [replyTo, setReplyTo] = useState<{ data?: any, setChild?: React.Dispatch<React.SetStateAction<any[]>> }>();
     const [comments, setComments] = useState<any[]>([]);
@@ -100,9 +100,7 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
 
     return (
         <div className={classes.container}>
-            <div className={classes.back_button_container}>
-                <Button className={classes.back_button} variant="text" handleClick={() => navigate(-1)}><AiFillBackward className={classes.back_icon} /></Button>
-            </div>
+            <BackButton />
             {loading && <Spinner label="Loading" />}
             {!loading && comments?.length && <InfiniteScroll
                 initialHasMore={hasMore}

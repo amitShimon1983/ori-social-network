@@ -84,18 +84,3 @@
     flex: 1;
     overflow: scroll;
 }
-
-.back_button_container {
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.back_icon {
-    font-size: 22px;
-}
-
-.back_button {
-    justify-content: flex-start !important;
-}
