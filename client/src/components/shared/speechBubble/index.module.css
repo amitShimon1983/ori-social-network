@@ -6,7 +6,7 @@
     flex-direction: column;
     background: #94BFE9;
     border-radius: .4em;
-    margin-bottom: 50px;
+    margin-bottom: 25px;
     margin-right: auto;
     min-width: 50%;
     max-width: 80%;
@@ -20,7 +20,7 @@
     min-height: 50px;
     background: #EFEAE2;
     border-radius: .4em;
-    margin-bottom: 50px;
+    margin-bottom: 25px;
     margin-left: auto;
     min-width: 50%;
     max-width: 80%;
