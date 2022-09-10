@@ -52,7 +52,7 @@ const Post: FunctionComponent<PostProps> = ({ post, styles, displayToolbar }) =>
         return () => {
             timer && clearTimeout(timer)
         }
-    }, [])
+    }, [post?.file?.originalname])
 
     const isVideo = type?.trim()?.toLowerCase()?.includes('video');
     return (

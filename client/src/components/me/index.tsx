@@ -28,7 +28,7 @@ const Me: FunctionComponent<MeProps> = ({ user, styles, displaySpinner }) => {
             if (displaySpinner) { setLoading(false) };
         }
         loadFile();
-    }, [])
+    }, [user.file.originalname, displaySpinner])
     const isVideo = type?.trim()?.toLowerCase()?.includes('video');
     return (<>
         <div className={`${classes.container} ${styles?.containerClassName}`}>

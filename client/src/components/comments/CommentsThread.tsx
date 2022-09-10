@@ -1,7 +1,7 @@
 import { FunctionComponent, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useCommentPost, useGetPostComments } from "../../hooks";
-import { AiFillBackward, Button, Input, InputButtonPanel, Spinner } from "../shared";
+import { AiFillBackward, Button, InputButtonPanel, Spinner } from "../shared";
 import InfiniteScroll from "../shared/infiniteScrolling/InfiniteScroll";
 import { TreeNode } from "../shared/tree/Tree";
 import Comment from "./Comment";

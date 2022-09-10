@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { authService } from "../../../services";
 import { appContextVar } from "../../../services/store";
 import { validateEmail } from "../../../utils";
-import { Input, Button, Spinner, ButtonList } from "../../shared";
+import { Input, Spinner, ButtonList } from "../../shared";
 import Form from "../../shared/form";
 import { Hr } from "../../styles/styles";
 import classes from '../Auth.module.css';
@@ -66,14 +66,14 @@ const LoginForm: FunctionComponent<LoginFormProps> = () => {
             <ButtonList
                 styles={{ containerClassName: classes.button_panel }}
                 items={[{
-                    key:'login_Sign_in',
+                    key: 'login_Sign_in',
                     className: classes.button,
                     children: `Sign in`,
                     disabled: !isValid,
                     handleClick: handleSubmit
                 },
                 {
-                    key:'login_Sign_Up',
+                    key: 'login_Sign_Up',
                     className: classes.button,
                     children: `Sign up`,
                     handleClick: handleNavigateToSignUp
