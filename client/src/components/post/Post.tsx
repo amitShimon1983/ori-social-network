@@ -29,17 +29,16 @@ interface PostProps {
 }
 const filesUri = `${appConfig.serverUrl}${'/api/file/post/'}`
 const Post: FunctionComponent<PostProps> = ({ post, styles, displayToolbar }) => {
+
     const { data: commentsData, } = useGetPostComments(post?._id || '');
     const { user } = appContextVar();
     const [url, setUrl] = useState<string>('');
-    const [loading, setLoading] = useState<boolean>(false);
-    const [displaySkeleton, setDisplaySkeleton] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [displaySkeleton, setDisplaySkeleton] = useState<boolean>(true);
     const [type, setType] = useState<string>('');
     const { data: likesData } = useGetPostLikes(post?._id || '');
 
     useEffect(() => {
-        setLoading(true);
-        setDisplaySkeleton(true);
         let timer: any;
         const loadFile = async () => {
             const blob: any = await httpService.getStream(filesUri + post?.file?.originalname);
@@ -56,7 +55,6 @@ const Post: FunctionComponent<PostProps> = ({ post, styles, displayToolbar }) =>
     }, [])
 
     const isVideo = type?.trim()?.toLowerCase()?.includes('video');
-
     return (
         <Paper elevation={3} className={`${classes.container} ${styles?.containerClassName}`}>
             {url && isVideo && !loading && <Video
@@ -69,6 +67,7 @@ const Post: FunctionComponent<PostProps> = ({ post, styles, displayToolbar }) =>
                 <VideoFooter
                     postId={post?._id}
                     me={user}
+                    creator={post.user || {}}
                     likes={likesData?.getLikes?.likes}
                     comments={commentsData?.getComments?.comments} styles={styles?.footerStyles} />
             </div>}
