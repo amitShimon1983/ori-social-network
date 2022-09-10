@@ -67,8 +67,6 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
         return emptyFetchState
     }
     const handleFetchChildren = async (data: any, skip: number) => {
-        console.log({ skip, data });
-
         const { data: fetchData } = await getLazyComment({
             variables: {
                 postId: postId!,
