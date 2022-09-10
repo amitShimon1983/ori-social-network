@@ -4,7 +4,7 @@ import { appConfig } from "../../../configuration";
 import { httpService } from "../../../services";
 import { validateEmail } from "../../../utils";
 import { CameraRoll } from "../../cameraRoll";
-import { Input, ButtonList, DatePicker } from "../../shared";
+import { Input, ButtonList, DatePicker, Header } from "../../shared";
 import { Hr } from "../../styles/styles";
 import classes from '../Auth.module.css';
 
@@ -79,8 +79,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
     };
     return (<>
         <div className={classes.sign_up_header}>
-            <h2 className={classes.header}>Sign Up!</h2>
-            <Hr />
+            <Header label={'Sign Up!'} />
         </div>
         <div className={classes.container}>
             <Input className={classes.input} handleChange={handleChange} placeholder='Email' type='email' name={'email'} value={signUp?.email} required />

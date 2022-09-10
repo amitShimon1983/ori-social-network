@@ -3,9 +3,8 @@ import { useNavigate } from "react-router";
 import { authService } from "../../../services";
 import { appContextVar } from "../../../services/store";
 import { validateEmail } from "../../../utils";
-import { Input, Spinner, ButtonList } from "../../shared";
+import { Input, Spinner, ButtonList, Header } from "../../shared";
 import Form from "../../shared/form";
-import { Hr } from "../../styles/styles";
 import classes from '../Auth.module.css';
 
 interface LoginFormProps {
@@ -57,10 +56,7 @@ const LoginForm: FunctionComponent<LoginFormProps> = () => {
             <Spinner label='Loading' />
         </div>}
         {!loading && <Form>
-            <div>
-                <h2 className={classes.header}>Login...</h2>
-                <Hr />
-            </div>
+            <Header label={'Login...'} />
             <Input className={classes.input} value={login.email} placeholder='Email' type='email' name='email' required handleChange={handleChange} />
             <Input className={classes.input} value={login.password} placeholder="Password" type='password' name='password' required handleChange={handleChange} />
             <ButtonList
