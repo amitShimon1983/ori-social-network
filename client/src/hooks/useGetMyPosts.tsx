@@ -5,7 +5,14 @@ query GetMyPosts($userId: String){
     getMyPosts(args:{ userId: $userId }){
         posts{
             _id
-            user
+            user{
+                _id
+                name
+                email
+                file {
+                  originalname
+                }  
+            }
             title
             createdAt
             file {
