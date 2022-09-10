@@ -3,9 +3,9 @@ import { gql, useQuery } from "@apollo/client"
 const GET_My_POSTS = gql`
 query GetMyPosts($userId: String){
     getMyPosts(args:{ userId: $userId }){
-        posts{
+        posts {
             _id
-            user{
+            user {
                 _id
                 name
                 email
@@ -23,7 +23,6 @@ query GetMyPosts($userId: String){
                 path
                 size
             }
-            
         }
     }
 }

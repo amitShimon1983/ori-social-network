@@ -5,3 +5,4 @@ export { useCommentPost } from './useCommentPost';
 export { useGetUser } from './useGetUser';
 export { useGetRandomPosts } from './useGetRandomPosts';
 export { useGetMyPosts } from './useGetMyPosts';
+export { useGetContacts } from './useGetContacts';

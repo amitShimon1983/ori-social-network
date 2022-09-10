@@ -13,7 +13,7 @@ export { default as Badge } from './badge/Badge';
 export { default as Switch } from './switch';
 export { default as Skeleton } from './skeleton';
 export { default as DatePicker } from './datePicker';
-export { default as SendMessageForm } from './sendMessage/SendMessage';
+export { default as MessageForm } from './messageForm';
 export { default as AutoComplete } from './autoComplete';
 export { default as InputButtonPanel } from './inputButtonPanel';
 export * from './tree';
