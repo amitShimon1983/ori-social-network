@@ -1,6 +1,5 @@
-import { Fab } from "@mui/material";
 import { FunctionComponent } from "react";
-import { RecordingIcon, RiDeleteBin2Fill, BsSave, } from "../shared";
+import { RecordingIcon, RiDeleteBin2Fill, BsSave, Fab, } from "../shared";
 import classes from "./CameraRoll.module.css";
 
 interface VideoButtonsListProps {
