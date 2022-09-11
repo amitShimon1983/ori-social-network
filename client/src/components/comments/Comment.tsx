@@ -34,7 +34,9 @@ const Comment: FunctionComponent<CommentProps> = ({ _id,
     return (<div className={classes.comment_container}>
         <div className={classes.comment_header}>
             <div className={classes.comment_details}>
-                <MiniMe navigateOnClick={true} user={user} displaySpinner={false} />
+                <div className={classes.mini_me_container}>
+                    <MiniMe navigateOnClick={true} user={user} displaySpinner={false} />
+                </div>
                 <div className={classes.date}> {diff}</div>
             </div>
         </div>

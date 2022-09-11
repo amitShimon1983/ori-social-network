@@ -4,9 +4,8 @@ import { InputButtonPanel } from "..";
 import classes from './index.module.css';
 import SpeechBubble from "../speechBubble";
 import { useSearchContacts } from "../../../hooks";
-import debounce from "lodash.debounce";
-import Me from "../../me";
 import MiniMe from "../../me/MiniMe";
+import { Hr } from "../../styles";
 
 const MessageForm: FunctionComponent = () => {
     const [inputData, setInputData] = useState<string>();
@@ -30,8 +29,12 @@ const MessageForm: FunctionComponent = () => {
         return res.data.searchContacts || [];
     }
     const renderOption = (props: object, option: any, state: object): React.ReactNode => {
-        return (
-            <MiniMe navigateOnClick={false} user={option} displaySpinner={false} />
+        return (<>
+            <div className={classes.me_container}>
+                <MiniMe navigateOnClick={false} user={option} displaySpinner={false} />
+            </div>
+            <Hr />
+        </>
         );
     };
     return (<div className={classes.container}>

@@ -32,8 +32,7 @@ const Inbox: FunctionComponent = () => {
         setOpenMessageForm(false)
     }
     return (<div className={classes.container}>
-        <BackButton />
-        <Header label={'Inbox'} />
+        <Header label={'Inbox'} ><BackButton /></Header>
         {!loading && !!threads?.length && <InfiniteScroll
             initialHasMore={hasMore}
             renderItem={renderItem}

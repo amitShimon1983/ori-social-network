@@ -29,7 +29,9 @@ const Wall: FunctionComponent<WallProps> = ({ user }) => {
     }
 
     return (<>
-        <Me navigateOnClick={true} displaySpinner={true} styles={{ imageClass: classes.image__wall }} user={user} />
+        <div className={classes.me_container}>
+            <Me navigateOnClick={true} displaySpinner={true} styles={{ imageClass: classes.image__wall }} user={user} />
+        </div>
         <div className={`${classes.following_container}`}>
             <div className={`${classes.following}`}>
                 followers {user?.followers?.length || 0}

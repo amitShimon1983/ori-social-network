@@ -2,7 +2,7 @@ import { FunctionComponent, useState } from "react";
 import { useParams } from "react-router";
 import { useCommentPost, useGetPostComments } from "../../hooks";
 import { BackButton } from "../backButton";
-import { InputButtonPanel, Spinner } from "../shared";
+import { Header, InputButtonPanel, Spinner } from "../shared";
 import InfiniteScroll from "../shared/infiniteScrolling/InfiniteScroll";
 import { TreeNode } from "../shared/tree/Tree";
 import Comment from "./Comment";
@@ -100,7 +100,7 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
 
     return (
         <div className={classes.container}>
-            <BackButton />
+            <Header label={'Comments'} ><BackButton /></Header>
             {loading && <Spinner label="Loading" />}
             {!loading && comments?.length && <InfiniteScroll
                 initialHasMore={hasMore}

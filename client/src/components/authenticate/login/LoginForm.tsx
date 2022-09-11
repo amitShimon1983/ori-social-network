@@ -55,26 +55,32 @@ const LoginForm: FunctionComponent<LoginFormProps> = () => {
         {loading && <div className={classes.container_loading}>
             <Spinner label='Loading' />
         </div>}
-        {!loading && <Form>
+        <div className={classes.sign_up_header}>
             <Header label={'Login...'} />
-            <Input className={classes.input} value={login.email} placeholder='Email' type='email' name='email' required handleChange={handleChange} />
-            <Input className={classes.input} value={login.password} placeholder="Password" type='password' name='password' required handleChange={handleChange} />
-            <ButtonList
-                styles={{ containerClassName: classes.button_panel }}
-                items={[{
-                    key: 'login_Sign_in',
-                    className: classes.button,
-                    children: `Sign in`,
-                    disabled: !isValid,
-                    handleClick: handleSubmit
-                },
-                {
-                    key: 'login_Sign_Up',
-                    className: classes.button,
-                    children: `Sign up`,
-                    handleClick: handleNavigateToSignUp
-                }]}
-            />
+        </div>
+        {!loading && <Form>
+            <div className={classes.inputs_container}>
+                <Input className={classes.input} value={login.email} placeholder='Email' type='email' name='email' required handleChange={handleChange} />
+                <Input className={classes.input} value={login.password} placeholder="Password" type='password' name='password' required handleChange={handleChange} />
+            </div>
+            <div className={classes.buttons_container}>
+                <ButtonList
+                    styles={{ containerClassName: classes.button_panel }}
+                    items={[{
+                        key: 'login_Sign_in',
+                        className: classes.button,
+                        children: `Sign in`,
+                        disabled: !isValid,
+                        handleClick: handleSubmit
+                    },
+                    {
+                        key: 'login_Sign_Up',
+                        className: classes.button,
+                        children: `Sign up`,
+                        handleClick: handleNavigateToSignUp
+                    }]}
+                />
+            </div>
             {!!errors.length && errors.map(error => (<div>{error}</div>))}
         </Form>}
     </>

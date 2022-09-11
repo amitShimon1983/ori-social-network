@@ -59,8 +59,13 @@
 .image__wall {
     width: 100px;
     height: 100px;
-    border-radius: 50%; 
+    border-radius: 50%;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.me_container {
+    margin-top: 2vh;
+    margin-bottom: 2vh;
 }
 
 .post {

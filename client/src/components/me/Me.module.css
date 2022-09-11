@@ -4,8 +4,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 2vh;
-    margin-top: 2vh;
     border-radius: 50%;
 
 }
@@ -16,7 +14,6 @@
 }
 
 .email {
-    margin-top: 1vh;
     width: 100%;
     text-align: center;
 }

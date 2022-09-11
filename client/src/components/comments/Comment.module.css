@@ -61,3 +61,7 @@
     flex: 1;
     overflow: scroll;
 }
+
+.mini_me_container {
+    width: 70%;
+}

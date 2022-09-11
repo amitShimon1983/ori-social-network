@@ -21,7 +21,7 @@ const AutoComplete: FunctionComponent<AutoCompleteProps> = ({ loading, fetchData
             multiple
             id="size-small-outlined-multi"
             size="small"
-            open={true}
+            open={open}
             // open={open}
             onOpen={() => {
                 setOpen(true);
