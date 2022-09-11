@@ -1,0 +1,22 @@
+.comment_me {
+    width: 80%;
+    padding: 1vh;
+}
+.me_container {
+    flex-direction: row !important;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.me_email {
+    margin-top: 0;
+    width: 70%;
+    margin-right: auto;
+}
+
+.me_image {
+    width: 45px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid rgb(73, 71, 71);
+}

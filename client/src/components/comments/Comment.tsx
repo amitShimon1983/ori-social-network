@@ -2,6 +2,7 @@ import { FunctionComponent, useEffect, useRef, useState } from "react";
 import { getPostDate } from "../../services/date";
 import { isOverflow } from "../../utils";
 import Me from "../me";
+import MiniMe from "../me/MiniMe";
 import { Button } from "../shared";
 import classes from './Comment.module.css';
 interface CommentProps {
@@ -33,17 +34,7 @@ const Comment: FunctionComponent<CommentProps> = ({ _id,
     return (<div className={classes.comment_container}>
         <div className={classes.comment_header}>
             <div className={classes.comment_details}>
-                <div className={classes.comment_me}>
-                    <Me
-                        displaySpinner={false}
-                        styles={{
-                            imageClass: classes.me_image,
-                            containerClassName: classes.me_container,
-                            emailClassName: classes.me_email
-                        }}
-                        user={user}
-                    />
-                </div>
+                <MiniMe navigateOnClick={true} user={user} displaySpinner={false} />
                 <div className={classes.date}> {diff}</div>
             </div>
         </div>
