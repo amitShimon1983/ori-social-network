@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Ctx, Arg } from "type-graphql";
 import { userService } from "../../../services";
-import { FollowArgs, GetUserArgs, User } from "./types";
+import { FollowArgs, GetUserArgs, User, SearchContactsArgs } from "./types";
 
 @Resolver()
 export class AccountResolver {
@@ -57,5 +57,13 @@ export class AccountResolver {
             } as User
         }
         return null;
+    }
+
+    @Query(() => [User])
+    async searchContacts(@Arg('args', () => SearchContactsArgs) args: SearchContactsArgs, @Ctx() context: any) {
+        const { user } = context;
+        const { queryString } = args;
+        if (queryString) { return userService.searchContacts(user, queryString); }
+        return []
     }
 }

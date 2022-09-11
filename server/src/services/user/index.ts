@@ -50,8 +50,12 @@ export class UserService {
             } else {
                 meUser.following = [otherUser._id];
             }
-            await meUser.save()
-            await otherUser.save()
+            try {
+                await meUser.save()
+                await otherUser.save()
+            } catch (error: any) {
+                console.log({ error });
+            }
         }
         return meUser?.toObject();
     }
@@ -81,6 +85,21 @@ export class UserService {
             }
         )
         return meUser;
+    }
+    async searchContacts(user: User, queryString: string) {
+
+        const contacts = [...(user?.followers || []), ...(user?.following || [])];
+        const memo: { [key: string]: any } = {};
+        const unique = [];
+        for (let index = 0; index < contacts.length; index++) {
+            const contact = contacts[index];
+            if (!memo[contact]) {
+                memo[contact] = contact;
+                unique.push(contact)
+            }
+        }
+        const users = unique ? await UserModel.find({ $text: { $search: "amit" } }).populate('file').lean() : [];
+        return users
     }
 }
 

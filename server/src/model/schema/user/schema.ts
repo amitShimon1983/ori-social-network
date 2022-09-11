@@ -10,7 +10,7 @@ const userSchema = new Schema<IUser>({
     following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     dateOfBirth: { type: Date, required: true }
 });
-
+userSchema.index({ name: 'text', email: 'text' });
 const UserModel = model<IUser>('User', userSchema);
 
 export default UserModel;

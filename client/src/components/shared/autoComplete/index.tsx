@@ -2,23 +2,27 @@ import { FunctionComponent, useState } from "react";
 import { TextField, Autocomplete as AutocompleteMUI, CircularProgress } from '../mui'
 interface AutoCompleteProps {
     loading: boolean;
-    fetchMore: (value: any) => any[] | Promise<any[]>;
-    onSelectHandler: (data: any) => void | Promise<void>
+    fetchData: (value: any) => any[] | Promise<any[]>;
+    onSelectHandler: (data: any) => void | Promise<void>;
+    renderOption: ((props: React.HTMLAttributes<HTMLLIElement>, option: any, state: any) => React.ReactNode) | undefined
 }
 
-const AutoComplete: FunctionComponent<AutoCompleteProps> = ({ loading, fetchMore, onSelectHandler }) => {
+const AutoComplete: FunctionComponent<AutoCompleteProps> = ({ loading, fetchData, onSelectHandler, renderOption }) => {
     const [open, setOpen] = useState<boolean>(false);
     const [options, setOptions] = useState<any[]>([]);
     const handleInputChange = async (value: any) => {
-        const items = await fetchMore(value);
-        setOptions(items)
+        const items = await fetchData(value);
+        console.log(items);
+
+        setOptions(items || [])
     }
     return (<>
         <AutocompleteMUI
             multiple
             id="size-small-outlined-multi"
             size="small"
-            open={open}
+            open={true}
+            // open={open}
             onOpen={() => {
                 setOpen(true);
             }}
@@ -30,10 +34,11 @@ const AutoComplete: FunctionComponent<AutoCompleteProps> = ({ loading, fetchMore
                 console.log({ event, values });
                 onSelectHandler(values)
             }}
-            isOptionEqualToValue={(option, value) => option.title === value.title}
-            getOptionLabel={(option: any) => option.title}
+            isOptionEqualToValue={(option, value) => option.name === value.name}
+            getOptionLabel={(option: any) => option.name}
             options={options}
             loading={loading}
+            renderOption={renderOption}
             renderInput={(params) => (
                 <TextField {...params}
                     label="Contacts"

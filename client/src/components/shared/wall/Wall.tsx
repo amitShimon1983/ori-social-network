@@ -25,14 +25,11 @@ const Wall: FunctionComponent<WallProps> = ({ user }) => {
                 userId: user._id
             }
         })
-        appContextVar({
-            ...me,
-            following: [...me.following, user._id]
-        });
+        appContextVar({ ...appContextVar(), user: { ...me, following: [...me.following, user._id] } });
     }
 
     return (<>
-        <Me displaySpinner={true} styles={{ imageClass: classes.image__wall }} user={user} />
+        <Me navigateOnClick={true} displaySpinner={true} styles={{ imageClass: classes.image__wall }} user={user} />
         <div className={`${classes.following_container}`}>
             <div className={`${classes.following}`}>
                 followers {user?.followers?.length || 0}

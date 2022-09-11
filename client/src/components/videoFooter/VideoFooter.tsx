@@ -65,7 +65,7 @@ const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments,
     }
     return (
         <ToolbarButton actions={[
-            { icon: <Me displaySpinner={false} user={creator} styles={{ emailClassName: classes.me_email, imageClass: classes.me_image, containerClassName: classes.me_container }} />, name: 'Avatar' },
+            { icon: <Me navigateOnClick={true} displaySpinner={false} user={creator} styles={{ emailClassName: classes.me_email, imageClass: classes.me_image, containerClassName: classes.me_container }} />, name: 'Avatar' },
             {
                 icon: <Badge max={99} count={comments?.length || 0}>
                     <FaRegComments className={classes.icon} onClick={onCommentClick} />

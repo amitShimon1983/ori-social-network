@@ -22,12 +22,10 @@ const Inbox: FunctionComponent = () => {
                     skip
                 }
             })
-            console.log({ data });
         }
         return { items: [], hasMore: false }
     }
     const openMessageFormHandler = () => {
-        debugger
         setOpenMessageForm(true)
     }
     const closeMessageFormHandler = () => {
@@ -51,14 +49,7 @@ const Inbox: FunctionComponent = () => {
             <FaPencilAlt />
         </Fab>
         <Drawer label={'New Message'} dismissHandler={closeMessageFormHandler} isOpen={openMessageForm}>
-            <MessageForm
-                loading={false}
-                handleSave={(data: any) => {
-
-                }}
-                fetchMore={(data) => {
-                    return [{}]
-                }} />
+            <MessageForm />
         </Drawer>
     </div>);
 }

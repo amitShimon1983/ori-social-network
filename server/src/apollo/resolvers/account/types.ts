@@ -26,3 +26,8 @@ export class FollowArgs {
     @Field(() => String)
     userId: string;
 }
+@InputType()
+export class SearchContactsArgs {
+    @Field(() => String, { nullable: true })
+    queryString?: string;
+}

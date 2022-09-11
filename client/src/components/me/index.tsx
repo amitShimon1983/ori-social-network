@@ -6,13 +6,14 @@ import { Spinner } from "../shared";
 import { Video } from "../video";
 import classes from './Me.module.css';
 
-interface MeProps {
+export interface MeProps {
     user: any;
     styles?: { imageClass?: string; containerClassName?: string; emailClassName?: string; };
     displaySpinner: boolean;
+    navigateOnClick: boolean;
 }
 const filesUri = `${appConfig.serverUrl}${'/api/file/post/'}`
-const Me: FunctionComponent<MeProps> = ({ user, styles, displaySpinner }) => {
+const Me: FunctionComponent<MeProps> = ({ user, styles, displaySpinner, navigateOnClick }) => {
     const [url, setUrl] = useState<string>('');
     const [type, setType] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
@@ -38,7 +39,7 @@ const Me: FunctionComponent<MeProps> = ({ user, styles, displaySpinner }) => {
             }
             {loading && <Spinner label={'Loading'} />}
             {url && !isVideo && <img className={styles?.imageClass} src={url} alt={'profilePicture'} />}
-            {<p onClick={handleNavigateToUser} className={`${classes.email} ${styles?.emailClassName}`}>{user?.email}</p>}
+            {<p onClick={navigateOnClick ? handleNavigateToUser : () => { }} className={`${classes.email} ${styles?.emailClassName}`}>{user?.email}</p>}
         </div>
     </>
     );
