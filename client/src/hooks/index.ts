@@ -7,3 +7,4 @@ export { useGetRandomPosts } from './useGetRandomPosts';
 export { useGetMyPosts } from './useGetMyPosts';
 export { useSearchContacts } from './useSearchContacts';
 export { useGetMessageThreads } from './useGetMessageThreads';
+export { useSendMessage } from './useSendMessage';
