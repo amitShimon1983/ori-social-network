@@ -7,7 +7,14 @@ query GetMessageThreads($skip:Int, $limit:Int){
             isRead
             _id
             sender
-            recipient
+            recipient{
+                _id
+                name
+                email
+                file {
+                    originalname
+                }
+            }
             content
             createdAt
         }
