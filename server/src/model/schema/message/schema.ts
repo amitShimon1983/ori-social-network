@@ -5,6 +5,7 @@ const messageSchema = new Schema<IMessage>({
     sender: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     recipient: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     parentMessageId: { type: Schema.Types.ObjectId, ref: 'Message', required: false },
+    messageThreadId: { type: Schema.Types.ObjectId, ref: 'MessageThread', required: true },
     content: { type: String, required: true },
     createdAt: { type: Date, default: new Date() },
     isRead: { type: Boolean, default: false }
