@@ -3,10 +3,10 @@ import { useParams } from "react-router";
 import { useCommentPost, useGetPostComments } from "../../hooks";
 import { BackButton } from "../backButton";
 import { Header, InputButtonPanel, Spinner } from "../shared";
+import Card from "../shared/card/Card";
 import InfiniteScroll from "../shared/infiniteScrolling/InfiniteScroll";
 import { TreeNode } from "../shared/tree/Tree";
-import Comment from "./Comment";
-import classes from './Comment.module.css';
+import classes from './CommentsThread.module.css';
 interface CommentsThreadProps {
 
 }
@@ -79,7 +79,8 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
         return fetchData?.getComments?.comments || []
     }
     const renderComment = (data: any) => {
-        return <Comment
+        return <Card
+            displayButtons={true}
             key={data._id}
             _id={data._id}
             content={data.content}
