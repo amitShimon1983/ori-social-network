@@ -1,11 +1,13 @@
 import { Arg, Mutation, Query, Resolver, Ctx } from "type-graphql";
 import { messageService } from "../../../services";
-import { GetMessageThreads, GetMessageThreadsArgs } from "./types";
+import { GetMessageThreads, GetMessageThreadsArgs, SendMessageArgs } from "./types";
 
 @Resolver()
 export class MessageResolver {
     @Mutation(() => Boolean)
-    async sendMessage() {
+    async sendMessage(@Arg('args', () => SendMessageArgs) args: SendMessageArgs, @Ctx() context: any) {
+        const { user } = context;
+        await messageService.sendMessage(args, user._id)
         return true;
     }
     @Query(() => GetMessageThreads)
