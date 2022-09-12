@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from "react";
-import { useGetMessageThreads } from "../../hooks";
+import { useGetConversation, useGetMessageThreads } from "../../hooks";
 import { BackButton } from "../backButton";
 import { Drawer, Fab, FaPencilAlt, Header, ImFilesEmpty, MessageForm, Spinner } from "../shared";
 import Card from "../shared/card/Card";
@@ -7,22 +7,27 @@ import InfiniteScroll from "../shared/infiniteScrolling/InfiniteScroll";
 import { Hr } from "../styles";
 import classes from './Inbox.module.css';
 const Inbox: FunctionComponent = () => {
-    const [threads, setThreads] = useState<any[]>([])
+    const [threads, setThreads] = useState<any[]>([]);
     const [hasMore, setHasMore] = useState<boolean>(false);
     const [openMessageForm, setOpenMessageForm] = useState<boolean>(false);
-    const { loading, error, fetchMore } = useGetMessageThreads((data: any) => {
-        setThreads((data?.getMessageThreads?.threads || []))
-        setHasMore(data?.getMessageThreads?.hasMore)
+    const [conversation, setConversation] = useState<any[]>([]);
+    const { getConversationQuery, loading: getConversationLoading } = useGetConversation();
+    const { loading, fetchMore } = useGetMessageThreads((data: any) => {
+        setThreads((data?.getMessageThreads?.threads || []));
+        setHasMore(data?.getMessageThreads?.hasMore);
     });
     const renderItem = (data: any) => {
-        return <div style={{ width: '95%', padding: '10px' }}>
+        debugger
+        return <div onClick={() => fetchThread(data.messageThreadId)} style={{ width: '95%', padding: '10px' }}>
             <Card
                 displayButtons={false}
                 key={data._id}
                 _id={data._id}
                 content={data.content}
                 user={data.recipient}
-                createdAt={data.createdAt} />
+                createdAt={data.createdAt}
+                navigateOnClick={false}
+            />
             <Hr />
         </div>
     }
@@ -31,16 +36,28 @@ const Inbox: FunctionComponent = () => {
             const data = await fetchMore({
                 variables: {
                     skip
-                }
+                },
             })
         }
-        return { items: [], hasMore: false }
+        return { items: [], hasMore: false };
+    }
+    const fetchThread = async (messageThreadId: string) => {
+        if (messageThreadId) {
+            const { data } = await getConversationQuery({
+                variables: {
+                    messageThreadId
+                },
+            });
+            setConversation(data?.getConversation?.messages);
+            setHasMore(data?.getConversation?.hasMore);
+            setOpenMessageForm(true);
+        }
     }
     const openMessageFormHandler = () => {
-        setOpenMessageForm(true)
+        setOpenMessageForm(true);
     }
     const closeMessageFormHandler = () => {
-        setOpenMessageForm(false)
+        setOpenMessageForm(false);
     }
     return (<div className={classes.container}>
         <Header label={'Inbox'} ><BackButton /></Header>
@@ -59,7 +76,7 @@ const Inbox: FunctionComponent = () => {
             <FaPencilAlt />
         </Fab>
         <Drawer label={'New Message'} dismissHandler={closeMessageFormHandler} isOpen={openMessageForm}>
-            <MessageForm />
+            <MessageForm conversation={conversation} />
         </Drawer>
     </div>);
 }
