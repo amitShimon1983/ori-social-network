@@ -1,5 +1,5 @@
 import { ObjectType, Int, Field, InputType } from "type-graphql";
-import { IMessage } from "../../../model/schema/message";
+import { User } from "../account/types";
 
 @ObjectType()
 export class GetMessageThreads {
@@ -31,15 +31,15 @@ export class SendMessageArgs {
 }
 
 @ObjectType()
-export class Message implements IMessage {
+export class Message {
     @Field(() => Boolean)
     isRead: boolean;
     @Field(() => String)
     _id: string;
     @Field(() => String)
     sender?: string | undefined;
-    @Field(() => String)
-    recipient?: string | undefined;
+    @Field(() => User)
+    recipient?: User;
     @Field(() => String)
     content: string;
     @Field(() => String)
