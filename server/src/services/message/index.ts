@@ -61,14 +61,12 @@ class MessageService {
             const thread = await MessageModel.find({ messageThreadId },
                 {},
                 { skip, limit, sort: { lastUpdated: -1 } }).populate({
-                    path: 'messages',
+                    path: 'recipient',
                     populate: {
-                        path: 'recipient',
-                        populate: {
-                            path: 'file'
-                        }
+                        path: 'file'
                     }
-                }).lean();
+                }
+                ).lean();
             const count = await MessageModel.count({ messageThreadId });
             const hasMore = (thread.length || 0) + (skip || 0) < count;
             return { messages: thread, hasMore, count };

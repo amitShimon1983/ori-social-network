@@ -7,6 +7,7 @@ query GetMessageThreads($skip:Int, $limit:Int){
             isRead
             _id
             sender
+            messageThreadId
             recipient{
                 _id
                 name

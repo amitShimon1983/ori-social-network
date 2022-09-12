@@ -11,13 +11,15 @@ interface CardProps {
     createdAt: string;
     user: any;
     displayButtons: boolean;
+    navigateOnClick: boolean;
 }
 
 const Card: FunctionComponent<CardProps> = ({ _id,
     content,
     createdAt,
     user,
-    displayButtons }) => {
+    displayButtons,
+    navigateOnClick }) => {
 
     const [isContentOverflow, setIsContentOverFlow] = useState<boolean>(false);
     const [toggle, setToggle] = useState<boolean>(false);
@@ -37,7 +39,7 @@ const Card: FunctionComponent<CardProps> = ({ _id,
         <div className={classes.header}>
             <div className={classes.details}>
                 <div className={classes.mini_me_container}>
-                    <MiniMe navigateOnClick={true} user={user} displaySpinner={false} />
+                    <MiniMe navigateOnClick={navigateOnClick} user={user} displaySpinner={false} />
                 </div>
                 <div className={classes.date}> {diff}</div>
             </div>

@@ -1,13 +1,16 @@
 import { FunctionComponent } from "react";
+import { appContextVar } from "../../../services/store";
 import classes from './index.module.css';
 interface SpeechBubbleProps {
     content: string;
-    fromMe: boolean;
+    userId: string;
 }
 
-const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ content, fromMe }) => {
+const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ content, userId }) => {
+    const { user: me } = appContextVar();
+    const isMe = me._id === userId
     return (<>
-        <div className={`${fromMe ? classes.speech_bubble_me : classes.speech_bubble_other} ${fromMe ? classes.me : classes.other}`}>{content}</div>
+        <div className={`${isMe ? classes.speech_bubble_me : classes.speech_bubble_other} ${isMe ? classes.me : classes.other}`}>{content}</div>
     </>);
 }
 

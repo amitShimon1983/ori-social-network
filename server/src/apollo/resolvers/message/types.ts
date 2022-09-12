@@ -61,4 +61,6 @@ export class Message {
     content: string;
     @Field(() => String)
     createdAt: Date;
+    @Field(() => String)
+    messageThreadId: string;
 }

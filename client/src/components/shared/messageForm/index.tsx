@@ -7,8 +7,10 @@ import { useSearchContacts, useSendMessage } from "../../../hooks";
 import MiniMe from "../../me/MiniMe";
 import { Hr } from "../../styles";
 import { debounce } from "@mui/material";
-
-const MessageForm: FunctionComponent = () => {
+export interface MessageFormProps {
+    conversation: { [key: string]: any }[]
+}
+const MessageForm: FunctionComponent<MessageFormProps> = ({ conversation }) => {
     const [inputData, setInputData] = useState<string>();
     const [isValid, setIsValid] = useState<boolean>(false);
     const [selectedUsers, setSelectedUsers] = useState<any[]>();
@@ -69,9 +71,7 @@ const MessageForm: FunctionComponent = () => {
             fetchData={fetchContactData}
         />
         <div className={classes.text_area}>
-            {inputData && <SpeechBubble fromMe={true} content={inputData} />}
-            {inputData && <SpeechBubble fromMe={false} content={inputData} />}
-
+            {conversation.map(message => <SpeechBubble key={`SpeechBubble_${message._id}_Message_Form`} userId={message.sender} content={message?.content} />)}
         </div>
         <InputButtonPanel
             disabled={!isValid}
