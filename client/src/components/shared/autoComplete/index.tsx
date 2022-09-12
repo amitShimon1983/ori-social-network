@@ -2,7 +2,7 @@ import { FunctionComponent, useState } from "react";
 import { TextField, Autocomplete as AutocompleteMUI, CircularProgress } from '../mui'
 interface AutoCompleteProps {
     loading: boolean;
-    fetchData: (value: any) => any[] | Promise<any[]>;
+    fetchData: (value: any, setOptions: React.Dispatch<React.SetStateAction<any[]>>) => any[] | Promise<any[]>;
     onSelectHandler: (data: any) => void | Promise<void>;
     renderOption: ((props: React.HTMLAttributes<HTMLLIElement>, option: any, state: any) => React.ReactNode) | undefined
 }
@@ -11,10 +11,7 @@ const AutoComplete: FunctionComponent<AutoCompleteProps> = ({ loading, fetchData
     const [open, setOpen] = useState<boolean>(false);
     const [options, setOptions] = useState<any[]>([]);
     const handleInputChange = async (value: any) => {
-        const items = await fetchData(value);
-        console.log(items);
-
-        setOptions(items || [])
+        await fetchData(value, setOptions);
     }
     return (<>
         <AutocompleteMUI

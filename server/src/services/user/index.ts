@@ -98,7 +98,7 @@ export class UserService {
                 unique.push(contact)
             }
         }
-        const users = unique ? await UserModel.find({ $text: { $search: "amit" } }).populate('file').lean() : [];
+        const users = unique ? await UserModel.find({ $text: { $search: queryString } }).populate('file').lean() : [];
         return users
     }
 }

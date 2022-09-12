@@ -6,6 +6,7 @@ import SpeechBubble from "../speechBubble";
 import { useSearchContacts } from "../../../hooks";
 import MiniMe from "../../me/MiniMe";
 import { Hr } from "../../styles";
+import { debounce } from "@mui/material";
 
 const MessageForm: FunctionComponent = () => {
     const [inputData, setInputData] = useState<string>();
@@ -17,7 +18,7 @@ const MessageForm: FunctionComponent = () => {
     const handleMessageSave = async () => {
         // handleSave({ inputData, selectedUsers })
     }
-    const fetchContactData = async (value: any) => {
+    const fetchContactData = debounce(async (value: any, setOptions: React.Dispatch<React.SetStateAction<any[]>>) => {
         if (!value || value.length < 2) {
             return [];
         }
@@ -26,16 +27,20 @@ const MessageForm: FunctionComponent = () => {
                 queryString: value
             }
         })
-        return res.data.searchContacts || [];
-    }
+        const options: any[] = res.data.searchContacts || []
+        setOptions(options)
+        return options;
+    }, 300)
+
     const renderOption = (props: object, option: any, state: object): React.ReactNode => {
-        return (<>
-            <div className={classes.me_container}>
+        return (<li {...props}>
+            <div key={'mini_me_' + option._id + 'message_form'} className={classes.me_container}>
                 <MiniMe navigateOnClick={false} user={option} displaySpinner={false} />
             </div>
             <Hr />
-        </>
+        </li>
         );
+
     };
     return (<div className={classes.container}>
         <AutoComplete
