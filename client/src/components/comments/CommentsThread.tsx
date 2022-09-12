@@ -108,6 +108,7 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
                 initialData={comments}
                 fetchMore={handleCommentFetch} />}
             <InputButtonPanel
+                disabled={!commentContent}
                 handleChange={handleCommentContentChange}
                 inputValue={commentContent}
                 handleSave={handleCommentSave}
