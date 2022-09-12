@@ -2,18 +2,29 @@ import { FunctionComponent, useState } from "react";
 import { useGetMessageThreads } from "../../hooks";
 import { BackButton } from "../backButton";
 import { Drawer, Fab, FaPencilAlt, Header, ImFilesEmpty, MessageForm, Spinner } from "../shared";
+import Card from "../shared/card/Card";
 import InfiniteScroll from "../shared/infiniteScrolling/InfiniteScroll";
+import { Hr } from "../styles";
 import classes from './Inbox.module.css';
 const Inbox: FunctionComponent = () => {
     const [threads, setThreads] = useState<any[]>([])
     const [hasMore, setHasMore] = useState<boolean>(false);
     const [openMessageForm, setOpenMessageForm] = useState<boolean>(false);
     const { loading, error, fetchMore } = useGetMessageThreads((data: any) => {
-        console.log({ data });
+        setThreads((data?.getMessageThreads?.threads || []))
+        setHasMore(data?.getMessageThreads?.hasMore)
     });
-    const renderItem = (item: any) => {
-        console.log({ item });
-        return <></>
+    const renderItem = (data: any) => {
+        return <div style={{ width: '95%', padding: '10px' }}>
+            <Card
+                displayButtons={false}
+                key={data._id}
+                _id={data._id}
+                content={data.content}
+                user={data.recipient}
+                createdAt={data.createdAt} />
+            <Hr />
+        </div>
     }
     const handleCommentFetch = async (skip: number) => {
         if (hasMore) {
