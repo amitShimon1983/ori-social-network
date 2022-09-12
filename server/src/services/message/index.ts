@@ -16,7 +16,17 @@ class MessageService {
                 $in: [userId]
             }
         }
-        const userThreads = await MessageThreadModel.find(query, { messages: { $slice: -1 } }, { skip, limit, sort: { lastUpdated: -1 } }).populate('messages').lean();
+        const userThreads = await MessageThreadModel.find(query,
+            { messages: { $slice: -1 } },
+            { skip, limit, sort: { lastUpdated: -1 } }).populate({
+                path: 'messages',
+                populate: {
+                    path: 'recipient',
+                    populate: {
+                        path: 'file'
+                    }
+                }
+            }).lean();
 
 
         const threadCount = await MessageThreadModel.count(query);
