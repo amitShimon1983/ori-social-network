@@ -17,7 +17,24 @@ export class GetMessageThreadsArgs {
     @Field(() => Int, { nullable: true })
     limit?: number;
 }
-
+@ObjectType()
+export class GetConversation {
+    @Field(() => [Message], { nullable: true })
+    messages: Message[];
+    @Field(() => Int, { nullable: true })
+    count: number;
+    @Field(() => Boolean, { nullable: true })
+    hasMore: boolean;
+}
+@InputType()
+export class GetConversationArgs {
+    @Field(() => String, { nullable: true })
+    messageThreadId?: string;
+    @Field(() => Int, { nullable: true })
+    skip?: number;
+    @Field(() => Int, { nullable: true })
+    limit?: number;
+}
 @InputType()
 export class SendMessageArgs {
     @Field(() => String)

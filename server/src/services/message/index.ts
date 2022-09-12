@@ -3,6 +3,7 @@ import { SendMessageArgs } from '../../apollo';
 import { IMessage, MessageModel, MessageThreadModel } from '../../model'
 import { IMessageThread } from '../../model/schema/message/types';
 class MessageService {
+
     static instance: MessageService;
     static getInstance() {
         if (!this.instance) {
@@ -37,7 +38,7 @@ class MessageService {
     async sendMessage(messageArgs: SendMessageArgs, userId: string) {
         let messageThread;
         if (messageArgs.messageThreadId) {
-            messageThread = await MessageThreadModel.findOne({ _id: messageArgs.messageThreadId, owners: { $in: [userId] } })
+            messageThread = await MessageThreadModel.findOne({ _id: messageArgs.messageThreadId, owners: { $in: [userId] } });
         } else {
             messageThread = await MessageThreadModel.create({
                 owners: [messageArgs.recipient, userId],
@@ -54,8 +55,26 @@ class MessageService {
 
         return messageThread;
     }
+    async getConversation(userId: any, messageThreadId?: string, skip?: number, limit?: number) {
+        if (await MessageThreadModel.findOne({ _id: messageThreadId, owners: { $in: [userId] } })) {
 
-    private async createMessage(userId: string, messageArgs: SendMessageArgs, messageThread: import("mongoose").Document<unknown, any, IMessageThread> & IMessageThread & { _id: Types.ObjectId; }) {
+            const thread = await MessageModel.find({ messageThreadId },
+                {},
+                { skip, limit, sort: { lastUpdated: -1 } }).populate({
+                    path: 'messages',
+                    populate: {
+                        path: 'recipient',
+                        populate: {
+                            path: 'file'
+                        }
+                    }
+                }).lean();
+            const count = await MessageModel.count({ messageThreadId });
+            const hasMore = (thread.length || 0) + (skip || 0) < count;
+            return { messages: thread, hasMore, count };
+        }
+    }
+    private async createMessage(userId: string, messageArgs: SendMessageArgs, messageThread: IMessageThread) {
         try {
             const message: IMessage = {
                 sender: userId,
