@@ -1,22 +1,38 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import AutoComplete from "../autoComplete";
 import { InputButtonPanel } from "..";
 import classes from './index.module.css';
 import SpeechBubble from "../speechBubble";
-import { useSearchContacts } from "../../../hooks";
+import { useSearchContacts, useSendMessage } from "../../../hooks";
 import MiniMe from "../../me/MiniMe";
 import { Hr } from "../../styles";
 import { debounce } from "@mui/material";
 
 const MessageForm: FunctionComponent = () => {
     const [inputData, setInputData] = useState<string>();
+    const [isValid, setIsValid] = useState<boolean>(false);
     const [selectedUsers, setSelectedUsers] = useState<any[]>();
     const { searchContactsQuery, loading, error } = useSearchContacts();
+    const { sendMessageMutation, loading: sendMessageLoading } = useSendMessage();
+    const isFormValid = useCallback(() => {
+        setIsValid(!!(selectedUsers?.length && inputData?.length))
+    }, [selectedUsers, inputData])
+    useEffect(() => {
+        isFormValid();
+    }, [isFormValid])
     const handleInputChange = ({ target }: { target: any }) => {
-        setInputData(target.value)
+        setInputData(target.value);
     }
+
     const handleMessageSave = async () => {
-        // handleSave({ inputData, selectedUsers })
+        if (isValid) {
+            await sendMessageMutation({
+                variables: {
+                    content: inputData,
+                    recipient: selectedUsers?.[0]?._id
+                }
+            })
+        }
     }
     const fetchContactData = debounce(async (value: any, setOptions: React.Dispatch<React.SetStateAction<any[]>>) => {
         if (!value || value.length < 2) {
@@ -46,8 +62,8 @@ const MessageForm: FunctionComponent = () => {
         <AutoComplete
             renderOption={renderOption}
             onSelectHandler={(data: any) => {
-                console.log('onSelectHandler', data);
                 setSelectedUsers(data);
+                isFormValid();
             }}
             loading={loading}
             fetchData={fetchContactData}
@@ -58,6 +74,7 @@ const MessageForm: FunctionComponent = () => {
 
         </div>
         <InputButtonPanel
+            disabled={!isValid}
             handleChange={handleInputChange}
             inputValue={inputData || ''}
             handleSave={handleMessageSave}
