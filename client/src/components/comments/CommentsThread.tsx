@@ -80,6 +80,7 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
     }
     const renderComment = (data: any) => {
         return <Card
+            navigateOnClick={true}
             displayButtons={true}
             key={data._id}
             _id={data._id}
