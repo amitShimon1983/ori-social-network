@@ -17,6 +17,19 @@ export class GetMessageThreadsArgs {
     @Field(() => Int, { nullable: true })
     limit?: number;
 }
+
+@InputType()
+export class SendMessageArgs {
+    @Field(() => String)
+    recipient: string | undefined;
+    @Field(() => String)
+    content: string;
+    @Field(() => String, { nullable: true })
+    parentMessageId?: string;
+    @Field(() => String, { nullable: true })
+    messageThreadId?: string;
+}
+
 @ObjectType()
 export class Message implements IMessage {
     @Field(() => Boolean)
