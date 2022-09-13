@@ -8,16 +8,17 @@ import { Hr } from "../styles";
 import classes from './Inbox.module.css';
 const Inbox: FunctionComponent = () => {
     const [threads, setThreads] = useState<any[]>([]);
+    const [threadsOwner, setThreadOwners] = useState<any[]>([]);
     const [hasMore, setHasMore] = useState<boolean>(false);
     const [openMessageForm, setOpenMessageForm] = useState<boolean>(false);
     const [conversation, setConversation] = useState<any[]>([]);
+    const [messageThreadId, setMessageThreadId] = useState<string>();
     const { getConversationQuery, loading: getConversationLoading } = useGetConversation();
     const { loading, fetchMore } = useGetMessageThreads((data: any) => {
         setThreads((data?.getMessageThreads?.threads || []));
         setHasMore(data?.getMessageThreads?.hasMore);
     });
     const renderItem = (data: any) => {
-        debugger
         return <div onClick={() => fetchThread(data.messageThreadId)} style={{ width: '95%', padding: '10px' }}>
             <Card
                 displayButtons={false}
@@ -43,11 +44,13 @@ const Inbox: FunctionComponent = () => {
     }
     const fetchThread = async (messageThreadId: string) => {
         if (messageThreadId) {
+            setThreadOwners(threads.find(thread => thread._id === messageThreadId)?.owners || [])
             const { data } = await getConversationQuery({
                 variables: {
                     messageThreadId
                 },
             });
+            setMessageThreadId(messageThreadId);
             setConversation(data?.getConversation?.messages);
             setHasMore(data?.getConversation?.hasMore);
             setOpenMessageForm(true);
@@ -59,12 +62,13 @@ const Inbox: FunctionComponent = () => {
     const closeMessageFormHandler = () => {
         setOpenMessageForm(false);
     }
+
     return (<div className={classes.container}>
         <Header label={'Inbox'} ><BackButton /></Header>
         {!loading && !!threads?.length && <InfiniteScroll
             initialHasMore={hasMore}
             renderItem={renderItem}
-            initialData={threads}
+            initialData={threads.map(tread => tread.messages[0])}
             fetchMore={handleCommentFetch} />}
         {!loading && !threads?.length &&
             <div className={classes.icon_container}>
@@ -76,7 +80,7 @@ const Inbox: FunctionComponent = () => {
             <FaPencilAlt />
         </Fab>
         <Drawer label={'New Message'} dismissHandler={closeMessageFormHandler} isOpen={openMessageForm}>
-            <MessageForm conversation={conversation} />
+            <MessageForm owners={threadsOwner} conversation={conversation} messageThreadId={messageThreadId} />
         </Drawer>
     </div>);
 }
