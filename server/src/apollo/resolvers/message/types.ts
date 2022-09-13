@@ -3,8 +3,8 @@ import { User } from "../account/types";
 
 @ObjectType()
 export class GetMessageThreads {
-    @Field(() => [Message], { nullable: true })
-    threads: Message[];
+    @Field(() => [MessageThread], { nullable: true })
+    threads: MessageThread[];
     @Field(() => Int, { nullable: true })
     count: number;
     @Field(() => Boolean, { nullable: true })
@@ -48,13 +48,22 @@ export class SendMessageArgs {
 }
 
 @ObjectType()
+export class MessageThread {
+    @Field(() => String)
+    _id: string;
+    @Field(() => [Message], { nullable: true })
+    messages: Message[];
+    @Field(() => [User], { nullable: true })
+    owners: User[];
+}
+@ObjectType()
 export class Message {
     @Field(() => Boolean)
     isRead: boolean;
     @Field(() => String)
     _id: string;
-    @Field(() => String)
-    sender?: string | undefined;
+    @Field(() => User)
+    sender?: User;
     @Field(() => User)
     recipient?: User;
     @Field(() => String)
