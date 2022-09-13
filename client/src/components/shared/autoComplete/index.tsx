@@ -1,25 +1,28 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { TextField, Autocomplete as AutocompleteMUI, CircularProgress } from '../mui'
 interface AutoCompleteProps {
     loading: boolean;
     fetchData: (value: any, setOptions: React.Dispatch<React.SetStateAction<any[]>>) => any[] | Promise<any[]>;
     onSelectHandler: (data: any) => void | Promise<void>;
-    renderOption: ((props: React.HTMLAttributes<HTMLLIElement>, option: any, state: any) => React.ReactNode) | undefined
+    renderOption: ((props: React.HTMLAttributes<HTMLLIElement>, option: any, state: any) => React.ReactNode) | undefined;
+    defaultValue: any[];
 }
 
-const AutoComplete: FunctionComponent<AutoCompleteProps> = ({ loading, fetchData, onSelectHandler, renderOption }) => {
-    const [open, setOpen] = useState<boolean>(false);
+const AutoComplete: FunctionComponent<AutoCompleteProps> = ({ loading, fetchData, onSelectHandler, renderOption, defaultValue }) => {
     const [options, setOptions] = useState<any[]>([]);
+    const [open, setOpen] = useState<boolean>(false);
     const handleInputChange = async (value: any) => {
         await fetchData(value, setOptions);
     }
+    console.log({ defaultValue });
+
     return (<>
         <AutocompleteMUI
             multiple
             id="size-small-outlined-multi"
             size="small"
             open={open}
-            // open={open}
+            value={defaultValue || null}
             onOpen={() => {
                 setOpen(true);
             }}
@@ -27,8 +30,8 @@ const AutoComplete: FunctionComponent<AutoCompleteProps> = ({ loading, fetchData
                 setOpen(false);
                 setOptions([]);
             }}
+            // value={defaultValue || null}
             onChange={(event: any, values: any) => {
-                console.log({ event, values });
                 onSelectHandler(values)
             }}
             isOptionEqualToValue={(option, value) => option.name === value.name}
@@ -44,8 +47,7 @@ const AutoComplete: FunctionComponent<AutoCompleteProps> = ({ loading, fetchData
                         if (ev.target.value !== "" || ev.target.value !== null) {
                             handleInputChange(ev.target.value);
                         }
-                    }}
-                    InputProps={{
+                    }} InputProps={{
                         ...params.InputProps,
                         endAdornment: (
                             <>
