@@ -19,20 +19,33 @@ class MessageService {
         }
         const userThreads = await MessageThreadModel.find(query,
             { messages: { $slice: -1 } },
-            { skip, limit, sort: { lastUpdated: -1 } }).populate({
+            { skip, limit, sort: { lastUpdated: -1 } }).populate([{
                 path: 'messages',
                 populate: {
                     path: 'recipient',
                     populate: {
                         path: 'file'
                     }
+                },
+            }, {
+                path: 'messages',
+                populate: {
+                    path: 'sender',
+                    populate: {
+                        path: 'file'
+                    }
+                },
+            }, {
+                path: 'owners',
+                populate: {
+                    path: 'file'
                 }
-            }).lean();
+            }]).lean();
 
 
         const threadCount = await MessageThreadModel.count(query);
         const hasMore = (limit || 0) + skip < threadCount;
-        return { threads: userThreads.map(({ messages }) => messages?.[0]), hasMore, count: threadCount };
+        return { threads: userThreads, hasMore, count: threadCount };
     }
 
     async sendMessage(messageArgs: SendMessageArgs, userId: string) {

@@ -4,9 +4,26 @@ const GET_MESSAGE_THREADS = gql`
 query GetMessageThreads($skip:Int, $limit:Int){
     getMessageThreads(args:{skip:$skip, limit:$limit}){
         threads{
+            _id
+            owners{
+                _id
+                name
+                email
+                file {
+                    originalname
+                }
+            }
+            messages {
             isRead
             _id
-            sender
+            sender{
+                _id
+                name
+                email
+                file {
+                    originalname
+                }
+            }
             messageThreadId
             recipient{
                 _id
@@ -18,6 +35,7 @@ query GetMessageThreads($skip:Int, $limit:Int){
             }
             content
             createdAt
+        }
         }
         count
         hasMore
