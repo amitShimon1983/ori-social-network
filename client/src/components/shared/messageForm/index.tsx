@@ -7,13 +7,19 @@ import { useSearchContacts, useSendMessage } from "../../../hooks";
 import MiniMe from "../../me/MiniMe";
 import { Hr } from "../../styles";
 import { debounce } from "@mui/material";
+import { appContextVar } from "../../../services/store";
 export interface MessageFormProps {
-    conversation: { [key: string]: any }[]
+    conversation: { [key: string]: any }[];
+    owners: { [key: string]: any }[];
+    messageThreadId?: string;
 }
-const MessageForm: FunctionComponent<MessageFormProps> = ({ conversation }) => {
+const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, conversation, owners }) => {
+    const { user: me } = appContextVar();
+    // const isMe = me._id
     const [inputData, setInputData] = useState<string>();
     const [isValid, setIsValid] = useState<boolean>(false);
     const [selectedUsers, setSelectedUsers] = useState<any[]>();
+    const [replyToId, setReplyToId] = useState<string>();
     const { searchContactsQuery, loading, error } = useSearchContacts();
     const { sendMessageMutation, loading: sendMessageLoading } = useSendMessage();
     const isFormValid = useCallback(() => {
@@ -31,7 +37,9 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ conversation }) => {
             await sendMessageMutation({
                 variables: {
                     content: inputData,
-                    recipient: selectedUsers?.[0]?._id
+                    recipient: selectedUsers?.[0]?._id,
+                    parentMessageId: replyToId,
+                    messageThreadId,
                 }
             })
         }
@@ -62,6 +70,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ conversation }) => {
     };
     return (<div className={classes.container}>
         <AutoComplete
+            defaultValue={owners?.filter((owner: any) => (owner._id !== me._id))}
             renderOption={renderOption}
             onSelectHandler={(data: any) => {
                 setSelectedUsers(data);
@@ -71,7 +80,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ conversation }) => {
             fetchData={fetchContactData}
         />
         <div className={classes.text_area}>
-            {conversation.map(message => <SpeechBubble key={`SpeechBubble_${message._id}_Message_Form`} userId={message.sender} content={message?.content} />)}
+            {conversation.map(message => <SpeechBubble onClickHandler={() => setReplyToId(message._id)} key={`SpeechBubble_${message._id}_Message_Form`} userId={message.sender} content={message?.content} />)}
         </div>
         <InputButtonPanel
             disabled={!isValid}
