@@ -6,6 +6,7 @@ const GET_USER = gql`
             name
             email
             file {
+                _id
                 originalname
             }
             followers

@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useRef, useState } from "react";
 import { useGetConversation, useGetMessageThreads } from "../../hooks";
 import { BackButton } from "../backButton";
 import { Drawer, Fab, FaPencilAlt, Header, ImFilesEmpty, MessageForm, Spinner } from "../shared";
@@ -7,6 +7,7 @@ import InfiniteScroll from "../shared/infiniteScrolling/InfiniteScroll";
 import { Hr } from "../styles";
 import classes from './Inbox.module.css';
 const Inbox: FunctionComponent = () => {
+    const ref = useRef<any>()
     const [threads, setThreads] = useState<any[]>([]);
     const [threadsOwner, setThreadOwners] = useState<any[]>([]);
     const [hasMore, setHasMore] = useState<boolean>(false);
@@ -66,7 +67,12 @@ const Inbox: FunctionComponent = () => {
         setThreadOwners([])
         setHasMore(false);
     }
-
+    const handleAddToConversation = async (data: any) => {
+        setConversation((prev) => ([...prev, data]));
+        console.log({ ref });
+        if (ref.current) {
+        }
+    }
     return (<div className={classes.container}>
         <Header label={'Inbox'} ><BackButton /></Header>
         {!loading && !!threads?.length && <InfiniteScroll
@@ -84,7 +90,7 @@ const Inbox: FunctionComponent = () => {
             <FaPencilAlt />
         </Fab>
         <Drawer label={'New Message'} dismissHandler={closeMessageFormHandler} isOpen={openMessageForm}>
-            {openMessageForm && <MessageForm owners={threadsOwner} conversation={conversation} messageThreadId={messageThreadId} />}
+            {openMessageForm && <MessageForm setConversation={handleAddToConversation} owners={threadsOwner} conversation={conversation} messageThreadId={messageThreadId} />}
         </Drawer>
     </div>);
 }

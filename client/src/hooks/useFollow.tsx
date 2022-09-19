@@ -6,6 +6,7 @@ const FOLLOW = gql`
             name
             email
             file {
+                _id
                 originalname
             }
             followers

@@ -6,6 +6,8 @@ interface InfiniteScrollProps {
     initialData: any[];
     initialHasMore: boolean;
     renderItem: (item: any) => React.ReactNode;
+    scrollTop?: () => void
+    scrollTBottom?: () => void
 }
 
 const InfiniteScroll: FunctionComponent<InfiniteScrollProps> = ({ initialHasMore, fetchMore, initialData, renderItem }) => {
@@ -53,7 +55,7 @@ const InfiniteScroll: FunctionComponent<InfiniteScrollProps> = ({ initialHasMore
             setHasMore(initialHasMore)
         }
     }, [initialData, initialHasMore])
-    
+
     return (<div className={classes.container}>
         {!!listItems.length && listItems.map((item: any, idx: number) => {
             const isLast = idx === listItems.length - 1;

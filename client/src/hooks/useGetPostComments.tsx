@@ -11,6 +11,7 @@ const GET_POST_COMMENTS = gql`
               name
               email
               file {
+                _id
                 originalname
               }        
             }

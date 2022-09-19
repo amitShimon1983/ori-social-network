@@ -12,8 +12,9 @@ export interface MessageFormProps {
     conversation: { [key: string]: any }[];
     owners: { [key: string]: any }[];
     messageThreadId?: string;
+    setConversation?: React.Dispatch<React.SetStateAction<any[]>>;
 }
-const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, conversation, owners }) => {
+const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, conversation, owners, setConversation }) => {
     const { user: me } = appContextVar();
     const defaultOwner = owners?.filter((owner: any) => (owner._id !== me._id));
     const [inputData, setInputData] = useState<string>();
@@ -43,7 +44,10 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, con
         }
         if (isValid) {
             const { data } = await sendMessageMutation(query);
-            console.log({ query, defaultOwner, data });
+            setInputData(undefined)
+            if (data?.sendMessage && typeof setConversation === 'function') {
+                setConversation(data?.sendMessage);
+            }
         }
     }
     const fetchContactData = debounce(async (value: any, setOptions: React.Dispatch<React.SetStateAction<any[]>>) => {

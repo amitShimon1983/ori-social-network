@@ -10,6 +10,7 @@ query GetMessageThreads($skip:Int, $limit:Int){
                 name
                 email
                 file {
+                    _id
                     originalname
                 }
             }
@@ -21,6 +22,7 @@ query GetMessageThreads($skip:Int, $limit:Int){
                 name
                 email
                 file {
+                    _id
                     originalname
                 }
             }
@@ -30,6 +32,7 @@ query GetMessageThreads($skip:Int, $limit:Int){
                 name
                 email
                 file {
+                    _id
                     originalname
                 }
             }
@@ -45,7 +48,7 @@ query GetMessageThreads($skip:Int, $limit:Int){
 export function useGetMessageThreads(onCompleted?: (data: any) => void | Promise<void>) {
     const { data, loading, error, fetchMore } = useQuery(GET_MESSAGE_THREADS, {
         onCompleted,
-        pollInterval: 15000,
+        pollInterval: 5000,
     })
     return { data, loading, error, fetchMore }
 }

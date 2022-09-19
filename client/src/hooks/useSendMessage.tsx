@@ -10,6 +10,7 @@ mutation SendMessage($recipient:String, $content:String, $parentMessageId:String
             name
             email
             file {
+                _id
                 originalname
             }
         }
@@ -18,6 +19,7 @@ mutation SendMessage($recipient:String, $content:String, $parentMessageId:String
             name
             email
             file {
+                _id
                 originalname
             }
         }
@@ -27,6 +29,26 @@ mutation SendMessage($recipient:String, $content:String, $parentMessageId:String
 }
 `
 export function useSendMessage() {
-    const [sendMessageMutation, { loading, data, error }] = useMutation(SEND_MESSAGE)
+    const [sendMessageMutation, { loading, data, error }] = useMutation(SEND_MESSAGE, {
+        update(cache, { data: { sendMessage } }) {
+            cache.modify({
+                fields: {
+                    getConversation(oldData = []) {
+                        const newMessageRef = cache.writeFragment({
+                            data: sendMessage,
+                            fragment: gql`
+                                    fragment NewMessage on Message {
+                                        _id
+                                        __typename
+                                    }
+                                `
+                        });
+                        const messages = [...(oldData?.messages || []), newMessageRef];
+                        return { ...oldData, messages };
+                    }
+                }
+            });
+        }
+    })
     return ({ sendMessageMutation, loading, data, error })
 }

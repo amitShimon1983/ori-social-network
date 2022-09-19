@@ -12,10 +12,12 @@ const GET_RANDOM_POSTS = gql`
                 name
                 email
                 file {
+                    _id
                   originalname
                 }        
              }
              file {
+                _id
                  originalname
                  encoding
                  mimetype

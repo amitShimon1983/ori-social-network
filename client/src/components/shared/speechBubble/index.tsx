@@ -10,8 +10,6 @@ interface SpeechBubbleProps {
 const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, content, userId }) => {
     const { user: me } = appContextVar();
     const isMe = me._id === userId
-    console.log({ me: me._id, userId });
-
     return (<>
         <div onClick={onClickHandler} className={`${isMe ? classes.speech_bubble_me : classes.speech_bubble_other} ${isMe ? classes.me : classes.other}`}>{content}</div>
     </>);

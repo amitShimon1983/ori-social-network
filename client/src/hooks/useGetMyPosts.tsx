@@ -10,12 +10,14 @@ query GetMyPosts($userId: String){
                 name
                 email
                 file {
+                    _id
                   originalname
                 }  
             }
             title
             createdAt
             file {
+                _id
                 originalname
                 encoding
                 mimetype

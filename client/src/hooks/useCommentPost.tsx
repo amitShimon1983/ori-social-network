@@ -9,6 +9,7 @@ mutation CommentPost($postId: String, $content: String, $commentId: String){
             name
             email
             file {
+                _id
               originalname
             }        
         }

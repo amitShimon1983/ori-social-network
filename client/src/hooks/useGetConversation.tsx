@@ -11,6 +11,7 @@ query GetConversation($messageThreadId:String, $skip:Int, $limit:Int){
                 name
                 email
                 file {
+                    _id
                     originalname
                 }
             }
@@ -19,6 +20,7 @@ query GetConversation($messageThreadId:String, $skip:Int, $limit:Int){
                 name
                 email
                 file {
+                    _id
                     originalname
                 }
             }

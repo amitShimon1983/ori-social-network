@@ -7,6 +7,7 @@ query SearchContacts($queryString:String){
         name
         email
         file {
+            _id
             originalname
         }  
     }
