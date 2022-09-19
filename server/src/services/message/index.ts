@@ -64,22 +64,36 @@ class MessageService {
                 messageThread?.messages?.push(newMessage._id);
                 await messageThread.save();
             }
+            return newMessage?.populate([{
+                path: 'recipient',
+                populate: {
+                    path: 'file'
+                }
+            }, {
+                path: 'sender',
+                populate: {
+                    path: 'file'
+                }
+            }]);
         }
 
-        return messageThread;
     }
     async getConversation(userId: any, messageThreadId?: string, skip?: number, limit?: number) {
         if (await MessageThreadModel.findOne({ _id: messageThreadId, owners: { $in: [userId] } })) {
 
             const thread = await MessageModel.find({ messageThreadId },
                 {},
-                { skip, limit, sort: { lastUpdated: -1 } }).populate({
+                { skip, limit, sort: { lastUpdated: -1 } }).populate([{
                     path: 'recipient',
                     populate: {
                         path: 'file'
                     }
-                }
-                ).lean();
+                }, {
+                    path: 'sender',
+                    populate: {
+                        path: 'file'
+                    }
+                }]).lean();
             const count = await MessageModel.count({ messageThreadId });
             const hasMore = (thread.length || 0) + (skip || 0) < count;
             return { messages: thread, hasMore, count };

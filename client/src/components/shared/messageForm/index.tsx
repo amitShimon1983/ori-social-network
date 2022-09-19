@@ -42,8 +42,8 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, con
             }
         }
         if (isValid) {
-            // await sendMessageMutation(query);
-            console.log({ query, defaultOwner });
+            const { data } = await sendMessageMutation(query);
+            console.log({ query, defaultOwner, data });
         }
     }
     const fetchContactData = debounce(async (value: any, setOptions: React.Dispatch<React.SetStateAction<any[]>>) => {
@@ -76,7 +76,6 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, con
             defaultValue={defaultOwner}
             renderOption={renderOption}
             onSelectHandler={(data: any) => {
-                debugger
                 setSelectedUsers(data);
                 isFormValid();
             }}
@@ -84,7 +83,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, con
             fetchData={fetchContactData}
         />
         <div className={classes.text_area}>
-            {conversation.map(message => <SpeechBubble onClickHandler={() => setReplyToId(message._id)} key={`SpeechBubble_${message._id}_Message_Form`} userId={message.sender} content={message?.content} />)}
+            {conversation.map(message => <SpeechBubble onClickHandler={() => setReplyToId(message._id)} key={`SpeechBubble_${message._id}_Message_Form`} userId={message.sender._id} content={message?.content} />)}
         </div>
         <InputButtonPanel
             disabled={!isValid}

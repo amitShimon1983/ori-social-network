@@ -44,7 +44,8 @@ query GetMessageThreads($skip:Int, $limit:Int){
 `
 export function useGetMessageThreads(onCompleted?: (data: any) => void | Promise<void>) {
     const { data, loading, error, fetchMore } = useQuery(GET_MESSAGE_THREADS, {
-        onCompleted
+        onCompleted,
+        pollInterval: 15000,
     })
     return { data, loading, error, fetchMore }
 }
