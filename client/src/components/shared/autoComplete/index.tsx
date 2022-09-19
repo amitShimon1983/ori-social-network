@@ -13,16 +13,15 @@ const AutoComplete: FunctionComponent<AutoCompleteProps> = ({ loading, fetchData
     const [open, setOpen] = useState<boolean>(false);
     const handleInputChange = async (value: any) => {
         await fetchData(value, setOptions);
+        return value;
     }
-    console.log({ defaultValue });
-
     return (<>
         <AutocompleteMUI
             multiple
             id="size-small-outlined-multi"
             size="small"
             open={open}
-            value={defaultValue || null}
+            value={defaultValue.length ? defaultValue : undefined}
             onOpen={() => {
                 setOpen(true);
             }}
@@ -33,6 +32,7 @@ const AutoComplete: FunctionComponent<AutoCompleteProps> = ({ loading, fetchData
             // value={defaultValue || null}
             onChange={(event: any, values: any) => {
                 onSelectHandler(values)
+                return values;
             }}
             isOptionEqualToValue={(option, value) => option.name === value.name}
             getOptionLabel={(option: any) => option.name}
@@ -47,7 +47,8 @@ const AutoComplete: FunctionComponent<AutoCompleteProps> = ({ loading, fetchData
                         if (ev.target.value !== "" || ev.target.value !== null) {
                             handleInputChange(ev.target.value);
                         }
-                    }} InputProps={{
+                    }}
+                    InputProps={{
                         ...params.InputProps,
                         endAdornment: (
                             <>

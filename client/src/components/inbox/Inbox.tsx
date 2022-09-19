@@ -61,6 +61,10 @@ const Inbox: FunctionComponent = () => {
     }
     const closeMessageFormHandler = () => {
         setOpenMessageForm(false);
+        setMessageThreadId(undefined);
+        setConversation([]);
+        setThreadOwners([])
+        setHasMore(false);
     }
 
     return (<div className={classes.container}>
@@ -80,7 +84,7 @@ const Inbox: FunctionComponent = () => {
             <FaPencilAlt />
         </Fab>
         <Drawer label={'New Message'} dismissHandler={closeMessageFormHandler} isOpen={openMessageForm}>
-            <MessageForm owners={threadsOwner} conversation={conversation} messageThreadId={messageThreadId} />
+            {openMessageForm && <MessageForm owners={threadsOwner} conversation={conversation} messageThreadId={messageThreadId} />}
         </Drawer>
     </div>);
 }

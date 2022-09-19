@@ -15,7 +15,7 @@ export interface MessageFormProps {
 }
 const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, conversation, owners }) => {
     const { user: me } = appContextVar();
-    // const isMe = me._id
+    const defaultOwner = owners?.filter((owner: any) => (owner._id !== me._id));
     const [inputData, setInputData] = useState<string>();
     const [isValid, setIsValid] = useState<boolean>(false);
     const [selectedUsers, setSelectedUsers] = useState<any[]>();
@@ -23,8 +23,8 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, con
     const { searchContactsQuery, loading, error } = useSearchContacts();
     const { sendMessageMutation, loading: sendMessageLoading } = useSendMessage();
     const isFormValid = useCallback(() => {
-        setIsValid(!!(selectedUsers?.length && inputData?.length))
-    }, [selectedUsers, inputData])
+        setIsValid(!!((selectedUsers?.length || owners?.filter((owner: any) => (owner._id !== me._id)).length) && inputData?.length))
+    }, [selectedUsers, inputData, owners, me._id])
     useEffect(() => {
         isFormValid();
     }, [isFormValid])
@@ -33,15 +33,17 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, con
     }
 
     const handleMessageSave = async () => {
+        let query = {
+            variables: {
+                content: inputData,
+                recipient: selectedUsers?.[0]?._id ?? defaultOwner[0]._id,
+                parentMessageId: replyToId,
+                messageThreadId,
+            }
+        }
         if (isValid) {
-            await sendMessageMutation({
-                variables: {
-                    content: inputData,
-                    recipient: selectedUsers?.[0]?._id,
-                    parentMessageId: replyToId,
-                    messageThreadId,
-                }
-            })
+            // await sendMessageMutation(query);
+            console.log({ query, defaultOwner });
         }
     }
     const fetchContactData = debounce(async (value: any, setOptions: React.Dispatch<React.SetStateAction<any[]>>) => {
@@ -56,7 +58,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, con
         const options: any[] = res.data.searchContacts || []
         setOptions(options)
         return options;
-    }, 300)
+    }, 600)
 
     const renderOption = (props: object, option: any, state: object): React.ReactNode => {
         return (<li {...props}>
@@ -68,11 +70,13 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, con
         );
 
     };
+
     return (<div className={classes.container}>
         <AutoComplete
-            defaultValue={owners?.filter((owner: any) => (owner._id !== me._id))}
+            defaultValue={defaultOwner}
             renderOption={renderOption}
             onSelectHandler={(data: any) => {
+                debugger
                 setSelectedUsers(data);
                 isFormValid();
             }}
