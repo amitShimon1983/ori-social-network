@@ -7,20 +7,22 @@ import InfiniteScroll from "../shared/infiniteScrolling/InfiniteScroll";
 import { Hr } from "../styles";
 import classes from './Inbox.module.css';
 const Inbox: FunctionComponent = () => {
-    const ref = useRef<any>()
     const [threads, setThreads] = useState<any[]>([]);
     const [threadsOwner, setThreadOwners] = useState<any[]>([]);
     const [hasMore, setHasMore] = useState<boolean>(false);
     const [openMessageForm, setOpenMessageForm] = useState<boolean>(false);
-    const [conversation, setConversation] = useState<any[]>([]);
     const [messageThreadId, setMessageThreadId] = useState<string>();
-    const { getConversationQuery, loading: getConversationLoading } = useGetConversation();
+
     const { loading, fetchMore } = useGetMessageThreads((data: any) => {
         setThreads((data?.getMessageThreads?.threads || []));
         setHasMore(data?.getMessageThreads?.hasMore);
     });
     const renderItem = (data: any) => {
-        return <div onClick={() => fetchThread(data.messageThreadId)} style={{ width: '95%', padding: '10px' }}>
+        return <div onClick={() => {
+            setThreadOwners(threads.find(thread => thread._id === data.messageThreadId)?.owners || [])
+            setOpenMessageForm(true);
+            setMessageThreadId(data.messageThreadId)
+        }} style={{ width: '95%', padding: '10px' }}>
             <Card
                 displayButtons={false}
                 key={data._id}
@@ -43,33 +45,16 @@ const Inbox: FunctionComponent = () => {
         }
         return { items: [], hasMore: false };
     }
-    const fetchThread = async (messageThreadId: string) => {
-        if (messageThreadId) {
-            setThreadOwners(threads.find(thread => thread._id === messageThreadId)?.owners || [])
-            const { data } = await getConversationQuery({
-                variables: {
-                    messageThreadId
-                },
-            });
-            setMessageThreadId(messageThreadId);
-            setConversation(data?.getConversation?.messages);
-            setHasMore(data?.getConversation?.hasMore);
-            setOpenMessageForm(true);
-        }
-    }
+    
     const openMessageFormHandler = () => {
         setOpenMessageForm(true);
     }
     const closeMessageFormHandler = () => {
         setOpenMessageForm(false);
         setMessageThreadId(undefined);
-        setConversation([]);
         setThreadOwners([])
-        setHasMore(false);
     }
-    const handleAddToConversation = async (data: any) => {
-        setConversation((prev) => ([...prev, data]));
-    }
+    
     return (<div className={classes.container}>
         <Header label={'Inbox'} ><BackButton /></Header>
         {!loading && !!threads?.length && <InfiniteScroll
@@ -87,7 +72,7 @@ const Inbox: FunctionComponent = () => {
             <FaPencilAlt />
         </Fab>
         <Drawer label={'New Message'} dismissHandler={closeMessageFormHandler} isOpen={openMessageForm}>
-            {openMessageForm && <MessageForm setConversation={handleAddToConversation} owners={threadsOwner} conversation={conversation} messageThreadId={messageThreadId} />}
+            {openMessageForm && <MessageForm  owners={threadsOwner}  messageThreadId={messageThreadId} />}
         </Drawer>
     </div>);
 }

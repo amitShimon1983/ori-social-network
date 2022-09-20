@@ -1,4 +1,4 @@
-import { gql, useLazyQuery } from '@apollo/client'
+import { gql, useLazyQuery, useQuery } from '@apollo/client'
 
 const GET_CONVERSATION = gql`
 query GetConversation($messageThreadId:String, $skip:Int, $limit:Int){
@@ -32,7 +32,14 @@ query GetConversation($messageThreadId:String, $skip:Int, $limit:Int){
     }
 }
 `
-export function useGetConversation() {
-    const [getConversationQuery, { data, loading, error }] = useLazyQuery(GET_CONVERSATION)
-    return { getConversationQuery, data, loading, error };
+export function useGetConversation(messageThreadId?: string, onCompleted?: (data: any) => void) {
+    const { data, loading, error } = useQuery(GET_CONVERSATION, {
+        variables: {
+            messageThreadId
+        },
+        skip: !messageThreadId,
+        pollInterval: 1000,
+        onCompleted
+    })
+    return { data, loading, error };
 }

@@ -1,28 +1,36 @@
 import { FunctionComponent, useCallback, useEffect, useRef, useState } from "react";
 import AutoComplete from "../autoComplete";
-import { InputButtonPanel } from "..";
+import { InputButtonPanel, Spinner } from "..";
 import classes from './index.module.css';
 import SpeechBubble from "../speechBubble";
-import { useSearchContacts, useSendMessage } from "../../../hooks";
+import { useGetConversation, useSearchContacts, useSendMessage } from "../../../hooks";
 import MiniMe from "../../me/MiniMe";
 import { Hr } from "../../styles";
 import { debounce } from "@mui/material";
 import { appContextVar } from "../../../services/store";
 export interface MessageFormProps {
-    conversation: { [key: string]: any }[];
     owners: { [key: string]: any }[];
     messageThreadId?: string;
-    setConversation?: React.Dispatch<React.SetStateAction<any[]>>;
 }
-const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, conversation, owners, setConversation }) => {
-    const { user: me } = appContextVar();
-    let speechBubbleRef = useRef<HTMLSpanElement>(null);
-    useEffect(() => {
-        if (speechBubbleRef.current) {
-            speechBubbleRef.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'end' })
-            console.log({ speechBubbleRef });
+const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, owners }) => {
+    const { data, loading: getConversationLoading } = useGetConversation(messageThreadId);
+    let ref = useRef<HTMLElement>()
+    const onRefChange = useCallback((node: any) => {
+        if (node) {
+            ref.current = node;
+            console.log('onRefChange', node);
+            console.log('data.getConversation.length');
+            ref?.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'end' });
         }
-    }, [speechBubbleRef.current])
+    }, []);
+    useEffect(() => {
+        if (ref?.current) {
+            console.log('ref.current', ref.current);
+            ref?.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'end' });
+        }
+    }, [data?.getConversation?.messages?.length])
+
+    const { user: me } = appContextVar();
     const defaultOwner = owners?.filter((owner: any) => (owner._id !== me._id));
     const [inputData, setInputData] = useState<string>();
     const [isValid, setIsValid] = useState<boolean>(false);
@@ -50,11 +58,8 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, con
             }
         }
         if (isValid) {
-            const { data } = await sendMessageMutation(query);
-            setInputData(undefined)
-            if (data?.sendMessage && typeof setConversation === 'function') {
-                setConversation(data?.sendMessage);
-            }
+            await sendMessageMutation(query);
+            setInputData(undefined);
         }
     }
     const fetchContactData = debounce(async (value: any, setOptions: React.Dispatch<React.SetStateAction<any[]>>) => {
@@ -81,7 +86,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, con
         );
 
     };
-
+    const messages = data?.getConversation?.messages;
     return (<div className={classes.container}>
         <AutoComplete
             defaultValue={defaultOwner}
@@ -94,12 +99,10 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, con
             fetchData={fetchContactData}
         />
         <div className={classes.text_area}>
-            {conversation.map((message: any, idx: number) => {
-                const isLast = idx === conversation.length - 1;
-                console.log({ isLast, length: conversation.length });
-
-                return <span style={{ padding: 16 }} key={`SpeechBubble_${message._id}_Message_Form_ref`}
-                    ref={isLast ? speechBubbleRef : undefined}>
+            {!getConversationLoading && messages?.map((message: any, idx: number) => {
+                const isLast = idx === messages?.length - 1;
+                return <span id={idx + ''} style={{ padding: 16 }} key={`SpeechBubble_${message._id}_Message_Form_ref`}
+                    ref={isLast ? onRefChange : undefined}>
                     <SpeechBubble
                         onClickHandler={() => setReplyToId(message._id)}
                         key={`SpeechBubble_${message._id}_Message_Form`}
@@ -107,6 +110,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, con
                         content={message?.content} />
                 </span>
             })}
+            {getConversationLoading && <Spinner />}
         </div>
         <InputButtonPanel
             disabled={!isValid}
