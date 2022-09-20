@@ -1,4 +1,4 @@
-import { FunctionComponent, useCallback, useEffect, useState } from "react";
+import { FunctionComponent, useCallback, useEffect, useRef, useState } from "react";
 import AutoComplete from "../autoComplete";
 import { InputButtonPanel } from "..";
 import classes from './index.module.css';
@@ -16,13 +16,20 @@ export interface MessageFormProps {
 }
 const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, conversation, owners, setConversation }) => {
     const { user: me } = appContextVar();
+    let speechBubbleRef = useRef<HTMLSpanElement>(null);
+    useEffect(() => {
+        if (speechBubbleRef.current) {
+            speechBubbleRef.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'end' })
+            console.log({ speechBubbleRef });
+        }
+    }, [speechBubbleRef.current])
     const defaultOwner = owners?.filter((owner: any) => (owner._id !== me._id));
     const [inputData, setInputData] = useState<string>();
     const [isValid, setIsValid] = useState<boolean>(false);
     const [selectedUsers, setSelectedUsers] = useState<any[]>();
     const [replyToId, setReplyToId] = useState<string>();
-    const { searchContactsQuery, loading, error } = useSearchContacts();
-    const { sendMessageMutation, loading: sendMessageLoading } = useSendMessage();
+    const { searchContactsQuery, loading } = useSearchContacts();
+    const { sendMessageMutation, } = useSendMessage();
     const isFormValid = useCallback(() => {
         setIsValid(!!((selectedUsers?.length || owners?.filter((owner: any) => (owner._id !== me._id)).length) && inputData?.length))
     }, [selectedUsers, inputData, owners, me._id])
@@ -87,7 +94,19 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, con
             fetchData={fetchContactData}
         />
         <div className={classes.text_area}>
-            {conversation.map(message => <SpeechBubble onClickHandler={() => setReplyToId(message._id)} key={`SpeechBubble_${message._id}_Message_Form`} userId={message.sender._id} content={message?.content} />)}
+            {conversation.map((message: any, idx: number) => {
+                const isLast = idx === conversation.length - 1;
+                console.log({ isLast, length: conversation.length });
+
+                return <span style={{ padding: 16 }} key={`SpeechBubble_${message._id}_Message_Form_ref`}
+                    ref={isLast ? speechBubbleRef : undefined}>
+                    <SpeechBubble
+                        onClickHandler={() => setReplyToId(message._id)}
+                        key={`SpeechBubble_${message._id}_Message_Form`}
+                        userId={message.sender._id}
+                        content={message?.content} />
+                </span>
+            })}
         </div>
         <InputButtonPanel
             disabled={!isValid}

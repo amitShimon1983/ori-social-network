@@ -69,9 +69,6 @@ const Inbox: FunctionComponent = () => {
     }
     const handleAddToConversation = async (data: any) => {
         setConversation((prev) => ([...prev, data]));
-        console.log({ ref });
-        if (ref.current) {
-        }
     }
     return (<div className={classes.container}>
         <Header label={'Inbox'} ><BackButton /></Header>
