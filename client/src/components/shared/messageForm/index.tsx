@@ -19,16 +19,10 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         if (node) {
             ref.current = node;
             console.log('onRefChange', node);
-            console.log('data.getConversation.length');
+            console.log('data.getConversation.length', data?.getConversation.messages?.length);
             ref?.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'end' });
         }
-    }, []);
-    useEffect(() => {
-        if (ref?.current) {
-            console.log('ref.current', ref.current);
-            ref?.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'end' });
-        }
-    }, [data?.getConversation?.messages?.length])
+    }, [data?.getConversation.messages?.length]);
 
     const { user: me } = appContextVar();
     const defaultOwner = owners?.filter((owner: any) => (owner._id !== me._id));
@@ -44,6 +38,11 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
     useEffect(() => {
         isFormValid();
     }, [isFormValid])
+    useEffect(() => {
+        setTimeout(() => {
+            ref?.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'end' });
+        }, 100)
+    }, [data?.getConversation.messages?.length])
     const handleInputChange = ({ target }: { target: any }) => {
         setInputData(target.value);
     }
@@ -102,14 +101,16 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             {!getConversationLoading && messages?.map((message: any, idx: number) => {
                 const isLast = idx === messages?.length - 1;
                 return <span id={idx + ''} style={{ padding: 16 }} key={`SpeechBubble_${message._id}_Message_Form_ref`}
-                    ref={isLast ? onRefChange : undefined}>
+                >
                     <SpeechBubble
                         onClickHandler={() => setReplyToId(message._id)}
                         key={`SpeechBubble_${message._id}_Message_Form`}
                         userId={message.sender._id}
                         content={message?.content} />
+                    {isLast && <span ref={onRefChange}>end</span>}
                 </span>
             })}
+
             {getConversationLoading && <Spinner />}
         </div>
         <InputButtonPanel
