@@ -1,6 +1,7 @@
 export const getPostDate = (date: Date) => {
     let timeDiff;
     let pattern = '';
+    let displayDiff = false;
     const today = new Date();
     const difInSeconds = (today.getTime() - date.getTime()) / 1000;
     timeDiff = difInSeconds;
@@ -15,14 +16,15 @@ export const getPostDate = (date: Date) => {
             pattern = ' hour';
             if (difInHours > 24) {
                 const difInDays = (difInHours) / 24;
+                displayDiff = true;
                 timeDiff = difInDays;
                 pattern = ' day';
                 if (difInDays > 30) {
-                    const difInMonths = (difInDays) / 24;
+                    const difInMonths = (difInDays) / 30;
                     timeDiff = difInMonths;
                     pattern = ' month';
                     if (difInMonths > 12) {
-                        const difInYears = (difInMonths) / 24;
+                        const difInYears = (difInMonths) / 12;
                         timeDiff = difInYears;
                         pattern = ' year';
 
@@ -33,5 +35,5 @@ export const getPostDate = (date: Date) => {
     }
     const diff = Math.floor(timeDiff);
     const p = diff > 1 ? pattern + 's' : pattern
-    return diff + p;
+    return (displayDiff ? diff + p + ' at ' : '') + date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
 }
