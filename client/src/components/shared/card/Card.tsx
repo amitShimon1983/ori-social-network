@@ -3,6 +3,7 @@ import { getPostDate } from "../../../services/date";
 import { isOverflow } from "../../../utils";
 import MiniMe from "../../me/MiniMe";
 import Button from "../button/Button";
+import { ReadMore } from "../readMore";
 
 import classes from './Card.module.css';
 interface CardProps {
@@ -21,19 +22,9 @@ const Card: FunctionComponent<CardProps> = ({ _id,
     displayButtons,
     navigateOnClick }) => {
 
-    const [isContentOverflow, setIsContentOverFlow] = useState<boolean>(false);
-    const [toggle, setToggle] = useState<boolean>(false);
-    let contentRef = useRef(null);
+
     const date = new Date(+createdAt);
     const diff = getPostDate(date);
-
-    useEffect(() => {
-        if (contentRef?.current && isOverflow(contentRef.current)) {
-            setIsContentOverFlow(true)
-        }
-    }, [contentRef])
-
-    const toggleReadMore = () => setToggle(prev => !prev);
 
     return (<div className={classes.container}>
         <div className={classes.header}>
@@ -43,11 +34,9 @@ const Card: FunctionComponent<CardProps> = ({ _id,
                 </div>
                 <div className={classes.date}> {diff}</div>
             </div>
+            <ReadMore content={content} displayButtons={displayButtons} />
         </div>
-        <div ref={contentRef} className={`${classes.content} ${toggle && classes.content_overflow}`}>{content}</div>
-        {isContentOverflow && displayButtons && <div className={classes.read_more_button_container}>
-            <Button className={classes.read_more_button} handleClick={toggleReadMore}>read {toggle ? 'less...' : 'more...'}</Button>
-        </div>}
+        
     </div>);
 }
 
