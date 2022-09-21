@@ -14,16 +14,7 @@ export interface MessageFormProps {
 }
 const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, owners }) => {
     const { data, loading: getConversationLoading } = useGetConversation(messageThreadId);
-    let ref = useRef<HTMLElement>()
-    const onRefChange = useCallback((node: any) => {
-        if (node) {
-            ref.current = node;
-            console.log('onRefChange', node);
-            console.log('data.getConversation.length', data?.getConversation.messages?.length);
-            ref?.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'end' });
-        }
-    }, [data?.getConversation.messages?.length]);
-
+    let ref = useRef<HTMLSpanElement>(null)
     const { user: me } = appContextVar();
     const defaultOwner = owners?.filter((owner: any) => (owner._id !== me._id));
     const [inputData, setInputData] = useState<string>();
@@ -100,6 +91,9 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         <div className={classes.text_area}>
             {!getConversationLoading && messages?.map((message: any, idx: number) => {
                 const isLast = idx === messages?.length - 1;
+                if (isLast) {
+                    console.log({ message });
+                }
                 return <span id={idx + ''} style={{ padding: 16 }} key={`SpeechBubble_${message._id}_Message_Form_ref`}
                 >
                     <SpeechBubble
@@ -107,7 +101,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
                         key={`SpeechBubble_${message._id}_Message_Form`}
                         userId={message.sender._id}
                         content={message?.content} />
-                    {isLast && <span ref={onRefChange}>end</span>}
+                    {isLast && <span ref={ref}>end</span>}
                 </span>
             })}
 
