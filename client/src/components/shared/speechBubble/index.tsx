@@ -2,16 +2,18 @@ import { FunctionComponent } from "react";
 import { appContextVar } from "../../../services/store";
 import classes from './index.module.css';
 interface SpeechBubbleProps {
-    content: string;
-    userId: string;
+    message: { [key: string]: any }
     onClickHandler: () => void | Promise<void>
 }
 
-const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, content, userId }) => {
+const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, message }) => {
+    const { content, sender } = message;
     const { user: me } = appContextVar();
-    const isMe = me._id === userId
+    const isMe = me._id === sender._id
     return (<>
-        <div onClick={onClickHandler} className={`${isMe ? classes.speech_bubble_me : classes.speech_bubble_other} ${isMe ? classes.me : classes.other}`}>{content}</div>
+        <div onClick={onClickHandler} className={`${classes.speech_bubble} ${isMe ? classes.me : classes.other}`}>
+            {content}
+        </div>
     </>);
 }
 

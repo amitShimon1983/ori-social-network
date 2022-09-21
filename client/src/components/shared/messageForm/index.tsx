@@ -99,8 +99,8 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
                     <SpeechBubble
                         onClickHandler={() => setReplyToId(message._id)}
                         key={`SpeechBubble_${message._id}_Message_Form`}
-                        userId={message.sender._id}
-                        content={message?.content} />
+                        message={message}
+                    />
                     {isLast && <span ref={ref}>end</span>}
                 </span>
             })}
