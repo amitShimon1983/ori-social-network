@@ -8,28 +8,30 @@ export const getPostDate = (date: Date) => {
     if (difInSeconds > 60) {
         const difInMinutes = (difInSeconds) / 60;
         timeDiff = difInMinutes;
-        pattern = ' minutes';
+        pattern = ' minute';
         if (difInMinutes > 60) {
             const difInHours = (difInMinutes) / 60;
             timeDiff = difInHours;
-            pattern = ' hours';
+            pattern = ' hour';
             if (difInHours > 24) {
                 const difInDays = (difInHours) / 24;
                 timeDiff = difInDays;
-                pattern = ' days';
+                pattern = ' day';
                 if (difInDays > 30) {
                     const difInMonths = (difInDays) / 24;
                     timeDiff = difInMonths;
-                    pattern = ' months';
+                    pattern = ' month';
                     if (difInMonths > 12) {
                         const difInYears = (difInMonths) / 24;
                         timeDiff = difInYears;
-                        pattern = ' years';
+                        pattern = ' year';
 
                     }
                 }
             }
         }
     }
-    return Math.floor(timeDiff) + pattern + ' ago';
+    const diff = Math.floor(timeDiff);
+    const p = diff > 1 ? pattern + 's' : pattern
+    return diff + p;
 }
