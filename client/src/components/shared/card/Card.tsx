@@ -39,7 +39,7 @@ const Card: FunctionComponent<CardProps> = ({ _id,
         <div className={classes.header}>
             <div className={classes.details}>
                 <div className={classes.mini_me_container}>
-                    <MiniMe navigateOnClick={navigateOnClick} user={user} displaySpinner={false} />
+                    <MiniMe displayEmailAddress={true} navigateOnClick={navigateOnClick} user={user} displaySpinner={false} />
                 </div>
                 <div className={classes.date}> {diff}</div>
             </div>

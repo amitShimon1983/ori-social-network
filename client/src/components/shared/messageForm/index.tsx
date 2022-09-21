@@ -69,7 +69,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
     const renderOption = (props: object, option: any, state: object): React.ReactNode => {
         return (<li {...props}>
             <div key={'mini_me_' + option._id + 'message_form'} className={classes.me_container}>
-                <MiniMe navigateOnClick={false} user={option} displaySpinner={false} />
+                <MiniMe displayEmailAddress={true} navigateOnClick={false} user={option} displaySpinner={false} />
             </div>
             <Hr />
         </li>

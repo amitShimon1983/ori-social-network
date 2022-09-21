@@ -3,15 +3,20 @@ import classes from "./MiniMe.module.css";
 import Me, { MeProps } from ".";
 
 interface MiniMeProps extends MeProps {
-
+    user: any;
+    styles?: { imageClass?: string; containerClassName?: string; emailClassName?: string; };
+    displaySpinner: boolean;
+    displayEmailAddress: boolean;
+    navigateOnClick: boolean;
 }
 
-const MiniMe: FunctionComponent<MiniMeProps> = ({ user, displaySpinner, navigateOnClick }) => {
+const MiniMe: FunctionComponent<MiniMeProps> = ({ user, displaySpinner, navigateOnClick, displayEmailAddress, styles }) => {
     return (<div className={classes.comment_me}>
         <Me
+            displayEmailAddress={displayEmailAddress}
             navigateOnClick={navigateOnClick}
             displaySpinner={displaySpinner}
-            styles={{
+            styles={!!styles ? styles : {
                 imageClass: classes.me_image,
                 containerClassName: classes.me_container,
                 emailClassName: classes.me_email
