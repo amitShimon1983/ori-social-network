@@ -62,6 +62,8 @@ export class Message {
     isRead: boolean;
     @Field(() => String)
     _id: string;
+    @Field(() => Message)
+    parentMessageId: Message;
     @Field(() => User)
     sender?: User;
     @Field(() => User)
