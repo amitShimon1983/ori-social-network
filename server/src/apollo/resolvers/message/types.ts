@@ -38,7 +38,7 @@ export class GetConversationArgs {
 @InputType()
 export class UpdateMessageArgs {
     @Field(() => String)
-    _id: string;
+    id: string;
     @Field(() => Boolean)
     isRead: boolean;
 }

@@ -1,4 +1,5 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect } from "react";
+import { useUpdateMessage } from "../../../../hooks";
 import { getPostDate } from "../../../../services/date";
 import { appContextVar } from "../../../../services/store";
 import MiniMe from "../../../me/MiniMe";
@@ -15,6 +16,12 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
     const { content, sender, createdAt, isRead } = message;
     const { user: me } = appContextVar();
     const isMe = me._id === sender._id
+    const { updateMessage } = useUpdateMessage();
+    useEffect(() => {
+        if (message?._id && !isMe && !message.isRead) {
+            updateMessage(message?._id, isMe)
+        }
+    }, [message?._id, isMe, updateMessage, message.isRead])
     const diff = getPostDate(new Date(+createdAt));
     const handleClick = () => {
         const elem = document.getElementById(message.parentMessageId._id);

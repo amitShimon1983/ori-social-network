@@ -9,3 +9,4 @@ export { useSearchContacts } from './useSearchContacts';
 export { useGetMessageThreads } from './useGetMessageThreads';
 export { useSendMessage } from './useSendMessage';
 export { useGetConversation } from './useGetConversation';
+export { useUpdateMessage } from './useUpdateMessage';

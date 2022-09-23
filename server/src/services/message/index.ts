@@ -128,7 +128,7 @@ class MessageService {
         }
     }
     async updateMessage(args: UpdateMessageArgs, userId: string) {
-        return await MessageModel.findOneAndUpdate({ _id: args._id, recipient: userId }, { isRead: true }, {
+        return await MessageModel.findOneAndUpdate({ _id: args.id, recipient: userId }, { isRead: true }, {
             new: true
         })
     }
