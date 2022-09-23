@@ -10,7 +10,7 @@ export interface ButtonProps {
 }
 
 const ButtonMUI: FunctionComponent<ButtonProps> = ({ handleClick, children, disabled, className, variant }) => {
-    return (<Button variant={variant || 'contained'} className={className} disabled={disabled} onClick={handleClick}>{children}</Button>);
+    return (<Button variant={variant || 'contained'} className={className} disabled={disabled} onClick={(e) => { e.stopPropagation(); handleClick(e); }}>{children}</Button>);
 }
 
 export default ButtonMUI;
