@@ -97,6 +97,12 @@ class MessageService {
                 },
                 {
                     path: 'parentMessageId',
+                    populate: {
+                        path: 'sender',
+                        populate: {
+                            path: 'file'
+                        }
+                    }
                 }]).lean();
             const count = await MessageModel.count({ messageThreadId });
             const hasMore = (thread.length || 0) + (skip || 0) < count;
