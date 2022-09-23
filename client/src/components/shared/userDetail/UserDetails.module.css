@@ -1,0 +1,14 @@
+.me {
+    color: var(--me-color)
+}
+
+.other {
+    color: var(--other-color)
+}
+
+.user {
+    font-weight: 500;
+    width: 100%;
+    text-align: left;
+    min-height: 20px;
+}
