@@ -91,8 +91,10 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         />
         <div className={classes.text_area}>
             {!getConversationLoading && <>
-                <SpeechBubbleList ref={ref}
-                    items={messages} onItemClick={(item) => {
+                <SpeechBubbleList
+                    ref={ref}
+                    items={messages}
+                    onItemClick={(item) => {
                         setReplyTo(item);
                     }} />
                 <ReplyCard display={!!replyTo} creator={replyTo?.sender} content={replyTo?.content} handleDismiss={handleReplyCardDismiss} />

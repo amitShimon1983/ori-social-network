@@ -8,7 +8,7 @@
     margin-bottom: 25px;
     min-width: 75%;
     max-width: 80%;
-    box-shadow: var(--box-shadow);;
+    box-shadow: var(--box-shadow);
 }
 
 .speech_bubble_other {
@@ -25,7 +25,8 @@
 }
 
 .image {
-    box-shadow: var(--box-shadow);;
+    box-shadow: var(--box-shadow);
+    ;
     border: none;
     width: 45px;
     height: 45px;
@@ -37,6 +38,11 @@
     display: flex;
     flex-direction: column;
     margin-top: 5px;
+}
+
+.selected {
+    background-color: #6495ED !important;
+    border-top-color: #6495ED !important;
 }
 
 .container {
@@ -51,16 +57,18 @@
 }
 
 .me {
-    background: var(--me-color);
+    background-color: var(--me-color);
     border-top-color: var(--me-color);
     margin-left: auto;
+    transition: background-color .5s linear;
 
 }
 
 .other {
-    background: var(--other-color);
+    background-color: var(--other-color);
     border-top-color: var(--other-color);
     margin-right: auto;
+    transition: background-color 1s linear;
 }
 
 .speech_bubble_me:after {

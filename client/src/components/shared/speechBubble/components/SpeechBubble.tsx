@@ -7,7 +7,7 @@ import { MessagePreview } from "../../replyCard/MessagePreview";
 import classes from './index.module.css';
 interface SpeechBubbleProps {
     message: { [key: string]: any }
-    onClickHandler: (e: any) => void | Promise<void>
+    onClickHandler: (e: any) => void | Promise<void>;
 }
 
 const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, message }) => {
@@ -17,11 +17,15 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
     const diff = getPostDate(new Date(+createdAt));
     const handleClick = () => {
         const elem = document.getElementById(message.parentMessageId._id);
-        elem?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'end' })
+        elem?.classList.add(classes.selected)
+        elem?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+        setTimeout(() => {
+            elem?.classList.remove(classes.selected);
+        }, 3000)
 
     }
     return (<div className={classes.container}>
-        <div className={`${isMe ? classes.speech_bubble_me : classes.speech_bubble_other} ${isMe ? classes.me : classes.other}`}>
+        <div id={message._id} className={`${isMe ? classes.speech_bubble_me : classes.speech_bubble_other} ${isMe ? classes.me : classes.other}`}>
             <div style={{ width: '100%' }} onClick={handleClick}>
                 {message?.parentMessageId && <MessagePreview creator={message?.parentMessageId?.sender} content={message.parentMessageId.content} />}
             </div>

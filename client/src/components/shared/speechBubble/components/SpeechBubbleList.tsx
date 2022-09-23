@@ -11,18 +11,17 @@ const SpeechBubbleList: ForwardRefExoticComponent<SpeechBubbleListProps & React.
         {items?.map((item: any, idx: number) => {
             const isLast = idx === items?.length - 1;
             return <span
-                id={item._id}
                 style={{ padding: 16, width: '100%' }}
                 key={`SpeechBubble_${item._id}_item_Form_ref`}
             >
                 <SpeechBubble
                     onClickHandler={() => {
-                        onItemClick(item)
+                        onItemClick(item);
                     }}
                     key={`SpeechBubble_${item._id}_item_Form`}
                     message={item}
                 />
-                {isLast && <span ref={ref}>last item</span>}
+                {isLast && <span ref={ref}></span>}
             </span>
         })}</>);
 })
