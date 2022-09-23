@@ -4,23 +4,28 @@
     border: none;
     outline: none;
 }
+
 .content_overflow_close {
     max-height: 4vh;
 }
+
 .content_overflow_open {
     max-height: 100%;
 }
+
 .content {
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 10px;
     padding-bottom: 10px;
+    width: 100%;
     flex-wrap: wrap;
     overflow: hidden;
     text-overflow: ellipsis;
- 
+
 
 }
+
 .read_more_button_container {
     width: 100%;
     display: flex;

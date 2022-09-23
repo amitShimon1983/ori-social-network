@@ -1,4 +1,16 @@
-.speech_bubble {
+.speech_bubble_me {
+    min-height: 50px;
+    padding: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: .5em;
+    margin-bottom: 25px;
+    min-width: 75%;
+    max-width: 80%;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+.speech_bubble_other {
     min-height: 50px;
     padding: 10px;
     position: relative;
@@ -23,8 +35,9 @@
     flex-direction: column;
 }
 .container{
+    padding: 5px;
     display: flex;
-    width: 100%;
+    width: 95%;
 }
 .time_stamp {
     align-self: flex-end;
@@ -44,11 +57,24 @@
     margin-right: auto;
 }
 
-.speech_bubble:after {
+.speech_bubble_me:after {
     content: '';
     position: absolute;
     bottom: 0;
     right: 5%;
+    width: 0;
+    height: 0;
+    border: 20px solid transparent;
+    border-top-color: inherit;
+    border-bottom: 0;
+    margin-bottom: -10px;
+
+}
+.speech_bubble_other:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 5%;
     width: 0;
     height: 0;
     border: 20px solid transparent;
