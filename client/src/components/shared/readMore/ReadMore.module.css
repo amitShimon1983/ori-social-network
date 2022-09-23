@@ -9,7 +9,6 @@
     max-height: 4vh;
     flex-wrap: wrap;
     overflow: hidden;
-    
 }
 
 .content_overflow_open {
@@ -22,6 +21,7 @@
     width: 100%;
     overflow-x: hidden;
     text-overflow: ellipsis;
+    font-size: 12px;
 }
 
 .read_more_button_container {
