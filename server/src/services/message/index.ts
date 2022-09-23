@@ -1,8 +1,9 @@
 import { Types } from 'mongoose';
-import { SendMessageArgs } from '../../apollo';
+import { SendMessageArgs, UpdateMessageArgs } from '../../apollo';
 import { IMessage, MessageModel, MessageThreadModel } from '../../model'
 import { IMessageThread } from '../../model/schema/message/types';
 class MessageService {
+
 
     static instance: MessageService;
     static getInstance() {
@@ -125,6 +126,11 @@ class MessageService {
         } catch (error: any) {
             console.log({ error });
         }
+    }
+    async updateMessage(args: UpdateMessageArgs, userId: any) {
+        return await MessageModel.findOneAndUpdate({ _id: args._id, recipient: userId }, { isRead: true }, {
+            new: true
+        })
     }
 }
 export default MessageService.getInstance();

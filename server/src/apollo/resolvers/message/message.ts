@@ -1,6 +1,6 @@
 import { Arg, Mutation, Query, Resolver, Ctx } from "type-graphql";
 import { messageService } from "../../../services";
-import { GetConversation, GetConversationArgs, GetMessageThreads, GetMessageThreadsArgs, Message, SendMessageArgs } from "./types";
+import { GetConversation, GetConversationArgs, GetMessageThreads, GetMessageThreadsArgs, Message, SendMessageArgs, UpdateMessageArgs } from "./types";
 
 @Resolver()
 export class MessageResolver {
@@ -8,6 +8,11 @@ export class MessageResolver {
     async sendMessage(@Arg('args', () => SendMessageArgs) args: SendMessageArgs, @Ctx() context: any) {
         const { user } = context;
         return messageService.sendMessage(args, user._id);
+    }
+    @Mutation(() => Message)
+    async updateMessage(@Arg('args', () => UpdateMessageArgs) args: UpdateMessageArgs, @Ctx() context: any) {
+        const { user } = context;
+        return messageService.updateMessage(args, user._id);
     }
     @Query(() => GetMessageThreads)
     async getMessageThreads(@Arg('args', () => GetMessageThreadsArgs) args: GetMessageThreadsArgs, @Ctx() context: any) {

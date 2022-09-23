@@ -36,6 +36,13 @@ export class GetConversationArgs {
     limit?: number;
 }
 @InputType()
+export class UpdateMessageArgs {
+    @Field(() => String)
+    _id: string;
+    @Field(() => Boolean)
+    isRead: boolean;
+}
+@InputType()
 export class SendMessageArgs {
     @Field(() => String)
     recipient: string | undefined;
