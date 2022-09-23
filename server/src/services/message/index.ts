@@ -127,7 +127,7 @@ class MessageService {
             console.log({ error });
         }
     }
-    async updateMessage(args: UpdateMessageArgs, userId: any) {
+    async updateMessage(args: UpdateMessageArgs, userId: string) {
         return await MessageModel.findOneAndUpdate({ _id: args._id, recipient: userId }, { isRead: true }, {
             new: true
         })
