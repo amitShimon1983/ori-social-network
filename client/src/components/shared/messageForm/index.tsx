@@ -8,6 +8,7 @@ import MiniMe from "../../me/MiniMe";
 import { Hr } from "../../styles";
 import { debounce } from "@mui/material";
 import { appContextVar } from "../../../services/store";
+import ReplyCard from "../replyCard/ReplyCard";
 export interface MessageFormProps {
     owners: { [key: string]: any }[];
     messageThreadId?: string;
@@ -20,7 +21,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
     const [inputData, setInputData] = useState<string>();
     const [isValid, setIsValid] = useState<boolean>(false);
     const [selectedUsers, setSelectedUsers] = useState<any[]>();
-    const [replyToId, setReplyToId] = useState<string>();
+    const [replyTo, setReplyTo] = useState<any>();
     const { searchContactsQuery, loading } = useSearchContacts();
     const { sendMessageMutation, } = useSendMessage();
     const isFormValid = useCallback(() => {
@@ -43,7 +44,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             variables: {
                 content: inputData,
                 recipient: selectedUsers?.[0]?._id ?? defaultOwner[0]._id,
-                parentMessageId: replyToId,
+                parentMessageId: replyTo?._id,
                 messageThreadId,
             }
         }
@@ -77,6 +78,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
 
     };
     const messages = data?.getConversation?.messages;
+    const handleReplyCardDismiss = (e: any) => { e.stopPropagation(); setReplyTo(undefined); }
     return (<div className={classes.container}>
         <AutoComplete
             defaultValue={defaultOwner}
@@ -91,20 +93,26 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         <div className={classes.text_area}>
             {!getConversationLoading && messages?.map((message: any, idx: number) => {
                 const isLast = idx === messages?.length - 1;
-                if (isLast) {
-                    console.log({ message });
-                }
-                return <span id={idx + ''} style={{ padding: 16 }} key={`SpeechBubble_${message._id}_Message_Form_ref`}
+                console.log({ message });
+
+                return <span
+                    id={message._id}
+                    style={{ padding: 16, width: '100%' }}
+                    key={`SpeechBubble_${message._id}_Message_Form_ref`}
                 >
                     <SpeechBubble
-                        onClickHandler={() => setReplyToId(message._id)}
+                        onClickHandler={(e) => {
+                            e.stopPropagation();
+                            setReplyTo(message);
+                        }}
                         key={`SpeechBubble_${message._id}_Message_Form`}
                         message={message}
                     />
-                    {isLast && <span ref={ref}>end</span>}
+                    {isLast && <span ref={ref}></span>}
                 </span>
             })}
 
+            {replyTo && <ReplyCard creator={replyTo?.sender?.name} content={replyTo.content} handleDismiss={handleReplyCardDismiss} />}
             {getConversationLoading && <Spinner />}
         </div>
         <InputButtonPanel
