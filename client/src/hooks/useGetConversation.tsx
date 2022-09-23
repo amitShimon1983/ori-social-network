@@ -9,6 +9,15 @@ query GetConversation($messageThreadId:String, $skip:Int, $limit:Int){
             parentMessageId{
                 _id
                 content
+                sender{
+                    _id
+                    name
+                    email
+                    file {
+                        _id
+                        originalname
+                    }
+                }
             }
             sender{
                 _id

@@ -3,6 +3,7 @@ import { getPostDate } from "../../../../services/date";
 import { appContextVar } from "../../../../services/store";
 import MiniMe from "../../../me/MiniMe";
 import { ReadMore } from "../../readMore";
+import { MessagePreview } from "../../replyCard/MessagePreview";
 import classes from './index.module.css';
 interface SpeechBubbleProps {
     message: { [key: string]: any }
@@ -14,17 +15,17 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
     const { user: me } = appContextVar();
     const isMe = me._id === sender._id
     const diff = getPostDate(new Date(+createdAt));
+    const handleClick = () => {
+        const elem = document.getElementById(message.parentMessageId._id);
+        elem?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'end' })
 
+    }
     return (<div className={classes.container}>
-        <div onClick={onClickHandler} className={`${isMe ? classes.speech_bubble_me : classes.speech_bubble_other} ${isMe ? classes.me : classes.other}`}>
-            {!!message?.parentMessageId?._id &&
-                <div style={{ padding: '10px', width: '90%', textAlign: 'center', overflow: 'hidden', color: 'white', height: '2vh', flexWrap: 'wrap', textOverflow: 'ellipsis' }} onClick={() => {
-                    const elem = document.getElementById(message.parentMessageId._id);
-                    elem?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'end' })
-
-                }}>...{message?.parentMessageId?.content}
-                </div>}
-            <div className={classes.details}>
+        <div className={`${isMe ? classes.speech_bubble_me : classes.speech_bubble_other} ${isMe ? classes.me : classes.other}`}>
+            <div style={{ width: '100%' }} onClick={handleClick}>
+                {message?.parentMessageId && <MessagePreview isMe={isMe} creator={message?.parentMessageId?.sender} content={message.parentMessageId.content} />}
+            </div>
+            <div onClick={onClickHandler} className={classes.details}>
                 <div className={classes.time_stamp}>
                     {diff}
                 </div>

@@ -2,13 +2,12 @@ import { FunctionComponent, useCallback, useEffect, useRef, useState } from "rea
 import AutoComplete from "../autoComplete";
 import { InputButtonPanel, Spinner } from "..";
 import classes from './index.module.css';
-import SpeechBubble from "../speechBubble";
 import { useGetConversation, useSearchContacts, useSendMessage } from "../../../hooks";
 import MiniMe from "../../me/MiniMe";
 import { Hr } from "../../styles";
 import { debounce } from "@mui/material";
 import { appContextVar } from "../../../services/store";
-import ReplyCard from "../replyCard/ReplyCard";
+import { ReplyCard, SpeechBubbleList } from "..";
 export interface MessageFormProps {
     owners: { [key: string]: any }[];
     messageThreadId?: string;
@@ -75,7 +74,6 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             <Hr />
         </li>
         );
-
     };
     const messages = data?.getConversation?.messages;
     const handleReplyCardDismiss = (e: any) => { e.stopPropagation(); setReplyTo(undefined); }
@@ -91,28 +89,15 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             fetchData={fetchContactData}
         />
         <div className={classes.text_area}>
-            {!getConversationLoading && messages?.map((message: any, idx: number) => {
-                const isLast = idx === messages?.length - 1;
-                console.log({ message });
-
-                return <span
-                    id={message._id}
-                    style={{ padding: 16, width: '100%' }}
-                    key={`SpeechBubble_${message._id}_Message_Form_ref`}
-                >
-                    <SpeechBubble
-                        onClickHandler={(e) => {
-                            e.stopPropagation();
-                            setReplyTo(message);
-                        }}
-                        key={`SpeechBubble_${message._id}_Message_Form`}
-                        message={message}
-                    />
-                    {isLast && <span ref={ref}></span>}
-                </span>
-            })}
-
-            {replyTo && <ReplyCard creator={replyTo?.sender?.name} content={replyTo.content} handleDismiss={handleReplyCardDismiss} />}
+            {!getConversationLoading && <>
+                <SpeechBubbleList ref={ref}
+                    items={messages} onItemClick={(e, item) => {
+                        e.stopPropagation();
+                        setReplyTo(item);
+                    }} />
+                <ReplyCard display={!!replyTo} creator={replyTo?.sender} content={replyTo?.content} handleDismiss={handleReplyCardDismiss} />
+            </>
+            }
             {getConversationLoading && <Spinner />}
         </div>
         <InputButtonPanel
