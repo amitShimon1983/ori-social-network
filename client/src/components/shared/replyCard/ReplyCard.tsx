@@ -13,7 +13,6 @@ interface ReplyCardProps {
 const ReplyCard: FunctionComponent<ReplyCardProps> = ({ display, handleDismiss, content, creator }) => {
     const { user: me } = appContextVar();
     const isMe = me._id === creator?._id
-
     return (<>
         <div className={`${classes.container} ${isMe ? classes.container_me : classes.container_other} ${display ? classes.display : classes.hide}`}>
             <MessagePreview isMe={isMe} creator={creator} content={content} />

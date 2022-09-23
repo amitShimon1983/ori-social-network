@@ -3,7 +3,7 @@ import SpeechBubble from "./SpeechBubble";
 
 interface SpeechBubbleListProps {
     items: any[];
-    onItemClick: (e: any, item: any) => void | Promise<void>
+    onItemClick: (item: any) => void | Promise<void>
 }
 
 const SpeechBubbleList: ForwardRefExoticComponent<SpeechBubbleListProps & React.RefAttributes<HTMLSpanElement>> = forwardRef<HTMLSpanElement, SpeechBubbleListProps>(({ items, onItemClick }, ref) => {
@@ -16,7 +16,9 @@ const SpeechBubbleList: ForwardRefExoticComponent<SpeechBubbleListProps & React.
                 key={`SpeechBubble_${item._id}_item_Form_ref`}
             >
                 <SpeechBubble
-                    onClickHandler={(e) => onItemClick(e, item)}
+                    onClickHandler={() => {
+                        onItemClick(item)
+                    }}
                     key={`SpeechBubble_${item._id}_item_Form`}
                     message={item}
                 />

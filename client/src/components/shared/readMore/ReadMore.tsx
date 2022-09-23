@@ -23,7 +23,6 @@ const ReadMore: FunctionComponent<ReadMoreProps> = ({ displayButtons, content })
 
     return (<>
         <div ref={contentRef} className={`${classes.content} ${!toggle ? classes.content_overflow_close : classes.content_overflow_open}`}>{content}</div>
-
         {isContentOverflow && displayButtons && <div className={classes.read_more_button_container}>
             <Button variant="text" className={classes.read_more_button} handleClick={toggleReadMore}>read {toggle ? 'less...' : 'more...'}</Button>
         </div>}
