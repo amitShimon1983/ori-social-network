@@ -1,5 +1,6 @@
 .comment_me {
     width: 100%;
+    display: flex;
 }
 .me_container {
     flex-direction: row !important;
