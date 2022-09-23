@@ -6,10 +6,12 @@
 
 .container {
     height: auto;
+    padding: 10px;
 }
 
 .header {
     display: flex;
+    flex-direction: column;
     width: 100%;
     align-items: center;
 }
