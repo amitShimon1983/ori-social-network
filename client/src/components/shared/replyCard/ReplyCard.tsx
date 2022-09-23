@@ -15,7 +15,7 @@ const ReplyCard: FunctionComponent<ReplyCardProps> = ({ display, handleDismiss, 
     const isMe = me._id === creator?._id
     return (<>
         <div className={`${classes.container} ${isMe ? classes.container_me : classes.container_other} ${display ? classes.display : classes.hide}`}>
-            <MessagePreview isMe={isMe} creator={creator} content={content} />
+            <MessagePreview creator={creator} content={content} />
             {handleDismiss && <CloseButton className={classes.icon} onClick={handleDismiss} />}
         </div>
     </>);

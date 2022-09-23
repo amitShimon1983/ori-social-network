@@ -11,7 +11,7 @@ interface SpeechBubbleProps {
 }
 
 const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, message }) => {
-    const { content, sender, createdAt } = message;
+    const { content, sender, createdAt, isRead } = message;
     const { user: me } = appContextVar();
     const isMe = me._id === sender._id
     const diff = getPostDate(new Date(+createdAt));
@@ -23,7 +23,7 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
     return (<div className={classes.container}>
         <div className={`${isMe ? classes.speech_bubble_me : classes.speech_bubble_other} ${isMe ? classes.me : classes.other}`}>
             <div style={{ width: '100%' }} onClick={handleClick}>
-                {message?.parentMessageId && <MessagePreview isMe={isMe} creator={message?.parentMessageId?.sender} content={message.parentMessageId.content} />}
+                {message?.parentMessageId && <MessagePreview creator={message?.parentMessageId?.sender} content={message.parentMessageId.content} />}
             </div>
             <div onClick={(e) => { e.stopPropagation(); onClickHandler(e); }
             } className={classes.details}>
@@ -31,6 +31,7 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
                 <div className={classes.time_stamp}>
                     {diff}
                 </div>
+                {isRead}
             </div>
         </div>
         {!isMe && <MiniMe styles={{
