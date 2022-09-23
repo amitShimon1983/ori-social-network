@@ -6,6 +6,7 @@ import MiniMe from "../../../me/MiniMe";
 import { BsCheck2, BsCheck2All } from "../../icons";
 import { ReadMore } from "../../readMore";
 import { MessagePreview } from "../../replyCard/MessagePreview";
+import { UserDetails } from "../../userDetail";
 import classes from './index.module.css';
 interface SpeechBubbleProps {
     message: { [key: string]: any }
@@ -39,6 +40,7 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
             </div>
             <div onClick={(e) => { e.stopPropagation(); onClickHandler(e); }
             } className={classes.details}>
+                <UserDetails className={`${isMe ? classes.sender_me : classes.sender_other}`} user={sender} />
                 <ReadMore content={content} displayButtons={true} />
                 <div className={classes.footer}>
                     <span className={classes.time_stamp}>

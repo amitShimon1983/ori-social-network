@@ -72,7 +72,13 @@
     transition: background-color .5s linear;
 
 }
+.sender_me {
+    color: var(--other-color);
+}
 
+.sender_other {
+    color: var(--me-color);
+}
 .other {
     background-color: var(--other-color);
     border-top-color: var(--other-color);
