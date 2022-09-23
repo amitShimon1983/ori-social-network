@@ -1,14 +1,28 @@
 .container {
-    background: #ffffff;
-    bottom: -1px;
+    background: var(--speech-bubble-reply-to-message-background);
     position: sticky;
     display: flex;
     align-items: center;
     justify-content: center;
     max-width: 100%;
-    max-height: 200px;
     padding: 10px;
     overflow: hidden;
+    -webkit-transition: all .3s, -webkit-transform .3s;
+    transition: all .3s, transform .3s;
+}
+
+.display {
+    bottom: -1px;
+    max-height: 200px;
+    -webkit-transition: all .3s, -webkit-transform .3s;
+    transition: all .3s, transform .3s;
+}
+
+.hide {
+    height: 0px;
+    bottom: -100%;
+    -webkit-transition: all 1s, -webkit-transform 1s;
+    transition: all 1s, transform 1s;
 }
 
 .details {
@@ -23,7 +37,6 @@
     min-width: 80%;
     font-size: 13px;
     flex: 1;
-    background: #E5E7EA;
     padding: 10px;
     margin-bottom: 10px;
     overflow: hidden;
@@ -32,17 +45,18 @@
     align-self: center;
     flex-wrap: wrap;
     text-overflow: ellipsis;
-    border-left: 5px solid green;
     margin-bottom: auto;
     border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    box-shadow: var(--box-shadow);
 
 }
 
 .content {
     flex: 1;
+    color: #111B21;
     overflow: hidden;
     max-height: 65px;
+    min-height: 25px;
     text-align: left;
     justify-self: center;
     align-self: center;
@@ -54,7 +68,26 @@
     font-weight: 500;
     width: 100%;
     text-align: left;
-    color: green;
+    min-height: 20px;
+
+}
+
+.creator_me {
+    color: var(--me-color)
+}
+
+.creator_other {
+    color: var(--other-color)
+}
+
+.me {
+    border-left: 5px solid var(--me-color);
+    background: var(--other-color);
+}
+
+.other {
+    background: var(--me-color);
+    border-left: 5px solid var(--other-color)
 }
 
 .icon {
