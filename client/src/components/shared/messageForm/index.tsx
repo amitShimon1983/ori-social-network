@@ -50,6 +50,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         if (isValid) {
             await sendMessageMutation(query);
             setInputData(undefined);
+            setReplyTo(undefined);
         }
     }
     const fetchContactData = debounce(async (value: any, setOptions: React.Dispatch<React.SetStateAction<any[]>>) => {
@@ -91,8 +92,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         <div className={classes.text_area}>
             {!getConversationLoading && <>
                 <SpeechBubbleList ref={ref}
-                    items={messages} onItemClick={(e, item) => {
-                        e.stopPropagation();
+                    items={messages} onItemClick={(item) => {
                         setReplyTo(item);
                     }} />
                 <ReplyCard display={!!replyTo} creator={replyTo?.sender} content={replyTo?.content} handleDismiss={handleReplyCardDismiss} />
