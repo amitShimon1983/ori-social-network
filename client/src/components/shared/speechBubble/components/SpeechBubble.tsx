@@ -25,11 +25,12 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
             <div style={{ width: '100%' }} onClick={handleClick}>
                 {message?.parentMessageId && <MessagePreview isMe={isMe} creator={message?.parentMessageId?.sender} content={message.parentMessageId.content} />}
             </div>
-            <div onClick={onClickHandler} className={classes.details}>
+            <div onClick={(e) => { e.stopPropagation(); onClickHandler(e); }
+            } className={classes.details}>
+                <ReadMore content={content} displayButtons={true} />
                 <div className={classes.time_stamp}>
                     {diff}
                 </div>
-                <ReadMore content={content} displayButtons={true} />
             </div>
         </div>
         {!isMe && <MiniMe styles={{
