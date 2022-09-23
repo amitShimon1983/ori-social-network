@@ -5,6 +5,7 @@ export { FaRegComments, FaPencilAlt } from 'react-icons/fa';
 export { CgProfile } from 'react-icons/cg';
 export { BiVideoRecording, BiLike, BiImage } from 'react-icons/bi';
 export { GiArrowDunk } from 'react-icons/gi';
-export { BsCloudDownload, BsSave } from 'react-icons/bs';
+export { BsCloudDownload, BsSave, BsCheck2All, BsCheck2 } from 'react-icons/bs';
 export { RiDeleteBin2Fill } from 'react-icons/ri';
 export { ImFilesEmpty } from 'react-icons/im';
+

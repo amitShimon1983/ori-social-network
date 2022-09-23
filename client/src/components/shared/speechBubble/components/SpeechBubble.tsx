@@ -2,6 +2,7 @@ import { FunctionComponent } from "react";
 import { getPostDate } from "../../../../services/date";
 import { appContextVar } from "../../../../services/store";
 import MiniMe from "../../../me/MiniMe";
+import { BsCheck2, BsCheck2All } from "../../icons";
 import { ReadMore } from "../../readMore";
 import { MessagePreview } from "../../replyCard/MessagePreview";
 import classes from './index.module.css';
@@ -32,10 +33,14 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
             <div onClick={(e) => { e.stopPropagation(); onClickHandler(e); }
             } className={classes.details}>
                 <ReadMore content={content} displayButtons={true} />
-                <div className={classes.time_stamp}>
-                    {diff}
+                <div className={classes.footer}>
+                    <span className={classes.time_stamp}>
+                        {diff}
+                    </span>
+                    <span className={classes.icon}>
+                        {isRead ? <BsCheck2All /> : <BsCheck2 />}
+                    </span>
                 </div>
-                {isRead}
             </div>
         </div>
         {!isMe && <MiniMe styles={{

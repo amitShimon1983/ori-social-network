@@ -51,6 +51,17 @@
     width: 95%;
 }
 
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icon {
+    width: 15px;
+    height: 15px;
+}
+
 .time_stamp {
     align-self: flex-end;
     font-size: .7rem;
