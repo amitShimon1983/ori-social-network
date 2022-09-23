@@ -6,6 +6,10 @@ query GetConversation($messageThreadId:String, $skip:Int, $limit:Int){
         messages{
             isRead
             _id
+            parentMessageId{
+                _id
+                content
+            }
             sender{
                 _id
                 name
