@@ -26,3 +26,4 @@ export * from './mui';
 export * from './closeButton';
 export * from './replyCard';
 export * from './speechBubble';
+export * from './userDetail';

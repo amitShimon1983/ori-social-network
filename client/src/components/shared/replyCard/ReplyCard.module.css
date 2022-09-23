@@ -61,22 +61,6 @@
     text-overflow: ellipsis;
 }
 
-.creator {
-    font-weight: 500;
-    width: 100%;
-    text-align: left;
-    min-height: 20px;
-
-}
-
-.creator_me {
-    color: var(--me-color)
-}
-
-.creator_other {
-    color: var(--other-color)
-}
-
 .me {
     border-left: 5px solid var(--me-color);
     background: var(--other-color);
