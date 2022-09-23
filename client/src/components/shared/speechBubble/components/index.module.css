@@ -41,8 +41,8 @@
 }
 
 .selected {
-    background-color: #6495ED !important;
-    border-top-color: #6495ED !important;
+    background-color: var(--hight-light-bubble) !important;
+    border-top-color: var(--hight-light-bubble) !important;
 }
 
 .container {
