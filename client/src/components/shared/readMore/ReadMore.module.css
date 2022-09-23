@@ -7,10 +7,13 @@
 
 .content_overflow_close {
     max-height: 4vh;
+    flex-wrap: wrap;
+    overflow: hidden;
+    
 }
 
 .content_overflow_open {
-    max-height: 100%;
+    height: 100%;
 }
 
 .content {
@@ -19,11 +22,8 @@
     padding-top: 10px;
     padding-bottom: 10px;
     width: 100%;
-    flex-wrap: wrap;
-    overflow: hidden;
+    overflow-x: hidden;
     text-overflow: ellipsis;
-
-
 }
 
 .read_more_button_container {
