@@ -25,3 +25,4 @@ export * from './icons';
 export * from './mui';
 export * from './closeButton';
 export * from './replyCard';
+export * from './speechBubble';

@@ -15,3 +15,8 @@ body, html, #root {
   color: black;
   overflow: hidden;
 }
+
+:root {
+  --me-color: #94BFE9;
+  --other-color: #E5E7EA;
+}
