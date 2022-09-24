@@ -66,7 +66,7 @@ class CameraService {
             const formData = new FormData();
             if (payload) {
                 for (let [key, val] of Object.entries(payload)) {
-                    formData.append(key, val);
+                    if (val != undefined) { formData.append(key, val); }
                 }
             }
             formData.append('files', blobFile!);
