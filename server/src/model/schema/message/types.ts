@@ -7,6 +7,8 @@ export interface IMessage {
     isRead: boolean;
     parentMessageId?: string;
     messageThreadId?: string;
+    type?: string;
+    file?: string;
 }
 export interface IMessageThread {
     _id: string;

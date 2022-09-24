@@ -52,6 +52,8 @@ export class SendMessageArgs {
     parentMessageId?: string;
     @Field(() => String, { nullable: true })
     messageThreadId?: string;
+    @Field(() => String, { nullable: true })
+    type?: string;
 }
 
 @ObjectType()

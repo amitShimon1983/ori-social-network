@@ -122,6 +122,7 @@ class MessageService {
                 recipient: messageArgs.recipient,
                 messageThreadId: messageThread?._id,
                 parentMessageId: messageArgs.parentMessageId,
+                type: messageArgs.type
             };
             const newMessage = await MessageModel.create(message);
             return newMessage;
