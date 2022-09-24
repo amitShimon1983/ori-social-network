@@ -77,7 +77,11 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
     const handleStart = async () => {
         setVideoBlob(undefined)
         if (stream) {
-            const recorderRef = await cameraService.startRecording(stream, undefined, setVideoBlob);
+            const recorderRef = await cameraService.startRecording(stream, undefined, setVideoBlob, 'video/webm', {
+                audioBitsPerSecond: 128000,
+                videoBitsPerSecond: 2500000,
+                mimeType: 'video/webm'
+            });
             setIsRecording(true)
             setRecorder(recorderRef)
         }
@@ -87,7 +91,7 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
         if (typeof onSave === 'function') {
             onSave(blobToSave)
         } else {
-            const url = `${appConfig.serverUrl}${appConfig.uploadEndpoint}`;
+            const url = `${appConfig.serverUrl}${appConfig.uploadPostEndpoint}`;
             await cameraService.saveFile(url, blobToSave);
         }
     }
