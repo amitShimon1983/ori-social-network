@@ -15,7 +15,7 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
     const [hasPhoto, setHasPhoto] = useState<boolean>(false);
     const [displayVideo, setDisplayVideo] = useState<boolean>(true);
     const [isRecording, setIsRecording] = useState<boolean>(false);
-    const [recorder, serRecorder] = useState<Recorder>();
+    const [recorder, setRecorder] = useState<Recorder>();
     const [stream, setStream] = useState<MediaStream>()
     const [videoBlob, setVideoBlob] = useState<Blob>();
     const [imageBlob, setImageBlob] = useState<Blob>();
@@ -79,7 +79,7 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
         if (stream) {
             const recorderRef = await cameraService.startRecording(stream, undefined, setVideoBlob);
             setIsRecording(true)
-            serRecorder(recorderRef)
+            setRecorder(recorderRef)
         }
     }
 
