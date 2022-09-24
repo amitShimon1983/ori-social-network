@@ -97,6 +97,9 @@ class MessageService {
                     populate: {
                         path: 'file'
                     }
+                }, {
+                    path: 'file',
+
                 },
                 {
                     path: 'parentMessageId',
