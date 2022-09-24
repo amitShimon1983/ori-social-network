@@ -5,7 +5,8 @@
 }
 
 .input_root fieldset {
-    border: none;
+    border: 1px solid var(--secondary-dark-color);
+    border-radius: 25px;
 }
 
 .input_root input {
@@ -20,8 +21,7 @@
 .input_root {
     border: none;
     align-items: center;
-    background: var(--primary-light);
-    border-radius: 25px;
+    background: var(--light-background);
     height: 40px;
     flex: 1;
 }

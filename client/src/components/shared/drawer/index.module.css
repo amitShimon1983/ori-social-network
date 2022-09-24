@@ -5,7 +5,7 @@
     transition: all .3s, transform .3s;
     height: 100%;
     width: 100%;
-    background: white;
+    background: var(--light-background);
 }
 
 .container_close {

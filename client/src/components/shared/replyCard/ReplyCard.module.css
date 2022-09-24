@@ -50,7 +50,7 @@
 
 .content {
     flex: 1;
-    color: #111B21;
+    color: var(--text-light-color);
     overflow: hidden;
     max-height: 65px;
     min-height: 25px;
@@ -72,5 +72,5 @@
 }
 
 .icon {
-    color: #8696A0
+    color: var(--icon-gray)
 }

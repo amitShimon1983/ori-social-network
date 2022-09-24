@@ -51,7 +51,7 @@
 }
 
 .button {
-    background: whitesmoke;
+    background: var(--light-background);
     height: 30px;
     margin-right: 1vh;
     padding: 1vh;

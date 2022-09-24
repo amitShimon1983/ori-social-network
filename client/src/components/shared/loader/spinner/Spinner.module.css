@@ -18,7 +18,7 @@
 .dot {
     width: 4px;
     height: 4px;
-    background: #22303e;
+    background: var(--dot-background);
     display: inline-block;
     border-radius: 50%;
     right: 0px;
