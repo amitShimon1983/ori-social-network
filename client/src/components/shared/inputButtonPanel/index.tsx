@@ -1,5 +1,6 @@
 import { FunctionComponent } from "react";
 import { AiOutlineCamera, FaMicrophoneAlt, IconButton, TbSend } from "..";
+import { MicrophoneRecorder } from "../../microphone";
 import Input from "../input/Input";
 import classes from './index.module.css';
 interface InputButtonProps {
@@ -16,22 +17,22 @@ const InputButtonPanel: FunctionComponent<InputButtonProps> = ({ handleChange, p
         }} className={classes.button} color="info" aria-label="upload picture" component="label">
             <AiOutlineCamera />
         </IconButton>
-            <Input handleChange={handleChange}
-                type={'text'}
-                variant={'outlined'}
-                name={'panel'}
-                styles={{ root: classes.input_root }}
-                required={true}
-                placeholder={placeholder}
-                value={inputValue} />
+        <Input handleChange={handleChange}
+            type={'text'}
+            variant={'outlined'}
+            name={'panel'}
+            styles={{ root: classes.input_root }}
+            required={true}
+            placeholder={placeholder}
+            value={inputValue} />
 
 
-        <IconButton onClick={disabled ? (e: any) => {
+        {!disabled ? <IconButton onClick={disabled ? (e: any) => {
             console.log('recording')
         }
-            : handleSave} className={classes.button} color="info" aria-label="record message" component="label">
-            {disabled ? <FaMicrophoneAlt /> : <TbSend />}
-        </IconButton>
+            : handleSave} className={`${classes.button}`} color="info" aria-label="record message" component="label">
+            <TbSend />
+        </IconButton> : <MicrophoneRecorder />}
     </div>;
 }
 export default InputButtonPanel;
