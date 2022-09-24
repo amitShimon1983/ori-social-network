@@ -16,7 +16,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
     const { data, loading: getConversationLoading } = useGetConversation(messageThreadId);
     let ref = useRef<HTMLSpanElement>(null)
     const { user: me } = appContextVar();
-    const defaultOwner = owners?.filter((owner: any) => (owner._id !== me._id));
+    const defaultOwner: any = owners?.filter((owner: any) => (owner._id !== me._id));
     const [inputData, setInputData] = useState<string>();
     const [isValid, setIsValid] = useState<boolean>(false);
     const [selectedUsers, setSelectedUsers] = useState<any[]>();

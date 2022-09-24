@@ -5,18 +5,27 @@ interface InputProps {
     handleChange: ({ target }: { target: any }) => void;
     type?: string;
     name?: string;
-    className?: string;
+    styles?: { input?: string; root?: string; notchedOutline?: string };
     required?: boolean;
     placeholder?: string;
+    label?: string;
     value: any;
     variant?: "standard" | "filled" | "outlined";
 
 }
 
-const Input: FunctionComponent<InputProps> = ({ handleChange, type, name, required, placeholder, value, className, variant }) => {
+const Input: FunctionComponent<InputProps> = ({ handleChange, type, name, required, placeholder, value, styles, variant, label }) => {
     return (<>
-        <TextField type={type} className={className} value={value} name={name} required={required} label={placeholder} inputProps={{ onChange: handleChange }} variant={variant || 'standard'} />
-        {/* <input className={className} value={value} placeholder={placeholder} type={type} name={name} required={required} onChange={handleChange} /> */}
+        <TextField
+            type={type}
+            value={value}
+            name={name}
+            required={required}
+            label={label}
+            placeholder={placeholder}
+            classes={styles}
+            inputProps={{ onChange: handleChange, placeholder }}
+            variant={variant || 'standard'} />
     </>
     );
 }

@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { Button } from "..";
+import { Button, FaMicrophoneAlt, IconButton, TbSend } from "..";
 import Input from "../input/Input";
 import classes from './index.module.css';
 interface InputButtonProps {
@@ -12,15 +12,17 @@ interface InputButtonProps {
 const InputButtonPanel: FunctionComponent<InputButtonProps> = ({ handleChange, placeholder, inputValue, handleSave, disabled }) => {
     return <div className={classes.container}>
         <Input handleChange={handleChange}
+        
             type={'text'}
-            name={'comment'}
-            className={classes.input}
+            variant={'outlined'}
+            name={'panel'}
+            styles={{ root: classes.input_root }}
             required={true}
             placeholder={placeholder}
             value={inputValue} />
-        <Button variant="text" className={classes.button} disabled={disabled} handleClick={handleSave}>
-            Save
-        </Button>
+        <IconButton disabled={disabled} onClick={disabled ? undefined : handleSave} className={classes.button} color="info" aria-label="upload picture" component="label">
+            {disabled ? <FaMicrophoneAlt /> : <TbSend />}
+        </IconButton>
     </div>;
 }
 export default InputButtonPanel;

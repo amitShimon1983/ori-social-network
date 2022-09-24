@@ -60,8 +60,8 @@ const LoginForm: FunctionComponent<LoginFormProps> = () => {
         </div>
         {!loading && <Form>
             <div className={classes.inputs_container}>
-                <Input className={classes.input} value={login.email} placeholder='Email' type='email' name='email' required handleChange={handleChange} />
-                <Input className={classes.input} value={login.password} placeholder="Password" type='password' name='password' required handleChange={handleChange} />
+                <Input styles={{ input: classes.input }} value={login.email} label='Email' type='email' name='email' required handleChange={handleChange} />
+                <Input styles={{ input: classes.input }} value={login.password} label="Password" type='password' name='password' required handleChange={handleChange} />
             </div>
             <div className={classes.buttons_container}>
                 <ButtonList

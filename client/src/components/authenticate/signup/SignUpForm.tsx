@@ -82,13 +82,13 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
             <Header label={'Sign Up!'} />
         </div>
         <div className={classes.container}>
-            <Input className={classes.input} handleChange={handleChange} placeholder='Email' type='email' name={'email'} value={signUp?.email} required />
-            <Input className={classes.input} handleChange={handleChange} placeholder='Name' type='text' name={'name'} value={signUp?.name} required />
-            <Input className={classes.input} handleChange={handleChange} placeholder='password' type='password' name='password' value={signUp?.password} required />
-            <Input className={classes.input} handleChange={handleChange} placeholder='Confirm password' type='password' name='confirmPassword' value={signUp?.confirmPassword} required />
+            <Input styles={{ input: classes.input }} handleChange={handleChange} label='Email' type='email' name={'email'} value={signUp?.email} required />
+            <Input styles={{ input: classes.input }} handleChange={handleChange} label='Name' type='text' name={'name'} value={signUp?.name} required />
+            <Input styles={{ input: classes.input }} handleChange={handleChange} label='password' type='password' name='password' value={signUp?.password} required />
+            <Input styles={{ input: classes.input }} handleChange={handleChange} label='Confirm password' type='password' name='confirmPassword' value={signUp?.confirmPassword} required />
             <DatePicker handlePickerChange={handleDateChange}
             />
-            {!takePhoto && <Input className={classes.input} handleChange={handleChange} placeholder='' type='file' name='uploadedImage' value={signUp?.uploadedImage} required />}
+            {!takePhoto && <Input styles={{ input: classes.input }} handleChange={handleChange} type='file' name='uploadedImage' value={signUp?.uploadedImage} required />}
             {takePhoto && <div className={classes.camera_container}><CameraRoll onSave={(b) => {
                 setBlob(b)
             }} /></div>}

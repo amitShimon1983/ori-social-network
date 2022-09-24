@@ -1,15 +1,32 @@
 .container {
     display: flex;
     align-items: center;
-    padding-left: 1.5vh;
+    justify-content: center;
 }
 
-.input {
-    height: 100% !important;
-    width: 75% !important;
+.input_root fieldset {
+    border: none;
+}
+
+.input_root input {
+    width: 100%;
+    height: 100%;
+}
+.input_root div {
+    width: 100%;
+    height: 100%;
+}
+
+.input_root {
+    border: none;
+    align-items: center;
+    background: var(--primary-light);
+    border-radius: 25px;
+    height: 40px;
+    flex: 1;
 }
 
 .button {
-    width: 25% !important;
-    height: 100% !important;
+    background-color: var(--primary-light) !important;
+    color: var(--other-color) !important;
 }
