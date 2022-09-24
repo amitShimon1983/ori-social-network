@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { Button, FaMicrophoneAlt, IconButton, TbSend } from "..";
+import { AiOutlineCamera, FaMicrophoneAlt, IconButton, TbSend } from "..";
 import Input from "../input/Input";
 import classes from './index.module.css';
 interface InputButtonProps {
@@ -11,16 +11,25 @@ interface InputButtonProps {
 }
 const InputButtonPanel: FunctionComponent<InputButtonProps> = ({ handleChange, placeholder, inputValue, handleSave, disabled }) => {
     return <div className={classes.container}>
-        <Input handleChange={handleChange}
-        
-            type={'text'}
-            variant={'outlined'}
-            name={'panel'}
-            styles={{ root: classes.input_root }}
-            required={true}
-            placeholder={placeholder}
-            value={inputValue} />
-        <IconButton disabled={disabled} onClick={disabled ? undefined : handleSave} className={classes.button} color="info" aria-label="upload picture" component="label">
+        <IconButton onClick={(e: any) => {
+            console.log('uploading')
+        }} className={classes.button} color="info" aria-label="upload picture" component="label">
+            <AiOutlineCamera />
+        </IconButton>
+            <Input handleChange={handleChange}
+                type={'text'}
+                variant={'outlined'}
+                name={'panel'}
+                styles={{ root: classes.input_root }}
+                required={true}
+                placeholder={placeholder}
+                value={inputValue} />
+
+
+        <IconButton onClick={disabled ? (e: any) => {
+            console.log('recording')
+        }
+            : handleSave} className={classes.button} color="info" aria-label="record message" component="label">
             {disabled ? <FaMicrophoneAlt /> : <TbSend />}
         </IconButton>
     </div>;

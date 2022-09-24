@@ -1,11 +1,11 @@
 .container {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 }
 
 .input_root fieldset {
-    border: 1px solid var(--secondary-dark-color);
+    border: 1px solid var(--other-color);
     border-radius: 25px;
 }
 
@@ -13,6 +13,7 @@
     width: 100%;
     height: 100%;
 }
+
 .input_root div {
     width: 100%;
     height: 100%;
@@ -24,9 +25,11 @@
     background: var(--light-background);
     height: 40px;
     flex: 1;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .button {
-    background-color: var(--primary-light) !important;
-    color: var(--other-color) !important;
+    border: 1px solid var(--other-color);
+    color: var(--primary-light);
 }
