@@ -27,3 +27,4 @@ export * from './closeButton';
 export * from './replyCard';
 export * from './speechBubble';
 export * from './userDetail';
+export * from './counter';
