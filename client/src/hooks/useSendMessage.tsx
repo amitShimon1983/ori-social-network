@@ -1,8 +1,8 @@
 import { gql, useMutation } from '@apollo/client'
 
 const SEND_MESSAGE = gql`
-mutation SendMessage($recipient:String, $content:String, $parentMessageId:String, $messageThreadId:String){
-    sendMessage(args:{ recipient: $recipient, content: $content, parentMessageId: $parentMessageId, messageThreadId: $messageThreadId }){
+mutation SendMessage($type: String, $recipient:String, $content:String, $parentMessageId:String, $messageThreadId:String){
+    sendMessage(args:{ type: $type, recipient: $recipient, content: $content, parentMessageId: $parentMessageId, messageThreadId: $messageThreadId }){
         isRead
         _id
         sender{
