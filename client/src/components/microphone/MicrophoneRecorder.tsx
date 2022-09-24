@@ -1,11 +1,11 @@
 import { IconButton } from "@mui/material";
 import { FunctionComponent, useState } from "react";
-import { FaMicrophoneAlt, FaMicrophoneAltSlash } from "..";
+import { FaMicrophoneAlt, FaMicrophoneAltSlash, AiOutlineCloudUpload, FcCancel, BsStopCircle } from "..";
 import { appConfig } from "../../configuration";
 import { cameraService, Recorder } from "../../services";
 import classes from './MicrophoneRecorder.module.css';
 interface MicrophoneRecorderProps {
-    onSave?: (blob: Blob) => void
+    onSave?: () => Promise<any> | any
 }
 
 const MicrophoneRecorder: FunctionComponent<MicrophoneRecorderProps> = ({ onSave }) => {
@@ -33,9 +33,13 @@ const MicrophoneRecorder: FunctionComponent<MicrophoneRecorderProps> = ({ onSave
     const handleSave = async () => {
         const url = `${appConfig.serverUrl}${appConfig.uploadMessageEndpoint}`;
         console.log(blob);
-        await cameraService.saveFile(url, blob);
-        setIsRecording(false);
-        setBlob(undefined);
+        if (typeof onSave === 'function') {
+            const payload = await onSave();
+            debugger
+            await cameraService.saveFile(url, blob, undefined, undefined, { ...payload, type: 'audio' });
+            setIsRecording(false);
+            setBlob(undefined);
+        }
     }
 
     const deleteHandler = () => {
@@ -51,10 +55,10 @@ const MicrophoneRecorder: FunctionComponent<MicrophoneRecorderProps> = ({ onSave
             }} color="info" aria-label="record message" component="label">
                 {isRecording ? <FaMicrophoneAltSlash /> : <FaMicrophoneAlt />}
             </IconButton>
-            {blob && <div onClick={handleSave}>Upload</div>}
-            {isRecording && <div onClick={handleStop}>stop</div>}
-            {blob && <div onClick={deleteHandler}>cancel</div>}
-        </div>
+            {blob && <div onClick={handleSave}><AiOutlineCloudUpload /></div>}
+            {isRecording && <div onClick={handleStop}><BsStopCircle /></div>}
+            {blob && <div onClick={deleteHandler}><FcCancel /></div>}
+        </div >
     );
 }
 
