@@ -10,9 +10,9 @@ class CameraService {
         return CameraService.instance;
     }
 
-    async startRecording(stream: MediaStream, onDataAvailable?: (event: any) => void, onRecordingStop?: (blob: Blob) => void) {
-        const recorder = new Recorder(stream, onDataAvailable, onRecordingStop);
-        recorder.start()
+    async startRecording(stream: MediaStream, onDataAvailable?: (event: any) => void, onRecordingStop?: (blob: Blob) => void, mimeType?: string, options?: any) {
+        const recorder = new Recorder(stream, onDataAvailable, onRecordingStop, mimeType);
+        recorder.start(options)
         return recorder;
     }
     async stopRecording(recorder: Recorder) {
