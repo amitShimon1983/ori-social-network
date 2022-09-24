@@ -15,8 +15,6 @@ export interface MessageFormProps {
 const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, owners }) => {
     const { data, loading: getConversationLoading } = useGetConversation(messageThreadId);
     let ref = useRef<HTMLSpanElement>(null)
-    const { user: me } = appContextVar();
-    const defaultOwner: any = owners?.filter((owner: any) => (owner._id !== me._id));
     const [inputData, setInputData] = useState<string>();
     const [isValid, setIsValid] = useState<boolean>(false);
     const [selectedUsers, setSelectedUsers] = useState<any[]>();
@@ -24,8 +22,8 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
     const { searchContactsQuery, loading } = useSearchContacts();
     const { sendMessageMutation, } = useSendMessage();
     const isFormValid = useCallback(() => {
-        setIsValid(!!((selectedUsers?.length || owners?.filter((owner: any) => (owner._id !== me._id)).length) && inputData?.length))
-    }, [selectedUsers, inputData, owners, me._id])
+        setIsValid(!!((selectedUsers?.length || owners?.length) && inputData?.length))
+    }, [selectedUsers, inputData, owners])
     useEffect(() => {
         isFormValid();
     }, [isFormValid])
@@ -42,7 +40,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         let query = {
             variables: {
                 content: inputData,
-                recipient: selectedUsers?.[0]?._id ?? defaultOwner[0]._id,
+                recipient: selectedUsers?.[0]?._id ?? owners[0]._id,
                 parentMessageId: replyTo?._id,
                 messageThreadId,
             }
@@ -79,8 +77,8 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
     const messages = data?.getConversation?.messages;
     const handleReplyCardDismiss = (e: any) => { e.stopPropagation(); setReplyTo(undefined); }
     return (<div className={classes.container}>
-        <AutoComplete
-            defaultValue={defaultOwner}
+        {!owners.length && <AutoComplete
+            defaultValue={owners}
             renderOption={renderOption}
             onSelectHandler={(data: any) => {
                 setSelectedUsers(data);
@@ -88,7 +86,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             }}
             loading={loading}
             fetchData={fetchContactData}
-        />
+        />}
         <div className={classes.text_area}>
             {!getConversationLoading && <>
                 <SpeechBubbleList
@@ -107,7 +105,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             handleChange={handleInputChange}
             inputValue={inputData || ''}
             handleSave={handleMessageSave}
-            placeholder={'Type message'} />
+            placeholder={'Type a message'} />
     </div>);
 }
 
