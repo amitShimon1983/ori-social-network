@@ -1,22 +1,22 @@
-import { FunctionComponent, useEffect, useRef, useState } from "react";
+import { FunctionComponent } from "react";
 import { getPostDate } from "../../../services/date";
-import { isOverflow } from "../../../utils";
 import MiniMe from "../../me/MiniMe";
-import Button from "../button/Button";
+import { Counter } from "../counter";
 import { ReadMore } from "../readMore";
 
 import classes from './Card.module.css';
 interface CardProps {
-    _id: string;
     content: string;
     createdAt: string;
     user: any;
     displayButtons: boolean;
     navigateOnClick: boolean;
+    counter?: number;
 }
 
-const Card: FunctionComponent<CardProps> = ({ _id,
+const Card: FunctionComponent<CardProps> = ({
     content,
+    counter,
     createdAt,
     user,
     displayButtons,
@@ -34,9 +34,12 @@ const Card: FunctionComponent<CardProps> = ({ _id,
                 </div>
                 <div className={classes.date}> {diff}</div>
             </div>
-            <ReadMore content={content} displayButtons={displayButtons} />
+            <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                <ReadMore content={content} displayButtons={displayButtons} />
+                {!!counter && <Counter counter={counter} />}
+            </div>
         </div>
-        
+
     </div>);
 }
 
