@@ -6,7 +6,6 @@ import { useGetConversation, useSearchContacts, useSendMessage } from "../../../
 import MiniMe from "../../me/MiniMe";
 import { Hr } from "../../styles";
 import { debounce } from "@mui/material";
-import { appContextVar } from "../../../services/store";
 import { ReplyCard, SpeechBubbleList } from "..";
 export interface MessageFormProps {
     owners: { [key: string]: any }[];
@@ -43,6 +42,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
                 recipient: selectedUsers?.[0]?._id ?? owners[0]._id,
                 parentMessageId: replyTo?._id,
                 messageThreadId,
+                type: 'text'
             }
         }
         if (isValid) {
@@ -51,6 +51,13 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             setReplyTo(undefined);
         }
     }
+    const handleRecorderSave = () => ({
+        content: inputData,
+        recipient: selectedUsers?.[0]?._id ?? owners[0]._id,
+        parentMessageId: replyTo?._id,
+        messageThreadId,
+        type: 'text'
+    })
     const fetchContactData = debounce(async (value: any, setOptions: React.Dispatch<React.SetStateAction<any[]>>) => {
         if (!value || value.length < 2) {
             return [];
@@ -105,6 +112,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             handleChange={handleInputChange}
             inputValue={inputData || ''}
             handleSave={handleMessageSave}
+            handleRecorderSave={handleRecorderSave}
             placeholder={'Type a message'} />
     </div>);
 }
