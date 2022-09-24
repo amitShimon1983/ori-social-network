@@ -1,11 +1,10 @@
 import { FunctionComponent, useState } from "react";
 import { useNavigate } from "react-router";
 import { appConfig } from "../../../configuration";
-import { httpService } from "../../../services";
+import { cameraService } from "../../../services";
 import { validateEmail } from "../../../utils";
 import { CameraRoll } from "../../cameraRoll";
 import { Input, ButtonList, DatePicker, Header } from "../../shared";
-import { Hr } from "../../styles/styles";
 import classes from '../Auth.module.css';
 
 interface SignUpFormProps {
@@ -49,19 +48,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         const url = `${appConfig.serverUrl}${appConfig.signUpEndpoint}`;
-        let formData = new FormData();
-        for (let [key, val] of Object.entries(signUp)) {
-            formData.append(key, val);
-        }
-        const fileType = blob?.type?.split('/')?.[1]
-        const filename = `${Date.now()}.${fileType}`;
-        const blobFile = new File([blob!], filename);
-        formData.append('files', blobFile!);
-        formData.append('fileName', filename);
-        const res: any = await httpService.formData(url, formData);
-        if (res.status === 200) {
-            onSuccess(res.payload);
-        }
+        await cameraService.saveFile(url, blob, onSuccess, undefined, signUp);
     }
     const handleNavigateToSignIn = () => {
         navigate(`/login`)
