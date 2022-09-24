@@ -21,19 +21,20 @@ const Inbox: FunctionComponent = () => {
         setHasMore(data?.getMessageThreads?.hasMore);
     });
     const renderItem = (data: any) => {
-        return <div onClick={() => {
-            setThreadOwners(threads.find(thread => thread._id === data.messageThreadId)?.owners || [])
+        const message = data.messages[0];
+        return <div key={'render_list_item_thread_' + data._id} onClick={() => {
+            setThreadOwners(data.owners || [])
             setOpenMessageForm(true);
-            setMessageThreadId(data.messageThreadId)
+            setMessageThreadId(data._id)
         }} style={{ width: '95%', padding: '10px' }}>
             <Card
                 displayButtons={false}
-                key={data._id}
-                _id={data._id}
-                content={data.content}
-                user={data.recipient}
-                createdAt={data.createdAt}
+                key={message._id + 'render_item_card_inbox'}
+                content={message.content}
+                user={message.recipient}
+                createdAt={message.createdAt}
                 navigateOnClick={false}
+                counter={data.unreadMessages}
             />
             <Hr />
         </div>
@@ -63,7 +64,7 @@ const Inbox: FunctionComponent = () => {
         {!loading && !!threads?.length && <InfiniteScroll
             initialHasMore={hasMore}
             renderItem={renderItem}
-            initialData={threads.map(tread => tread.messages[0])}
+            initialData={threads}
             fetchMore={handleCommentFetch} />}
         {!loading && !threads?.length &&
             <div className={classes.icon_container}>

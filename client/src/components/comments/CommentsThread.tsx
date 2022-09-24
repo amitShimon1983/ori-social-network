@@ -83,7 +83,6 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
             navigateOnClick={true}
             displayButtons={true}
             key={data._id}
-            _id={data._id}
             content={data.content}
             user={data.user}
             createdAt={data.createdAt} />
