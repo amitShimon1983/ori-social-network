@@ -1,0 +1,1 @@
+export { default as MicrophoneRecorder } from './MicrophoneRecorder';

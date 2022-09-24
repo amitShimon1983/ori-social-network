@@ -1,0 +1,13 @@
+.container {
+    display: flex;
+    -webkit-transition: all .3s, -webkit-transform .3s;
+    transition: all .3s, transform .3s;
+}
+
+.container_absolute {
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    background: var(--primary);
+    position: absolute;
+}
