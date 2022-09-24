@@ -8,9 +8,16 @@ interface InputButtonProps {
     placeholder: string;
     inputValue: string;
     handleSave: (event: any) => Promise<void> | void;
-    disabled: boolean
+    disabled: boolean;
+    handleRecorderSave?: () => {
+        content: string | undefined;
+        recipient: any;
+        parentMessageId: any;
+        messageThreadId: string | undefined;
+        type: string;
+    }
 }
-const InputButtonPanel: FunctionComponent<InputButtonProps> = ({ handleChange, placeholder, inputValue, handleSave, disabled }) => {
+const InputButtonPanel: FunctionComponent<InputButtonProps> = ({ handleChange, placeholder, inputValue, handleSave, disabled, handleRecorderSave }) => {
     return <div className={classes.container}>
         <IconButton onClick={(e: any) => {
             console.log('uploading')
@@ -32,7 +39,7 @@ const InputButtonPanel: FunctionComponent<InputButtonProps> = ({ handleChange, p
         }
             : handleSave} className={`${classes.button}`} color="info" aria-label="record message" component="label">
             <TbSend />
-        </IconButton> : <MicrophoneRecorder />}
+        </IconButton> : <MicrophoneRecorder onSave={handleRecorderSave} />}
     </div>;
 }
 export default InputButtonPanel;
