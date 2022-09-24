@@ -1,5 +1,6 @@
 import { FunctionComponent, useRef, useState } from "react";
 import { useGetConversation, useGetMessageThreads } from "../../hooks";
+import { appContextVar } from "../../services/store";
 import { BackButton } from "../backButton";
 import { Drawer, Fab, FaPencilAlt, Header, ImFilesEmpty, MessageForm, Spinner } from "../shared";
 import Card from "../shared/card/Card";
@@ -7,12 +8,14 @@ import InfiniteScroll from "../shared/infiniteScrolling/InfiniteScroll";
 import { Hr } from "../styles";
 import classes from './Inbox.module.css';
 const Inbox: FunctionComponent = () => {
+    const { user: me } = appContextVar();
     const [threads, setThreads] = useState<any[]>([]);
     const [threadsOwner, setThreadOwners] = useState<any[]>([]);
     const [hasMore, setHasMore] = useState<boolean>(false);
     const [openMessageForm, setOpenMessageForm] = useState<boolean>(false);
     const [messageThreadId, setMessageThreadId] = useState<string>();
-
+    const owners: any = threadsOwner?.filter((owner: any) => (owner._id !== me._id));
+    const ownerNames = owners.map((owner: any) => owner.name)
     const { loading, fetchMore } = useGetMessageThreads((data: any) => {
         setThreads((data?.getMessageThreads?.threads || []));
         setHasMore(data?.getMessageThreads?.hasMore);
@@ -45,7 +48,7 @@ const Inbox: FunctionComponent = () => {
         }
         return { items: [], hasMore: false };
     }
-    
+
     const openMessageFormHandler = () => {
         setOpenMessageForm(true);
     }
@@ -54,7 +57,7 @@ const Inbox: FunctionComponent = () => {
         setMessageThreadId(undefined);
         setThreadOwners([])
     }
-    
+
     return (<div className={classes.container}>
         <Header label={'Inbox'} ><BackButton /></Header>
         {!loading && !!threads?.length && <InfiniteScroll
@@ -71,8 +74,8 @@ const Inbox: FunctionComponent = () => {
         <Fab onClick={openMessageFormHandler} className={`${classes.fab} ${!openMessageForm && classes.fab_show}`} color="secondary" aria-label="edit">
             <FaPencilAlt />
         </Fab>
-        <Drawer label={'New Message'} dismissHandler={closeMessageFormHandler} isOpen={openMessageForm}>
-            {openMessageForm && <MessageForm  owners={threadsOwner}  messageThreadId={messageThreadId} />}
+        <Drawer label={ownerNames.length ? ownerNames.join(',') : 'New Message'} dismissHandler={closeMessageFormHandler} isOpen={openMessageForm}>
+            {openMessageForm && <MessageForm owners={owners} messageThreadId={messageThreadId} />}
         </Drawer>
     </div>);
 }
