@@ -5,6 +5,7 @@ query GetMessageThreads($skip:Int, $limit:Int){
     getMessageThreads(args:{skip:$skip, limit:$limit}){
         threads{
             _id
+            unreadMessages
             owners{
                 _id
                 name

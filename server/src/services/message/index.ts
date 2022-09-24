@@ -22,31 +22,33 @@ class MessageService {
             { messages: { $slice: -1 } },
             { skip, limit, sort: { lastUpdated: -1 } }).populate([{
                 path: 'messages',
-                populate: {
+                populate: [{
                     path: 'recipient',
                     populate: {
                         path: 'file'
                     }
-                },
-            }, {
-                path: 'messages',
-                populate: {
+                }, {
                     path: 'sender',
                     populate: {
                         path: 'file'
                     }
-                },
-            }, {
+                }],
+            },
+            {
                 path: 'owners',
                 populate: {
                     path: 'file'
                 }
             }]).lean();
-
-
+        const threads = [];
+        for (let index = 0; index < userThreads.length; index++) {
+            const tread = userThreads[index];
+            const unReadCount = await MessageModel.count({ messageThreadId: tread._id, recipient: userId, isRead: false });
+            threads.push({ ...tread, unreadMessages: unReadCount })
+        }
         const threadCount = await MessageThreadModel.count(query);
         const hasMore = (limit || 0) + skip < threadCount;
-        return { threads: userThreads, hasMore, count: threadCount };
+        return { threads, hasMore, count: threadCount };
     }
 
     async sendMessage(messageArgs: SendMessageArgs, userId: string) {

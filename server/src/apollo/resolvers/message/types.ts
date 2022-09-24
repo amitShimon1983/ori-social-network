@@ -58,6 +58,8 @@ export class SendMessageArgs {
 export class MessageThread {
     @Field(() => String)
     _id: string;
+    @Field(() => Int)
+    unreadMessages: number;
     @Field(() => [Message], { nullable: true })
     messages: Message[];
     @Field(() => [User], { nullable: true })
