@@ -58,19 +58,24 @@ class CameraService {
     private _toBlob(photo: any, cb: (data: any) => void) {
         return photo.toBlob(cb);
     }
-    async saveFile(url: string, blob: any, onSuccess?: () => void, onError?: (error: Error) => void): Promise<void> {
+    async saveFile(url: string, blob: any, onSuccess?: (payload?: any) => void, onError?: (error: Error) => void, payload?: { [key: string]: any }): Promise<void> {
         try {
             const fileType = blob?.type?.split('/')?.[1]
             const filename = `${Date.now()}.${fileType}`;
-            const formData = new FormData();
             const blobFile = new File([blob!], filename);
+            const formData = new FormData();
+            if (payload) {
+                for (let [key, val] of Object.entries(payload)) {
+                    formData.append(key, val);
+                }
+            }
             formData.append('files', blobFile!);
             formData.append('fileName', filename);
             const res: any = await httpService.formData(url, formData);
-
-            if (typeof onSuccess === 'function') {
-                onSuccess();
+            if (typeof onSuccess === 'function' && res.status === 200) {
+                onSuccess(res.payload);
             }
+
         } catch (error: any) {
             if (typeof onError === 'function') {
                 onError(error);
