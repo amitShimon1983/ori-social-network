@@ -1,5 +1,6 @@
 import { ObjectType, Int, Field, InputType } from "type-graphql";
 import { User } from "../account/types";
+import { File } from "../post/types";
 
 @ObjectType()
 export class GetMessageThreads {
@@ -81,6 +82,10 @@ export class Message {
     recipient?: User;
     @Field(() => String)
     content: string;
+    @Field(() => String)
+    type: string;
+    @Field(() => File)
+    file?: File;
     @Field(() => String)
     createdAt: Date;
     @Field(() => String)
