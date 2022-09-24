@@ -34,9 +34,12 @@ const Card: FunctionComponent<CardProps> = ({
                 </div>
                 <div className={classes.date}> {diff}</div>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+            <div className={classes.content_container}>
                 <ReadMore content={content} displayButtons={displayButtons} />
-                {!!counter && <Counter counter={counter} />}
+                {!!counter && <span className={classes.counter_container}>
+                    <Counter counter={counter} />
+                </span>
+                }
             </div>
         </div>
 

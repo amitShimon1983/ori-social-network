@@ -1,9 +1,9 @@
 .me {
-    color: var(--me-color)
+    color: var(--primary)
 }
 
 .other {
-    color: var(--other-color)
+    color: var(--secondary)
 }
 
 .user {

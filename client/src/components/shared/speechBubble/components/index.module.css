@@ -29,7 +29,7 @@
     width: 45px;
     height: 45px;
     border-radius: 50%;
-    border: thin solid var(--other-color);
+    border: thin solid var(--secondary);
 }
 
 .details {
@@ -66,22 +66,22 @@
 }
 
 .me {
-    background-color: var(--me-color);
-    border-top-color: var(--me-color);
+    background-color: var(--primary);
+    border-top-color: var(--primary);
     margin-left: auto;
     transition: background-color .5s linear;
 
 }
 .sender_me {
-    color: var(--other-color);
+    color: var(--secondary);
 }
 
 .sender_other {
-    color: var(--me-color);
+    color: var(--primary);
 }
 .other {
-    background-color: var(--other-color);
-    border-top-color: var(--other-color);
+    background-color: var(--secondary);
+    border-top-color: var(--secondary);
     margin-right: auto;
     transition: background-color 1s linear;
 }

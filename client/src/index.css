@@ -5,8 +5,8 @@
 
 
 :root {
-  --me-color: #94BFE9;
-  --other-color: #E5E7EA;
+  --primary: #94BFE9;
+  --secondary: #E5E7EA;
   --light-background: #FFFFFF;
   --dot-background: #22303e;
   --secondary-dark-color: #677680;

@@ -5,7 +5,7 @@
 }
 
 .input_root fieldset {
-    border: 1px solid var(--other-color);
+    border: 1px solid var(--secondary);
     border-radius: 25px;
 }
 
@@ -30,6 +30,6 @@
 }
 
 .button {
-    border: 1px solid var(--other-color);
+    border: 1px solid var(--secondary);
     color: var(--primary-light);
 }

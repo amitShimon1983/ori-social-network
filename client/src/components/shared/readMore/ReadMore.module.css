@@ -21,6 +21,7 @@
     width: 100%;
     overflow-x: hidden;
     text-overflow: ellipsis;
+    flex-wrap: wrap;
     font-size: 12px;
 }
 
