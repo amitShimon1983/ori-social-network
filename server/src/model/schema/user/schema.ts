@@ -8,7 +8,8 @@ const userSchema = new Schema<IUser>({
     file: { type: Schema.Types.ObjectId, ref: 'File' },
     followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    dateOfBirth: { type: Date, required: true }
+    dateOfBirth: { type: Date, required: true },
+    lastSeen: { type: Date, required: true }
 });
 userSchema.index({ name: 'text', email: 'text' });
 const UserModel = model<IUser>('User', userSchema);

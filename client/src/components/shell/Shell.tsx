@@ -1,6 +1,7 @@
 import { useReactiveVar } from "@apollo/client";
 import { FunctionComponent } from "react";
 import { Outlet, useNavigate } from "react-router";
+import { useUpdateUserStatus } from "../../hooks";
 import { authService } from "../../services";
 import { appContextVar } from "../../services/store";
 import { AiOutlineLogout, FcHome, CgProfile, AiOutlineCloudUpload, Toolbar, FiInbox } from "../shared";
@@ -10,6 +11,7 @@ interface ShellProps {
 }
 const Shell: FunctionComponent<ShellProps> = () => {
     const { isAuthenticate } = useReactiveVar(appContextVar);
+    useUpdateUserStatus();
     const navigate = useNavigate();
     const handleNavigate = (path: string) => {
         navigate(path)

@@ -7,4 +7,5 @@ export interface IUser {
     followers?: string[];
     following?: string[];
     dateOfBirth: Date;
+    lastSeen: Date;
 }
