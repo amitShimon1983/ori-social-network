@@ -10,3 +10,4 @@ export { useGetMessageThreads } from './useGetMessageThreads';
 export { useSendMessage } from './useSendMessage';
 export { useGetConversation } from './useGetConversation';
 export { useUpdateMessage } from './useUpdateMessage';
+export { useUpdateUserStatus } from './useUpdateUserStatus';

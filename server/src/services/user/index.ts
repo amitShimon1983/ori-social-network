@@ -3,6 +3,7 @@ import { User } from "../../apollo/resolvers/account/types";
 import { UserModel } from "../../model";
 
 export class UserService {
+
     private static instance: UserService;
     static getInstance() {
         if (!UserService.instance) {
@@ -16,7 +17,12 @@ export class UserService {
             email
         }).populate('file').lean()
     }
-
+    async updateUserConnectionStatus(_id: string) {
+        return await UserModel.findOneAndUpdate({ _id }, { lastSeen: new Date() }, {
+            new: true,
+            upsert: true
+        })
+    }
     async findOne(userId: string) {
         return await UserModel.findOne({
             _id: new Types.ObjectId(userId),

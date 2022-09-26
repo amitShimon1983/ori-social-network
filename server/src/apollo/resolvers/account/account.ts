@@ -66,4 +66,10 @@ export class AccountResolver {
         if (queryString) { return userService.searchContacts(user, queryString); }
         return []
     }
+
+    @Mutation(() => Boolean)
+    async updateUserStatus(@Ctx() context: any): Promise<boolean> {
+        await userService.updateUserConnectionStatus(context.user._id)
+        return true
+    }
 }
