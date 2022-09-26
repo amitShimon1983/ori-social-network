@@ -2,6 +2,7 @@ import { FunctionComponent, useState } from "react";
 import { useGetMessageThreads } from "../../hooks";
 import { appContextVar } from "../../services/store";
 import { BackButton } from "../backButton";
+import MiniMe from "../me/MiniMe";
 import { Drawer, Fab, FaPencilAlt, Header, ImFilesEmpty, MessageForm, Spinner } from "../shared";
 import Card from "../shared/card/Card";
 import InfiniteScroll from "../shared/infiniteScrolling/InfiniteScroll";
@@ -75,7 +76,7 @@ const Inbox: FunctionComponent = () => {
         <Fab onClick={openMessageFormHandler} className={`${classes.fab} ${!openMessageForm && classes.fab_show}`} color="secondary" aria-label="edit">
             <FaPencilAlt />
         </Fab>
-        <Drawer label={ownerNames.length ? ownerNames.join(',') : 'New Message'} dismissHandler={closeMessageFormHandler} isOpen={openMessageForm}>
+        <Drawer headerStyles={{ container: classes.drawer_header_container, header: classes.drawer_header_header }} label={ownerNames.length ? <div style={{ marginBottom: '10px', marginTop: '10px', width: '100%', paddingLeft: '10px' }}><MiniMe displayEmailAddress={true} user={owners[0]} displaySpinner={false} navigateOnClick={false} /></div> : 'New Message'} dismissHandler={closeMessageFormHandler} isOpen={openMessageForm}>
             {openMessageForm && <MessageForm owners={owners} messageThreadId={messageThreadId} />}
         </Drawer>
     </div>);
