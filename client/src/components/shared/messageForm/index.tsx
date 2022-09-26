@@ -16,7 +16,6 @@ export interface MessageFormProps {
 }
 const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, owners }) => {
     const { data, loading: getConversationLoading } = useGetConversation(messageThreadId);
-    let ref = useRef<HTMLSpanElement>(null);
     const [inputData, setInputData] = useState<string>();
     const [isValid, setIsValid] = useState<boolean>(false);
     const [displayCamera, setDisplayCamera] = useState<boolean>(false);
@@ -30,11 +29,6 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
     useEffect(() => {
         isFormValid();
     }, [isFormValid])
-    useEffect(() => {
-        setTimeout(() => {
-            ref?.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'end' });
-        }, 100)
-    }, [data?.getConversation.messages?.length])
     const handleInputChange = ({ target }: { target: any }) => {
         setInputData(target.value);
     }
@@ -88,30 +82,33 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         </li>
         );
     };
+    const onVideoSave = (blob: Blob) => {
+        handleRecorderSave(blob, 'video')
+        setDisplayCamera(false)
+    }
     const messages = data?.getConversation?.messages;
     const handleReplyCardDismiss = (e: any) => { e.stopPropagation(); setReplyTo(undefined); }
+    const onSelectHandler = (data: any) => {
+        setSelectedUsers(data);
+        isFormValid();
+    };
+    const onItemClick: (item: any) => void | Promise<void> = (item) => {
+        setReplyTo(item);
+    };
     return (<div className={classes.container}>
-        {displayCamera && <CameraRoll onSave={(b) => {
-            handleRecorderSave(b, 'video')
-        }} />}
+        {displayCamera && <CameraRoll onSave={onVideoSave} />}
         {!owners.length && <AutoComplete
             defaultValue={owners}
             renderOption={renderOption}
-            onSelectHandler={(data: any) => {
-                setSelectedUsers(data);
-                isFormValid();
-            }}
+            onSelectHandler={onSelectHandler}
             loading={loading}
             fetchData={fetchContactData}
         />}
         <div className={classes.text_area}>
             {!getConversationLoading && <>
                 <SpeechBubbleList
-                    ref={ref}
                     items={messages}
-                    onItemClick={(item) => {
-                        setReplyTo(item);
-                    }} />
+                    onItemClick={onItemClick} />
                 <ReplyCard display={!!replyTo} creator={replyTo?.sender} content={replyTo?.content} handleDismiss={handleReplyCardDismiss} />
             </>
             }
