@@ -4,6 +4,7 @@ const GET_USER = gql`
         getUser(args: { userId: $userId }){
             _id
             name
+            lastSeen
             email
             file {
                 _id

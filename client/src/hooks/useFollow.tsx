@@ -5,6 +5,7 @@ const FOLLOW = gql`
             _id
             name
             email
+            lastSeen
             file {
                 _id
                 originalname

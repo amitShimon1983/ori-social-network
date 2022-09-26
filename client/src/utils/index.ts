@@ -9,3 +9,7 @@ export const validateEmail = (email: string) => {
 export const isOverflow = (element: any) => {
     return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
 }
+
+export const addMinutes = (minutes: number) => {
+    return new Date(new Date().getTime() + (minutes * 60000));
+}

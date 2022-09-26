@@ -10,6 +10,7 @@ query GetMessageThreads($skip:Int, $limit:Int){
                 _id
                 name
                 email
+                lastSeen
                 file {
                     _id
                     originalname
@@ -22,6 +23,7 @@ query GetMessageThreads($skip:Int, $limit:Int){
                 _id
                 name
                 email
+                lastSeen
                 file {
                     _id
                     originalname

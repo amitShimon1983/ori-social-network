@@ -1,11 +1,12 @@
 .container {
-    bottom: 0; 
+    bottom: 0;
     position: absolute;
     -webkit-transition: all .3s, -webkit-transform .3s;
     transition: all .3s, transform .3s;
     height: 100%;
     width: 100%;
     background: var(--light-background);
+    z-index: 1;
 }
 
 .container_close {

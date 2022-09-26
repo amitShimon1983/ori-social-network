@@ -9,6 +9,7 @@ mutation SendMessage($type: String, $recipient:String, $content:String, $parentM
             _id
             name
             email
+            lastSeen
             file {
                 _id
                 originalname
@@ -18,6 +19,7 @@ mutation SendMessage($type: String, $recipient:String, $content:String, $parentM
             _id
             name
             email
+            lastSeen
             file {
                 _id
                 originalname

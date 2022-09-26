@@ -65,15 +65,25 @@ const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments,
     }
     return (
         <ToolbarButton actions={[
-            { icon: <Me displayEmailAddress={true}  navigateOnClick={true} displaySpinner={false} user={creator} styles={{ emailClassName: classes.me_email, imageClass: classes.me_image, containerClassName: classes.me_container }} />, name: 'Avatar' },
+            { icon: <Me displayEmailAddress={true} navigateOnClick={true} displaySpinner={false} user={creator} styles={{ emailClassName: classes.me_email, imageClass: classes.me_image, containerClassName: classes.me_container }} />, name: 'Avatar' },
             {
-                icon: <Badge max={99} count={comments?.length || 0}>
+                icon: <Badge
+                    color={'default'}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }} style={{ position: 'absolute', top: '5px' }} max={99} count={comments?.length || 0}>
                     <FaRegComments className={classes.icon} onClick={onCommentClick} />
                 </Badge>,
                 name: 'Comments'
             },
             {
-                icon: <Badge max={99} count={internalLikes?.length || 0}>
+                icon: <Badge
+                    color={'default'}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }} style={{ position: 'absolute', top: '5px' }} max={99} count={internalLikes?.length || 0}>
                     <FcLike onClick={onLikeClick} className={`${classes.icon} ${styles?.icon} ${iLikeIt ? classes.like_icon_selected : classes.like_icon_not_selected}`} />
                 </Badge>,
                 name: 'Liks'

@@ -8,6 +8,7 @@ mutation CommentPost($postId: String, $content: String, $commentId: String){
             _id
             name
             email
+            lastSeen
             file {
                 _id
               originalname

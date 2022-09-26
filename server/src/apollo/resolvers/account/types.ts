@@ -14,6 +14,8 @@ export class User {
     followers: string[]
     @Field(() => [String])
     following: string[]
+    @Field(() => String, { nullable: true })
+    lastSeen?: Date;
 }
 
 @InputType()

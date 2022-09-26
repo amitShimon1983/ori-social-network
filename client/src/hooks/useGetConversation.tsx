@@ -18,6 +18,7 @@ query GetConversation($messageThreadId:String, $skip:Int, $limit:Int){
                     _id
                     name
                     email
+                    lastSeen
                     file {
                         _id
                         originalname
@@ -28,6 +29,7 @@ query GetConversation($messageThreadId:String, $skip:Int, $limit:Int){
                 _id
                 name
                 email
+                lastSeen
                 file {
                     _id
                     originalname
@@ -37,6 +39,7 @@ query GetConversation($messageThreadId:String, $skip:Int, $limit:Int){
                 _id
                 name
                 email
+                lastSeen
                 file {
                     _id
                     originalname

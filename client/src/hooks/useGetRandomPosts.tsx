@@ -11,6 +11,7 @@ const GET_RANDOM_POSTS = gql`
                 _id
                 name
                 email
+                lastSeen
                 file {
                     _id
                   originalname

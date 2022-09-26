@@ -3,7 +3,8 @@ import { useNavigate } from "react-router";
 import { appConfig } from "../../configuration";
 import { httpService } from "../../services";
 import { appContextVar } from "../../services/store";
-import { Spinner } from "../shared";
+import { addMinutes } from "../../utils";
+import { Badge, Spinner } from "../shared";
 import { Video } from "../video";
 import classes from './Me.module.css';
 
@@ -36,14 +37,20 @@ const Me: FunctionComponent<MeProps> = ({ displayEmailAddress, user, styles, dis
         loadFile();
     }, [user.file.originalname, displaySpinner])
     const isVideo = type?.trim()?.toLowerCase()?.includes('video');
+    const isOnline = !!user.lastSeen && new Date(+user.lastSeen) > addMinutes(-5);
     return (<>
         <div className={`${classes.container} ${styles?.containerClassName}`}>
-            {url && isVideo && <div className={styles?.imageClass}>
-                <Video videoClassName={classes.video} type={type} link={url} />
-            </div>
-            }
             {loading && <Spinner label={'Loading'} />}
-            {url && !isVideo && <img className={styles?.imageClass} src={url} alt={'profilePicture'} />}
+            <Badge overlap="circular" variant="dot" anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+            }} color={isOnline ? "success" : 'error'} count=" " >
+                {url && isVideo && <div className={styles?.imageClass}>
+                    <Video videoClassName={classes.video} type={type} link={url} />
+                </div>
+                }
+                {url && !isVideo && <img className={styles?.imageClass} src={url} alt={'profilePicture'} />}
+            </Badge>
             {displayEmailAddress && <p onClick={navigateOnClick ? handleNavigateToUser : () => { }} className={`${classes.email} ${styles?.emailClassName}`}>{isMe && label ? label : user?.email}</p>}
         </div>
     </>
