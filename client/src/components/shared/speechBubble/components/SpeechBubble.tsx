@@ -46,7 +46,8 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
             } className={classes.details}>
                 <UserDetails className={`${isMe ? classes.sender_me : classes.sender_other}`} user={sender} />
                 {(!type || type === 'text') && <ReadMore content={content} displayButtons={true} />}
-                {(!!type && type !== 'text') && <MediaCard message={message} isMe={isMe} />}
+                {(!!type && type === 'audio') && <MediaCard type={type} message={message} isMe={isMe} />}
+                {(!!type && type === 'video') && <MediaCard type={type} message={message} isMe={isMe} />}
                 <div className={classes.footer}>
                     <span className={classes.time_stamp}>
                         {diff}

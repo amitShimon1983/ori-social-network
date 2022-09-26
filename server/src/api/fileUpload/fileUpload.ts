@@ -25,8 +25,7 @@ router.post('/uploadMessage', upload.array("files"), async (req: Request, res: R
             const dbFiles = await fileService.saveAll(files as Express.Multer.File[]);
             const messageArgs = {
                 ...req.body,
-                type: 'audio',
-                content: 'Audio',
+                content: req.body.type.charAt(0).toUpperCase() + req.body.type.slice(1),
             }
             const dbMessage = await messageService.sendMessage(messageArgs, user._id);
             if (dbMessage?._id) {

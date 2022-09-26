@@ -9,19 +9,12 @@ interface InputButtonProps {
     inputValue: string;
     handleSave: (event: any) => Promise<void> | void;
     disabled: boolean;
-    handleRecorderSave?: () => {
-        content: string | undefined;
-        recipient: any;
-        parentMessageId: any;
-        messageThreadId: string | undefined;
-        type: string;
-    }
+    handleRecorderSave?: (blob: Blob, type: string) => void | Promise<void>;
+    handleDisplayCamera?: () => Promise<void> | void
 }
-const InputButtonPanel: FunctionComponent<InputButtonProps> = ({ handleChange, placeholder, inputValue, handleSave, disabled, handleRecorderSave }) => {
+const InputButtonPanel: FunctionComponent<InputButtonProps> = ({ handleDisplayCamera, handleChange, placeholder, inputValue, handleSave, disabled, handleRecorderSave }) => {
     return <div className={classes.container}>
-        <IconButton onClick={(e: any) => {
-            console.log('uploading')
-        }} className={classes.button} color="info" aria-label="upload picture" component="label">
+        <IconButton onClick={handleDisplayCamera} className={classes.button} color="info" aria-label="upload picture" component="label">
             <AiOutlineCamera />
         </IconButton>
         <Input handleChange={handleChange}

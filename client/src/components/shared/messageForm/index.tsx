@@ -7,15 +7,19 @@ import MiniMe from "../../me/MiniMe";
 import { Hr } from "../../styles";
 import { debounce } from "@mui/material";
 import { ReplyCard, SpeechBubbleList } from "..";
+import { appConfig } from "../../../configuration";
+import { cameraService } from "../../../services";
+import { CameraRoll } from "../../cameraRoll";
 export interface MessageFormProps {
     owners: { [key: string]: any }[];
     messageThreadId?: string;
 }
 const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, owners }) => {
     const { data, loading: getConversationLoading } = useGetConversation(messageThreadId);
-    let ref = useRef<HTMLSpanElement>(null)
+    let ref = useRef<HTMLSpanElement>(null);
     const [inputData, setInputData] = useState<string>();
     const [isValid, setIsValid] = useState<boolean>(false);
+    const [displayCamera, setDisplayCamera] = useState<boolean>(false);
     const [selectedUsers, setSelectedUsers] = useState<any[]>();
     const [replyTo, setReplyTo] = useState<any>();
     const { searchContactsQuery, loading } = useSearchContacts();
@@ -51,13 +55,16 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             setReplyTo(undefined);
         }
     }
-    const handleRecorderSave = () => ({
-        content: inputData,
-        recipient: selectedUsers?.[0]?._id ?? owners[0]._id,
-        parentMessageId: replyTo?._id,
-        messageThreadId,
-        type: 'text'
-    })
+    const handleRecorderSave = async (blob: any, type: string) => {
+        const url = `${appConfig.serverUrl}${appConfig.uploadMessageEndpoint}`;
+        await cameraService.saveFile(url, blob, undefined, undefined, {
+            content: inputData,
+            recipient: selectedUsers?.[0]?._id ?? owners[0]._id,
+            parentMessageId: replyTo?._id,
+            messageThreadId,
+            type,
+        });
+    }
     const fetchContactData = debounce(async (value: any, setOptions: React.Dispatch<React.SetStateAction<any[]>>) => {
         if (!value || value.length < 2) {
             return [];
@@ -84,6 +91,9 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
     const messages = data?.getConversation?.messages;
     const handleReplyCardDismiss = (e: any) => { e.stopPropagation(); setReplyTo(undefined); }
     return (<div className={classes.container}>
+        {displayCamera && <CameraRoll onSave={(b) => {
+            handleRecorderSave(b, 'video')
+        }} />}
         {!owners.length && <AutoComplete
             defaultValue={owners}
             renderOption={renderOption}
@@ -108,6 +118,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             {getConversationLoading && <Spinner />}
         </div>
         <InputButtonPanel
+            handleDisplayCamera={() => setDisplayCamera(prev => (!prev))}
             disabled={!isValid}
             handleChange={handleInputChange}
             inputValue={inputData || ''}
