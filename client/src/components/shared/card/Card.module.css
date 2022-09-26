@@ -29,8 +29,9 @@
     margin-left: auto;
     display: flex;
     align-items: center;
+    font-size: 12px;
 }
 
 .mini_me_container {
-    width: 70%;
+    min-width: 50%;
 }

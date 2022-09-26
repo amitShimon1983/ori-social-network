@@ -1,0 +1,13 @@
+.audio {
+    width: 95%;
+}
+
+.me::-webkit-media-controls-panel {
+    background: var(--secondary);
+    color: aliceblue;
+}
+
+.other::-webkit-media-controls-panel {
+    background: var(--primary);
+    color: aliceblue;
+}
