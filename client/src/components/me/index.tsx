@@ -16,6 +16,7 @@ export interface MeProps {
     displayEmailAddress: boolean;
     navigateOnClick: boolean;
 }
+const userStatusStyles = { '.MuiBadge-badge': { width: 12, height: 12, borderRadius: '50%' } }
 const filesUri = `${appConfig.serverUrl}${'/api/file/post/'}`
 const Me: FunctionComponent<MeProps> = ({ displayEmailAddress, user, styles, displaySpinner, navigateOnClick, label }) => {
     const [url, setUrl] = useState<string>('');
@@ -41,7 +42,7 @@ const Me: FunctionComponent<MeProps> = ({ displayEmailAddress, user, styles, dis
     return (<>
         <div className={`${classes.container} ${styles?.containerClassName}`}>
             {loading && <Spinner label={'Loading'} />}
-            <Badge overlap="circular" variant="dot" anchorOrigin={{
+            <Badge sx={userStatusStyles} overlap="circular" variant="dot" anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'right',
             }} color={isOnline ? "success" : 'error'} count=" " >
