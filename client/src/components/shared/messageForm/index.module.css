@@ -4,7 +4,7 @@
     padding: 2.5% 10px;
     padding-bottom: 0;
     width: 95%;
-    height: 92%;
+    height: 90%;
 }
 
 .me_container {
@@ -15,7 +15,6 @@
 .text_area {
     position: relative;
     padding-bottom: 0;
-    margin-top: 10px;
     margin-bottom: 10px;
     border-radius: 4px;
     height: 75%;
