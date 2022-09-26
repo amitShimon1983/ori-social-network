@@ -1,8 +1,6 @@
 import { forwardRef, ForwardRefExoticComponent } from "react";
-import { CardMedia } from "../..";
-import { appConfig } from "../../../../configuration";
 import SpeechBubble from "./SpeechBubble";
-
+import classes from './index.module.css';
 interface SpeechBubbleListProps {
     items: any[];
     onItemClick: (item: any) => void | Promise<void>
@@ -13,22 +11,14 @@ const SpeechBubbleList: ForwardRefExoticComponent<SpeechBubbleListProps & React.
         {items?.map((item: any, idx: number) => {
             const isLast = idx === items?.length - 1;
             return <span
-                style={{ padding: 16, width: '100%' }}
+                className={classes.speech_container}
                 key={`SpeechBubble_${item._id}_item_Form_ref`}
             >
-                {item.type === 'text' ? < SpeechBubble
-                    onClickHandler={() => {
-                        onItemClick(item);
-                    }}
+                <SpeechBubble
+                    onClickHandler={onItemClick}
                     key={`SpeechBubble_${item._id}_item_Form`}
                     message={item}
-                /> : <CardMedia src={`${appConfig.serverUrl}${'/api/file/post/'}${item?.file?.originalname}`}>
-                    <audio controls>
-                        <source src={`${appConfig.serverUrl}${'/api/file/post/'}${item?.file?.originalname}`} type="audio/webm" />
-                        <source src={`${appConfig.serverUrl}${'/api/file/post/'}${item?.file?.originalname}`} type="audio/mpeg" />
-                        Your browser does not support the audio tag.
-                    </audio>
-                </CardMedia>}
+                />
                 {isLast && <span ref={ref}></span>}
             </span>
         })}</>);

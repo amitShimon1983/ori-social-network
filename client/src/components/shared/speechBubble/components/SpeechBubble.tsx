@@ -1,4 +1,5 @@
 import { FunctionComponent, useEffect } from "react";
+import { MediaCard } from "../..";
 import { useUpdateMessage } from "../../../../hooks";
 import { getPostDate } from "../../../../services/date";
 import { appContextVar } from "../../../../services/store";
@@ -10,11 +11,11 @@ import { UserDetails } from "../../userDetail";
 import classes from './index.module.css';
 interface SpeechBubbleProps {
     message: { [key: string]: any }
-    onClickHandler: (e: any) => void | Promise<void>;
+    onClickHandler: (message: any) => void | Promise<void>;
 }
 
 const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, message }) => {
-    const { content, sender, createdAt, isRead } = message;
+    const { content, sender, createdAt, isRead, type } = message;
     const { user: me } = appContextVar();
     const isMe = me._id === sender._id
     const { updateMessage } = useUpdateMessage();
@@ -38,10 +39,14 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
             <div style={{ width: '100%' }} onClick={handleClick}>
                 {message?.parentMessageId && <MessagePreview creator={message?.parentMessageId?.sender} content={message.parentMessageId.content} />}
             </div>
-            <div onClick={(e) => { e.stopPropagation(); onClickHandler(e); }
+            <div onClick={(e) => {
+                e.stopPropagation();
+                onClickHandler(message);
+            }
             } className={classes.details}>
                 <UserDetails className={`${isMe ? classes.sender_me : classes.sender_other}`} user={sender} />
-                <ReadMore content={content} displayButtons={true} />
+                {(!type || type === 'text') && <ReadMore content={content} displayButtons={true} />}
+                {(!!type && type !== 'text') && <MediaCard message={message} isMe={isMe} />}
                 <div className={classes.footer}>
                     <span className={classes.time_stamp}>
                         {diff}
@@ -52,10 +57,12 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
                 </div>
             </div>
         </div>
-        {!isMe && <MiniMe styles={{
-            imageClass: classes.image
-        }} displayEmailAddress={false} navigateOnClick={false} user={sender} displaySpinner={false} />}
-    </div>);
+        {
+            !isMe && <MiniMe styles={{
+                imageClass: classes.image
+            }} displayEmailAddress={false} navigateOnClick={false} user={sender} displaySpinner={false} />
+        }
+    </div >);
 }
 
 export default SpeechBubble;

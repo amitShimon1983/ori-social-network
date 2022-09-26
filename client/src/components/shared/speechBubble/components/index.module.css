@@ -31,7 +31,7 @@
     border-radius: 50%;
     border: thin solid var(--secondary);
 }
-
+.speech_container{ padding: 16px; width: 100%; }
 .details {
     display: flex;
     flex-direction: column;
