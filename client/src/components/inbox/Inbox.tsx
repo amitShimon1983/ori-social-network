@@ -11,20 +11,21 @@ import classes from './Inbox.module.css';
 const Inbox: FunctionComponent = () => {
     const { user: me } = appContextVar();
     const [threads, setThreads] = useState<any[]>([]);
-    const [threadsOwner, setThreadOwners] = useState<any[]>([]);
+    const [threadOwners, setThreadOwners] = useState<any[]>([]);
     const [hasMore, setHasMore] = useState<boolean>(false);
     const [openMessageForm, setOpenMessageForm] = useState<boolean>(false);
     const [messageThreadId, setMessageThreadId] = useState<string>();
-    const owners: any = threadsOwner?.filter((owner: any) => (owner._id !== me._id));
-    const ownerNames = owners.map((owner: any) => owner.name)
+    const ownerNames = threadOwners.map((owner: any) => owner.name)
     const { loading, fetchMore } = useGetMessageThreads((data: any) => {
         setThreads((data?.getMessageThreads?.threads || []));
         setHasMore(data?.getMessageThreads?.hasMore);
     });
+
     const renderItem = (data: any) => {
         const message = data.messages[0];
+        const tOwners = data.owners.filter((owner: any) => (owner._id !== me._id));
         return <div key={'render_list_item_thread_' + data._id} onClick={() => {
-            setThreadOwners(data.owners || [])
+            setThreadOwners(tOwners || [])
             setOpenMessageForm(true);
             setMessageThreadId(data._id)
         }} style={{ width: '95%', padding: '10px' }}>
@@ -32,7 +33,7 @@ const Inbox: FunctionComponent = () => {
                 displayButtons={false}
                 key={message._id + 'render_item_card_inbox'}
                 content={message.content}
-                user={message.sender}
+                user={tOwners[0]}
                 createdAt={message.createdAt}
                 navigateOnClick={false}
                 counter={data.unreadMessages}
@@ -76,8 +77,8 @@ const Inbox: FunctionComponent = () => {
         <Fab onClick={openMessageFormHandler} className={`${classes.fab} ${!openMessageForm && classes.fab_show}`} color="secondary" aria-label="edit">
             <FaPencilAlt />
         </Fab>
-        <Drawer headerStyles={{ container: classes.drawer_header_container, header: classes.drawer_header_header }} label={ownerNames.length ? <div style={{ marginBottom: '10px', marginTop: '10px', width: '100%', paddingLeft: '10px' }}><MiniMe displayEmailAddress={true} user={owners[0]} displaySpinner={false} navigateOnClick={false} /></div> : 'New Message'} dismissHandler={closeMessageFormHandler} isOpen={openMessageForm}>
-            {openMessageForm && <MessageForm owners={owners} messageThreadId={messageThreadId} />}
+        <Drawer headerStyles={{ container: classes.drawer_header_container, header: classes.drawer_header_header }} label={ownerNames.length ? <div style={{ marginBottom: '10px', marginTop: '10px', width: '100%', paddingLeft: '10px' }}><MiniMe displayEmailAddress={true} user={threadOwners[0]} displaySpinner={false} navigateOnClick={false} /></div> : 'New Message'} dismissHandler={closeMessageFormHandler} isOpen={openMessageForm}>
+            {openMessageForm && <MessageForm owners={threadOwners} messageThreadId={messageThreadId} />}
         </Drawer>
     </div>);
 }
