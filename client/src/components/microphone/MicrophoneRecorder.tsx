@@ -1,11 +1,10 @@
 import { IconButton } from "@mui/material";
 import { FunctionComponent, useState } from "react";
 import { FaMicrophoneAlt, FaMicrophoneAltSlash, AiOutlineCloudUpload, FcCancel, BsStopCircle } from "..";
-import { appConfig } from "../../configuration";
 import { cameraService, Recorder } from "../../services";
 import classes from './MicrophoneRecorder.module.css';
 interface MicrophoneRecorderProps {
-    onSave?: () => Promise<any> | any
+    onSave?: (blob: Blob, type: string) => Promise<any> | any
 }
 
 const MicrophoneRecorder: FunctionComponent<MicrophoneRecorderProps> = ({ onSave }) => {
@@ -31,11 +30,8 @@ const MicrophoneRecorder: FunctionComponent<MicrophoneRecorderProps> = ({ onSave
     }
 
     const handleSave = async () => {
-        const url = `${appConfig.serverUrl}${appConfig.uploadMessageEndpoint}`;
-        console.log(blob);
-        if (typeof onSave === 'function') {
-            const payload = await onSave();
-            await cameraService.saveFile(url, blob, undefined, undefined, { ...payload, type: 'audio' });
+        if (typeof onSave === 'function' && blob) {
+            onSave(blob, 'audio');
             setIsRecording(false);
             setBlob(undefined);
         }
