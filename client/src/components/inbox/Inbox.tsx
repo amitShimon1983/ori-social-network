@@ -1,5 +1,5 @@
-import { FunctionComponent, useRef, useState } from "react";
-import { useGetConversation, useGetMessageThreads } from "../../hooks";
+import { FunctionComponent, useState } from "react";
+import { useGetMessageThreads } from "../../hooks";
 import { appContextVar } from "../../services/store";
 import { BackButton } from "../backButton";
 import { Drawer, Fab, FaPencilAlt, Header, ImFilesEmpty, MessageForm, Spinner } from "../shared";
@@ -31,7 +31,7 @@ const Inbox: FunctionComponent = () => {
                 displayButtons={false}
                 key={message._id + 'render_item_card_inbox'}
                 content={message.content}
-                user={message.recipient}
+                user={message.sender}
                 createdAt={message.createdAt}
                 navigateOnClick={false}
                 counter={data.unreadMessages}
