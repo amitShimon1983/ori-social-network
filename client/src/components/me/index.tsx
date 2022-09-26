@@ -2,6 +2,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { appConfig } from "../../configuration";
 import { httpService } from "../../services";
+import { appContextVar } from "../../services/store";
 import { Spinner } from "../shared";
 import { Video } from "../video";
 import classes from './Me.module.css';
@@ -17,6 +18,8 @@ const filesUri = `${appConfig.serverUrl}${'/api/file/post/'}`
 const Me: FunctionComponent<MeProps> = ({ displayEmailAddress, user, styles, displaySpinner, navigateOnClick }) => {
     const [url, setUrl] = useState<string>('');
     const [type, setType] = useState<string>('');
+    const { user: me } = appContextVar();
+    const isMe = me._id === user?._id
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
     const handleNavigateToUser = () => navigate(`/other/${user._id}`);
@@ -40,7 +43,7 @@ const Me: FunctionComponent<MeProps> = ({ displayEmailAddress, user, styles, dis
             }
             {loading && <Spinner label={'Loading'} />}
             {url && !isVideo && <img className={styles?.imageClass} src={url} alt={'profilePicture'} />}
-            {displayEmailAddress && <p onClick={navigateOnClick ? handleNavigateToUser : () => { }} className={`${classes.email} ${styles?.emailClassName}`}>{user?.email}</p>}
+            {displayEmailAddress && <p onClick={navigateOnClick ? handleNavigateToUser : () => { }} className={`${classes.email} ${styles?.emailClassName}`}>{isMe ? 'You' : user?.email}</p>}
         </div>
     </>
     );
