@@ -12,9 +12,22 @@
     background: var(--secondary);
     text-transform: none;
 }
+
 .drawer_header_header {
     background: var(--secondary);
     text-transform: none;
+}
+
+.mini_me {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    width: 100%;
+    padding-left: 10px;
+}
+
+.card_container {
+    width: 95%;
+    padding: 10px;
 }
 
 .container {

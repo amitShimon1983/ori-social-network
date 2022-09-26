@@ -28,7 +28,7 @@ const Inbox: FunctionComponent = () => {
             setThreadOwners(tOwners || [])
             setOpenMessageForm(true);
             setMessageThreadId(data._id)
-        }} style={{ width: '95%', padding: '10px' }}>
+        }} className={classes.card_container}>
             <Card
                 displayButtons={false}
                 key={message._id + 'render_item_card_inbox'}
@@ -77,7 +77,7 @@ const Inbox: FunctionComponent = () => {
         <Fab onClick={openMessageFormHandler} className={`${classes.fab} ${!openMessageForm && classes.fab_show}`} color="secondary" aria-label="edit">
             <FaPencilAlt />
         </Fab>
-        <Drawer headerStyles={{ container: classes.drawer_header_container, header: classes.drawer_header_header }} label={ownerNames.length ? <div style={{ marginBottom: '10px', marginTop: '10px', width: '100%', paddingLeft: '10px' }}><MiniMe displayEmailAddress={true} user={threadOwners[0]} displaySpinner={false} navigateOnClick={false} /></div> : 'New Message'} dismissHandler={closeMessageFormHandler} isOpen={openMessageForm}>
+        <Drawer headerStyles={{ container: classes.drawer_header_container, header: classes.drawer_header_header }} label={ownerNames.length ? <div className={classes.mini_me}><MiniMe displayEmailAddress={true} user={threadOwners[0]} displaySpinner={false} navigateOnClick={false} /></div> : 'New Message'} dismissHandler={closeMessageFormHandler} isOpen={openMessageForm}>
             {openMessageForm && <MessageForm owners={threadOwners} messageThreadId={messageThreadId} />}
         </Drawer>
     </div>);

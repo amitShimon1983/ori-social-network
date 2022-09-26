@@ -18,7 +18,7 @@ interface VideoFooterProps {
         icon?: string;
     }
 }
-
+const badgeStyle = { position: 'absolute', top: '5px' };
 const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments, postId, styles, creator }) => {
     const [internalLikes, setLikes] = useState<any[]>([]);
     const { likePostMutation } = useLikePost();
@@ -72,7 +72,7 @@ const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments,
                     anchorOrigin={{
                         vertical: 'bottom',
                         horizontal: 'left',
-                    }} style={{ position: 'absolute', top: '5px' }} max={99} count={comments?.length || 0}>
+                    }} style={badgeStyle} max={99} count={comments?.length || 0}>
                     <FaRegComments className={classes.icon} onClick={onCommentClick} />
                 </Badge>,
                 name: 'Comments'
@@ -83,7 +83,7 @@ const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments,
                     anchorOrigin={{
                         vertical: 'bottom',
                         horizontal: 'left',
-                    }} style={{ position: 'absolute', top: '5px' }} max={99} count={internalLikes?.length || 0}>
+                    }} style={badgeStyle} max={99} count={internalLikes?.length || 0}>
                     <FcLike onClick={onLikeClick} className={`${classes.icon} ${styles?.icon} ${iLikeIt ? classes.like_icon_selected : classes.like_icon_not_selected}`} />
                 </Badge>,
                 name: 'Liks'

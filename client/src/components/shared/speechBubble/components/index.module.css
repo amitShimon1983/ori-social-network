@@ -24,14 +24,22 @@
 
 .image {
     box-shadow: var(--box-shadow);
-    ;
     border: none;
     width: 45px;
     height: 45px;
     border-radius: 50%;
     border: thin solid var(--secondary);
 }
-.speech_container{ padding: 16px; width: 100%; }
+
+.message_container {
+    width: 100%;
+}
+
+.speech_container {
+    padding: 16px;
+    width: 100%;
+}
+
 .details {
     display: flex;
     flex-direction: column;
@@ -72,6 +80,7 @@
     transition: background-color .5s linear;
 
 }
+
 .sender_me {
     color: var(--secondary);
 }
@@ -79,6 +88,7 @@
 .sender_other {
     color: var(--primary);
 }
+
 .other {
     background-color: var(--secondary);
     border-top-color: var(--secondary);

@@ -36,7 +36,7 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
     }
     return (<div className={classes.container}>
         <div id={message._id} className={`${isMe ? classes.speech_bubble_me : classes.speech_bubble_other} ${isMe ? classes.me : classes.other}`}>
-            <div style={{ width: '100%' }} onClick={handleClick}>
+            <div className={classes.message_container} onClick={handleClick}>
                 {message?.parentMessageId && <MessagePreview creator={message?.parentMessageId?.sender} content={message.parentMessageId.content} />}
             </div>
             <div onClick={(e) => {
