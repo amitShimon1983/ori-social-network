@@ -35,7 +35,6 @@ const MicrophoneRecorder: FunctionComponent<MicrophoneRecorderProps> = ({ onSave
         console.log(blob);
         if (typeof onSave === 'function') {
             const payload = await onSave();
-            debugger
             await cameraService.saveFile(url, blob, undefined, undefined, { ...payload, type: 'audio' });
             setIsRecording(false);
             setBlob(undefined);
