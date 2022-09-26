@@ -13,6 +13,7 @@ interface MiniMeProps extends MeProps {
 const MiniMe: FunctionComponent<MiniMeProps> = ({ user, displaySpinner, navigateOnClick, displayEmailAddress, styles }) => {
     return (<div className={classes.comment_me}>
         <Me
+            label="You"
             displayEmailAddress={displayEmailAddress}
             navigateOnClick={navigateOnClick}
             displaySpinner={displaySpinner}

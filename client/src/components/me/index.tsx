@@ -9,13 +9,14 @@ import classes from './Me.module.css';
 
 export interface MeProps {
     user: any;
+    label?: string;
     styles?: { imageClass?: string; containerClassName?: string; emailClassName?: string; };
     displaySpinner: boolean;
     displayEmailAddress: boolean;
     navigateOnClick: boolean;
 }
 const filesUri = `${appConfig.serverUrl}${'/api/file/post/'}`
-const Me: FunctionComponent<MeProps> = ({ displayEmailAddress, user, styles, displaySpinner, navigateOnClick }) => {
+const Me: FunctionComponent<MeProps> = ({ displayEmailAddress, user, styles, displaySpinner, navigateOnClick, label }) => {
     const [url, setUrl] = useState<string>('');
     const [type, setType] = useState<string>('');
     const { user: me } = appContextVar();
@@ -43,7 +44,7 @@ const Me: FunctionComponent<MeProps> = ({ displayEmailAddress, user, styles, dis
             }
             {loading && <Spinner label={'Loading'} />}
             {url && !isVideo && <img className={styles?.imageClass} src={url} alt={'profilePicture'} />}
-            {displayEmailAddress && <p onClick={navigateOnClick ? handleNavigateToUser : () => { }} className={`${classes.email} ${styles?.emailClassName}`}>{isMe ? 'You' : user?.email}</p>}
+            {displayEmailAddress && <p onClick={navigateOnClick ? handleNavigateToUser : () => { }} className={`${classes.email} ${styles?.emailClassName}`}>{isMe && label ? label : user?.email}</p>}
         </div>
     </>
     );
