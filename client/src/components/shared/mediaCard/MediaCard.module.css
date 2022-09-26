@@ -2,6 +2,13 @@
     width: 95%;
 }
 
+.video {
+    object-fit: contain;
+}
+.video_container{
+    flex: 1;
+    height: 70%;
+}
 .me::-webkit-media-controls-panel {
     background: var(--secondary);
     color: aliceblue;

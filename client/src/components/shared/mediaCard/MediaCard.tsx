@@ -21,7 +21,10 @@ const MediaCard: FunctionComponent<MediaCardProps> = ({ message, isMe, type }) =
                 Your browser does not support the audio tag.
             </audio>
         </CardMedia>}
-        {type === 'video' && <Video videoClassName={classes.video} type={'video/webm'} link={url} />}
+        {type === 'video' && <Video 
+        containerClassName={classes.video_container}
+        videoClassName={classes.video} 
+        type={'video/webm'} link={url} />}
     </>
     );
 }
