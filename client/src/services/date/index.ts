@@ -18,17 +18,9 @@ export const getPostDate = (date: Date) => {
                 const difInDays = (difInHours) / 24;
                 displayDiff = true;
                 timeDiff = difInDays;
-                pattern = ' day';
-                if (difInDays > 30) {
-                    const difInMonths = (difInDays) / 30;
-                    timeDiff = difInMonths;
-                    pattern = ' month';
-                    if (difInMonths > 12) {
-                        const difInYears = (difInMonths) / 12;
-                        timeDiff = difInYears;
-                        pattern = ' year';
-
-                    }
+                pattern = ' yesterday';
+                if (difInDays > 1) {
+                    return `${date.toLocaleDateString()} ${' ' + date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}`
                 }
             }
         }
