@@ -55,6 +55,8 @@ export class SendMessageArgs {
     messageThreadId?: string;
     @Field(() => String, { nullable: true })
     type?: string;
+    @Field(() => String, { nullable: true })
+    file?: string;
 }
 
 @ObjectType()
