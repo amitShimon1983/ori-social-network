@@ -11,3 +11,4 @@ export { useSendMessage } from './useSendMessage';
 export { useGetConversation } from './useGetConversation';
 export { useUpdateMessage } from './useUpdateMessage';
 export { useUpdateUserStatus } from './useUpdateUserStatus';
+export { useDownloadFile } from './useDownloadFile';

@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { appConfig } from "../../../configuration";
+import { useDownloadFile } from "../../../hooks";
 import { Video } from "../../video";
 import { CardMedia } from "../mui";
 import classes from './MediaCard.module.css'
@@ -11,21 +11,28 @@ interface MediaCardProps {
 }
 
 const MediaCard: FunctionComponent<MediaCardProps> = ({ message, isMe, type }) => {
-    const url = `${appConfig.serverUrl}${'/api/file/post/'}${message?.file?.originalname}`;
+    const { fileDuration, url }: {
+        url: string;
+        fileDuration: string;
+    } = useDownloadFile({ fileName: message?.file?.originalname });
+
     return (<>
-        {type === 'audio' && <CardMedia src={url}>
-            <audio className={`${classes.audio} ${isMe ? classes.me : classes.other}`} controls>
+        {type === 'audio' && url && <CardMedia src={url}>
+            <audio preload="auto" className={`${classes.audio} ${isMe ? classes.me : classes.other}`} controls>
                 <source src={url} type="audio/webm" />
                 <source src={url} type="audio/mpeg" />
                 Your browser does not support the audio tag.
             </audio>
         </CardMedia>}
-        {type === 'video' && <Video
+        {type === 'video' && url && <Video
             containerClassName={classes.video_container}
             videoClassName={classes.video}
             type={'video/webm'} link={url} />}
+        <span>{fileDuration}</span>
     </>
     );
 }
 
 export default MediaCard;
+
+

@@ -18,7 +18,9 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
     const { content, sender, createdAt, isRead, type } = message;
     const { user: me } = appContextVar();
     const isMe = me._id === sender._id
-    const { updateMessage } = useUpdateMessage();
+    const { updateMessage }: {
+        updateMessage: (messageId: string, skip: boolean) => Promise<void>
+    } = useUpdateMessage();
     useEffect(() => {
         if (message?._id && !isMe && !message.isRead) {
             updateMessage(message?._id, isMe)

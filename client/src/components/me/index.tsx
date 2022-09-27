@@ -1,7 +1,6 @@
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent } from "react";
 import { useNavigate } from "react-router";
-import { appConfig } from "../../configuration";
-import { httpService } from "../../services";
+import { useDownloadFile } from "../../hooks";
 import { appContextVar } from "../../services/store";
 import { addMinutes } from "../../utils";
 import { Badge, Spinner } from "../shared";
@@ -17,26 +16,16 @@ export interface MeProps {
     navigateOnClick: boolean;
 }
 const userStatusStyles = { '.MuiBadge-badge': { width: 12, height: 12, borderRadius: '50%' } }
-const filesUri = `${appConfig.serverUrl}${'/api/file/post/'}`
 const Me: FunctionComponent<MeProps> = ({ displayEmailAddress, user, styles, displaySpinner, navigateOnClick, label }) => {
-    const [url, setUrl] = useState<string>('');
-    const [type, setType] = useState<string>('');
     const { user: me } = appContextVar();
     const isMe = me._id === user?._id
-    const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
     const handleNavigateToUser = () => navigate(`/other/${user._id}`);
-    useEffect(() => {
-        if (displaySpinner) { setLoading(true); }
-        const loadFile = async () => {
-            const blob: any = await httpService.getStream(filesUri + user.file.originalname);
-            const objectURL = URL.createObjectURL(blob);
-            setType(blob?.type)
-            setUrl(objectURL)
-            if (displaySpinner) { setLoading(false) };
-        }
-        loadFile();
-    }, [user.file.originalname, displaySpinner])
+    const { url, loading, type }: {
+        url: string;
+        type: string;
+        loading: boolean;
+    } = useDownloadFile({ fileName: user.file.originalname || '' });
     const isVideo = type?.trim()?.toLowerCase()?.includes('video');
     const isOnline = !!user.lastSeen && new Date(+user.lastSeen) > addMinutes(-5);
     return (<>
