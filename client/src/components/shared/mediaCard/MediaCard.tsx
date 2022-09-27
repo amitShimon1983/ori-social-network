@@ -28,7 +28,7 @@ const MediaCard: FunctionComponent<MediaCardProps> = ({ message, isMe, type }) =
             containerClassName={classes.video_container}
             videoClassName={classes.video}
             type={'video/webm'} link={url} />}
-        <span>{fileDuration}</span>
+        <span className={classes.duration}>{fileDuration}</span>
     </>
     );
 }

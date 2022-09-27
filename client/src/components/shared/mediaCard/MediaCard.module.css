@@ -2,13 +2,20 @@
     width: 95%;
 }
 
-.video {
-    object-fit: contain;
+.duration {
+    text-align: right;
+    font-size: 12px;
 }
-.video_container{
+
+.video {
+    object-fit: fill;
+}
+
+.video_container {
     flex: 1;
     height: 70%;
 }
+
 .me::-webkit-media-controls-panel {
     background: var(--secondary);
     color: aliceblue;
