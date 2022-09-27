@@ -16,7 +16,7 @@ export function useDownloadFile({ fileName }: { fileName: string }) {
     const [loading, setLoading] = useState<boolean>(false);
     const [fileDuration, setFileDuration] = useState<number>();
     const getBlobDuration = useCallback(async (blob: Blob) => {
-        const audioCtx = new (window.AudioContext)();
+        const audioCtx = new AudioContext();
         const blobBuffer = await blob.arrayBuffer();
         const buffer = await audioCtx.decodeAudioData(blobBuffer);
         if (buffer.duration) {
