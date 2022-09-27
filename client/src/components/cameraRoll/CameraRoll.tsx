@@ -8,7 +8,20 @@ import CameralRollPanel from "./CameraRollPanel";
 interface VideoProps {
     onSave?: (blob: Blob) => void
 }
-
+const deviceMediaOptions = {
+    video: {
+        width: {
+            min: 500,
+            ideal: 500,
+            max: 560,
+        },
+        height: {
+            min: 720,
+            ideal: 1080,
+            max: 1440
+        }
+    }, audio: true
+}
 const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const photoRef = useRef<any>(null);
@@ -28,20 +41,7 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
     }, [videoRef])
 
     const getUserVideo = useCallback(async () => {
-        const userStream = await cameraService.getCameraStream({
-            video: {
-                width: {
-                    min: 500,
-                    ideal: 500,
-                    max: 560,
-                },
-                height: {
-                    min: 720,
-                    ideal: 1080,
-                    max: 1440
-                }
-            }, audio: true
-        }, handleStream);
+        const userStream = await cameraService.getCameraStream(deviceMediaOptions, handleStream);
         if (userStream) {
             setStream(userStream)
         }
@@ -148,6 +148,3 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
 }
 
 export default CameraRoll;
-
-
-
