@@ -58,6 +58,8 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             messageThreadId,
             type,
         });
+        setInputData(undefined);
+        setReplyTo(undefined);
     }
     const fetchContactData = debounce(async (value: any, setOptions: React.Dispatch<React.SetStateAction<any[]>>) => {
         if (!value || value.length < 2) {
@@ -83,7 +85,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         );
     };
     const onVideoSave = (blob: Blob) => {
-        handleRecorderSave(blob, 'video')
+        handleRecorderSave(blob, 'video');
         setDisplayCamera(false)
     }
     const messages = data?.getConversation?.messages;
