@@ -11,6 +11,7 @@ const MicrophoneRecorder: FunctionComponent<MicrophoneRecorderProps> = ({ onSave
     const [isRecording, setIsRecording] = useState<boolean>(false);
     const [recorder, setRecorder] = useState<Recorder>();
     const [blob, setBlob] = useState<Blob>();
+    const [stream, setStream] = useState<MediaStream>();
     const handleStop = async () => {
         if (recorder) {
             cameraService.stopRecording(recorder);
@@ -22,6 +23,7 @@ const MicrophoneRecorder: FunctionComponent<MicrophoneRecorderProps> = ({ onSave
         setBlob(undefined);
         const userStream = await cameraService.getCameraStream({ audio: true });
         if (userStream) {
+            setStream(userStream)
             const recorderRef = await cameraService.startRecording(userStream, undefined, setBlob, 'audio/webm', {
                 mimeType: 'audio/webm'
             });
@@ -34,6 +36,7 @@ const MicrophoneRecorder: FunctionComponent<MicrophoneRecorderProps> = ({ onSave
             onSave(blob, 'audio');
             setIsRecording(false);
             setBlob(undefined);
+            if (stream) { cameraService.closeCamera(stream) }
         }
     }
 
