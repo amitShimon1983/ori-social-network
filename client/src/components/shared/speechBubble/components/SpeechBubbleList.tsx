@@ -19,7 +19,7 @@ const SpeechBubbleList: FunctionComponent<SpeechBubbleListProps> = ({ items, onI
                     inline: "end",
                     behavior: "smooth"
                 });
-            }, 1500);
+            }, 3500);
             return () => {
                 return clearTimeout(timer)
             }
@@ -32,8 +32,7 @@ const SpeechBubbleList: FunctionComponent<SpeechBubbleListProps> = ({ items, onI
         }
     }, [items?.length, displaySkeleton])
     return (<>
-
-        {items.map((item: any, idx: number) => {
+        {items?.map((item: any, idx: number) => {
             const isLast = idx === items?.length - 1;
             return <span
                 className={classes.speech_container}

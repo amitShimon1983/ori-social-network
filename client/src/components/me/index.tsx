@@ -30,7 +30,7 @@ const Me: FunctionComponent<MeProps> = ({ displayEmailAddress, user, styles, dis
     const isOnline = !!user.lastSeen && new Date(+user.lastSeen) > addMinutes(-5);
     return (<>
         <div className={`${classes.container} ${styles?.containerClassName}`}>
-            {loading && <Spinner label={'Loading'} />}
+            {loading && displaySpinner && <Spinner label={'Loading'} />}
             <Badge sx={userStatusStyles} overlap="circular" variant="dot" anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'right',
