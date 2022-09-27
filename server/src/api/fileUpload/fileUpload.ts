@@ -25,13 +25,10 @@ router.post('/uploadMessage', upload.array("files"), async (req: Request, res: R
             const dbFiles = await fileService.saveAll(files as Express.Multer.File[]);
             const messageArgs = {
                 ...req.body,
+                file: dbFiles[0]._id,
                 content: req.body.type.charAt(0).toUpperCase() + req.body.type.slice(1),
             }
-            const dbMessage = await messageService.sendMessage(messageArgs, user._id);
-            if (dbMessage?._id) {
-                dbMessage.file = dbFiles[0]._id;
-                await dbMessage.save();
-            }
+            messageService.sendMessage(messageArgs, user._id);
         }
     }
     res.status(200).json(response)
