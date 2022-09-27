@@ -21,7 +21,7 @@ class CameraService {
 
     async getCameraStream(constraints?: MediaStreamConstraints | undefined, onSuccess?: (stream: MediaStream) => void, onError?: (error: Error) => void) {
         try {
-            const stream: MediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
             if (typeof onSuccess === 'function') {
                 onSuccess(stream)
             }
@@ -30,6 +30,13 @@ class CameraService {
             if (typeof onError === 'function') {
                 onError(error)
             }
+        }
+    }
+    closeCamera(stream: MediaStream) {
+        if (stream) {
+            stream?.getTracks().forEach((track: any) => {
+                track.stop()
+            })
         }
     }
     saveImage(video: any, photo: any, onSuccess?: (data: any) => void, onError?: (error: Error) => void): void {
