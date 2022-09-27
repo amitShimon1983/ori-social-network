@@ -23,7 +23,7 @@ export function useDownloadFile({ fileName }: { fileName: string }) {
             const duration = buffer.duration;
             setFileDuration(duration);
         }
-    }, [])
+    }, []);
     useEffect(() => {
         setLoading(true);
         const loadFile = async () => {
