@@ -21,7 +21,10 @@ const Video: FunctionComponent<VideoProps> = ({ type, link, containerClassName, 
     return (
         <div className={`${classes.container} ${containerClassName}`}>
             <VideoElement ref={videoRef} className={`${classes.video} ${videoClassName}`} video={{
-                onClick: toggleVideoPlayingState,
+                onClick: (e) => {
+                    e.stopPropagation()
+                    toggleVideoPlayingState()
+                },
                 width: "100%",
                 height: "100%"
             }}>
