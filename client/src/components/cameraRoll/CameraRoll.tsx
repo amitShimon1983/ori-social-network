@@ -48,11 +48,11 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
     }, [handleStream]);
 
     useEffect(() => {
-        getUserVideo()
+        if (!stream) { getUserVideo(); }
         return () => {
+            if (stream) { cameraService.closeCamera(stream); }
         }
-    }, [videoRef, getUserVideo, hasPhoto])
-
+    }, [videoRef, getUserVideo, hasPhoto, stream])
     const takePictureHandler = async () => {
         cameraService.saveImage(videoRef.current, photoRef.current, (image) => {
             setImageBlob(image)
