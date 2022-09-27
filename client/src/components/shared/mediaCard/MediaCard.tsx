@@ -1,6 +1,5 @@
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent } from "react";
 import { appConfig } from "../../../configuration";
-import { httpService } from "../../../services";
 import { Video } from "../../video";
 import { CardMedia } from "../mui";
 import classes from './MediaCard.module.css'
@@ -21,10 +20,10 @@ const MediaCard: FunctionComponent<MediaCardProps> = ({ message, isMe, type }) =
                 Your browser does not support the audio tag.
             </audio>
         </CardMedia>}
-        {type === 'video' && <Video 
-        containerClassName={classes.video_container}
-        videoClassName={classes.video} 
-        type={'video/webm'} link={url} />}
+        {type === 'video' && <Video
+            containerClassName={classes.video_container}
+            videoClassName={classes.video}
+            type={'video/webm'} link={url} />}
     </>
     );
 }
