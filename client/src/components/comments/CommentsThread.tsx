@@ -103,7 +103,7 @@ const CommentsThread: FunctionComponent<CommentsThreadProps> = () => {
         <div className={classes.container}>
             <Header label={'Comments'} ><BackButton /></Header>
             {loading && <Spinner label="Loading" />}
-            {!loading && comments?.length && <InfiniteScroll
+            {!loading && !!comments?.length && <InfiniteScroll
                 initialHasMore={hasMore}
                 renderItem={renderTreeNode}
                 initialData={comments}
