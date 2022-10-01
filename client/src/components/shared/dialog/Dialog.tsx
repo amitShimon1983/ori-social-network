@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import {
-  D,
+  MuiDialog,
   DialogTitle,
   DialogContent,
   DialogContentText,
@@ -31,7 +31,7 @@ export const Dialog: FunctionComponent<DialogProps> = ({
   };
   return (
     <div>
-      <D
+      <MuiDialog
         open={open}
         onClose={handleCancelDialog}
         aria-labelledby="alert-dialog-title"
@@ -49,7 +49,7 @@ export const Dialog: FunctionComponent<DialogProps> = ({
           <Button handleClick={handleCancelDialog}>No</Button>
           <Button handleClick={handleSuccessDialog}>Yes</Button>
         </DialogActions>
-      </D>
+      </MuiDialog>
     </div>
   );
 };
