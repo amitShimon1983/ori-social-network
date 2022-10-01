@@ -35,7 +35,8 @@ export class UserService {
             email,
             password,
             file: file || '',
-            dateOfBirth
+            dateOfBirth,
+            lastSeen: new Date(),
         })
     }
     async follow(me: string, other: string) {
