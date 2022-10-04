@@ -8,8 +8,8 @@ const app = express();
 const port = appConfig.port;
 
 async function main() {
-    app.listen(port, async () => {
-        await configureApp(app, appConfig);
+    const server = await configureApp(app, appConfig);
+    server.listen(port, async () => {
         console.log(`app listening on port ${port}`)
     });
 }
