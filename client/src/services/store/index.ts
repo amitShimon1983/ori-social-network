@@ -3,6 +3,12 @@ import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import { authService } from '..';
 import { appConfig } from '../../configuration';
+import { split } from '@apollo/client';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { createClient } from 'graphql-ws';
+
+
 const initialData = {
     user: {},
     isAuthenticate: false,
@@ -49,11 +55,27 @@ class ApolloProvider {
             appContextVar({ isAuthenticate: false, loading: false })
         });
     }
+
     _createApolloLinks() {
+        const wsLink = new GraphQLWsLink(createClient({
+            url: 'ws://localhost:3978/api/graphql',
+            connectionParams: { bla: 'bla' }
+        }));
         const httpLink = this._createHttpLink();
         const authLink = this._createAuthMiddleware();
         const errorLink = this._createErrorMiddleware()
-        return from([errorLink, authLink, httpLink])
+        const splitLink = split(
+            ({ query }) => {
+                const definition = getMainDefinition(query);
+                return (
+                    definition.kind === 'OperationDefinition' &&
+                    definition.operation === 'subscription'
+                );
+            },
+            wsLink,
+            from([errorLink, authLink, httpLink]),
+        );
+        return splitLink;
     }
     _createHttpLink() {
         return createHttpLink({

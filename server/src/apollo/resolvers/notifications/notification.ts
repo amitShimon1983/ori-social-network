@@ -1,4 +1,4 @@
-import { Arg, Args, Field, InputType, Int, Mutation, ObjectType, PubSub, PubSubEngine, Resolver, Root, Subscription } from "type-graphql";
+import { Field, InputType, ObjectType, Resolver, Root, Subscription } from "type-graphql";
 @InputType()
 export class NotificationA {
     @Field(() => String, { nullable: true })
@@ -20,7 +20,8 @@ export class SampleResolver {
         topics: "NOTIFICATIONS",
         filter: ({ payload, args, context }) => {
             console.log({ payload, args, context });
-            return args.priorities.includes(payload.priority)
+            //check if current user is one of owners
+            return true
         },
     })
     newNotification(
@@ -31,12 +32,5 @@ export class SampleResolver {
             ...notificationPayload,
             date: new Date(),
         };
-    }
-    @Mutation(() => Boolean)
-    async addNewComment(@PubSub() pubSub: PubSubEngine) {
-        // here we can trigger subscriptions topics
-        const payload: any = { message: "input.content" };
-        await pubSub.publish("NOTIFICATIONS", payload);
-        return true;
     }
 }
