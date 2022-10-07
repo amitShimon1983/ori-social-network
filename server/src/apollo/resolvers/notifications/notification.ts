@@ -19,7 +19,6 @@ export class SampleResolver {
     @Subscription(() => NotificationO, {
         topics: "NOTIFICATIONS",
         filter: ({ payload, args, context }) => {
-            console.log({ payload, args, context });
             //check if current user is one of owners
             return true
         },
