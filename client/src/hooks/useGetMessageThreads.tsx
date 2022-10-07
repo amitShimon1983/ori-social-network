@@ -1,5 +1,48 @@
 import { gql, useQuery } from "@apollo/client"
-
+const NEW_MESSAGE_THREAD_SUBSCRIPTION = gql`
+subscription NewMessageThread {
+  newMessageThread {
+    _id
+    unreadMessages
+    owners{
+        _id
+        name
+        email
+        lastSeen
+        file {
+            _id
+            originalname
+        }
+    }
+    messages {
+        isRead
+        _id
+        sender{
+            _id
+            name
+            email
+            lastSeen
+            file {
+                _id
+                originalname
+            }
+        }
+        messageThreadId
+        recipient{
+            _id
+            name
+            email
+            file {
+                _id
+                originalname
+            }
+        }
+        content
+        createdAt
+    }
+  }
+}
+`
 const GET_MESSAGE_THREADS = gql`
 query GetMessageThreads($skip:Int, $limit:Int){
     getMessageThreads(args:{skip:$skip, limit:$limit}){
@@ -17,31 +60,31 @@ query GetMessageThreads($skip:Int, $limit:Int){
                 }
             }
             messages {
-            isRead
-            _id
-            sender{
+                isRead
                 _id
-                name
-                email
-                lastSeen
-                file {
+                sender{
                     _id
-                    originalname
+                    name
+                    email
+                    lastSeen
+                    file {
+                        _id
+                        originalname
+                    }
                 }
-            }
-            messageThreadId
-            recipient{
-                _id
-                name
-                email
-                file {
+                messageThreadId
+                recipient{
                     _id
-                    originalname
+                    name
+                    email
+                    file {
+                        _id
+                        originalname
+                    }
                 }
+                content
+                createdAt
             }
-            content
-            createdAt
-        }
         }
         count
         hasMore
@@ -49,9 +92,8 @@ query GetMessageThreads($skip:Int, $limit:Int){
 }
 `
 export function useGetMessageThreads(onCompleted?: (data: any) => void | Promise<void>) {
-    const { data, loading, error, fetchMore } = useQuery(GET_MESSAGE_THREADS, {
+    const { data, loading, error, fetchMore, subscribeToMore } = useQuery(GET_MESSAGE_THREADS, {
         onCompleted,
-        pollInterval: 3000,
     })
-    return { data, loading, error, fetchMore }
+    return { data, loading, error, fetchMore, subscribeToMore, NEW_MESSAGE_THREAD_SUBSCRIPTION }
 }
