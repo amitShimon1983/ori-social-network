@@ -24,11 +24,17 @@ const Inbox: FunctionComponent = () => {
 
         subscribeToMore({
             document: NEW_MESSAGE_THREAD_SUBSCRIPTION,
-            // variables: { postID: params.postID },
             updateQuery: (prev, { subscriptionData }) => {
-                console.log(subscriptionData);
-                if (!subscriptionData.data) return prev;
-                return prev;
+                if (!subscriptionData?.data?.newMessageThread) return prev;
+                const newData = {
+                    ...prev,
+                    getMessageThreads: {
+                        ...prev.getMessageThreads,
+                        threads: [subscriptionData.data.newMessageThread, ...(prev?.getMessageThreads?.threads || [])]
+                    }
+
+                };
+                return newData
             }
         })
 

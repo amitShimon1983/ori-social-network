@@ -69,20 +69,30 @@ class MessageService {
                 messageThread?.messages?.push(newMessage._id);
                 await messageThread.save();
             }
-            if(fireCreateMessageThreadEvent){
-                pubSub.publish("NEW_MESSAGE_THREAD", messageThread);
+            if (fireCreateMessageThreadEvent) {
+                const eventPayload = await messageThread.populate([{
+                    path: 'messages',
+                    populate: [{
+                        path: 'recipient',
+                        populate: {
+                            path: 'file'
+                        }
+                    }, {
+                        path: 'sender',
+                        populate: {
+                            path: 'file'
+                        }
+                    }],
+                },
+                {
+                    path: 'owners',
+                    populate: {
+                        path: 'file'
+                    }
+                }]);
+                pubSub.publish("NEW_MESSAGE_THREAD", eventPayload);
             }
-            return newMessage?.populate([{
-                path: 'recipient',
-                populate: {
-                    path: 'file'
-                }
-            }, {
-                path: 'sender',
-                populate: {
-                    path: 'file'
-                }
-            }]);
+            return newMessage;
         }
 
     }
@@ -134,7 +144,17 @@ class MessageService {
                 file: messageArgs?.file
             };
             const newMessage = await MessageModel.create(message);
-            return newMessage;
+            return await newMessage.populate([{
+                path: 'recipient',
+                populate: {
+                    path: 'file'
+                }
+            }, {
+                path: 'sender',
+                populate: {
+                    path: 'file'
+                }
+            }]);
         } catch (error: any) {
             console.log({ error });
         }
