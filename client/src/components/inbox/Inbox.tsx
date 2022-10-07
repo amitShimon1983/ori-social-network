@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { useGetMessageThreads } from "../../hooks";
 import { appContextVar } from "../../services/store";
 import { BackButton } from "../backButton";
@@ -16,10 +16,23 @@ const Inbox: FunctionComponent = () => {
     const [openMessageForm, setOpenMessageForm] = useState<boolean>(false);
     const [messageThreadId, setMessageThreadId] = useState<string>();
     const ownerNames = threadOwners.map((owner: any) => owner.name)
-    const { loading, fetchMore } = useGetMessageThreads((data: any) => {
+    const { loading, fetchMore, subscribeToMore, NEW_MESSAGE_THREAD_SUBSCRIPTION } = useGetMessageThreads((data: any) => {
         setThreads((data?.getMessageThreads?.threads || []));
         setHasMore(data?.getMessageThreads?.hasMore);
     });
+    useEffect(() => {
+
+        subscribeToMore({
+            document: NEW_MESSAGE_THREAD_SUBSCRIPTION,
+            // variables: { postID: params.postID },
+            updateQuery: (prev, { subscriptionData }) => {
+                console.log(subscriptionData);
+                if (!subscriptionData.data) return prev;
+                return prev;
+            }
+        })
+
+    }, [])
 
     const renderItem = (data: any) => {
         const message = data.messages[0];
@@ -77,7 +90,18 @@ const Inbox: FunctionComponent = () => {
         <Fab onClick={openMessageFormHandler} className={`${classes.fab} ${!openMessageForm && classes.fab_show}`} color="secondary" aria-label="edit">
             <FaPencilAlt />
         </Fab>
-        <Drawer headerStyles={{ container: classes.drawer_header_container, header: classes.drawer_header_header }} label={ownerNames.length ? <div className={classes.mini_me}><MiniMe displayEmailAddress={true} user={threadOwners[0]} displaySpinner={false} navigateOnClick={false} /></div> : 'New Message'} dismissHandler={closeMessageFormHandler} isOpen={openMessageForm}>
+        <Drawer
+            headerStyles={{ container: classes.drawer_header_container, header: classes.drawer_header_header }}
+            label={ownerNames.length ?
+                <div className={classes.mini_me}>
+                    <MiniMe
+                        displayEmailAddress={true}
+                        user={threadOwners[0]}
+                        displaySpinner={false}
+                        navigateOnClick={false} />
+                </div> : 'New Message'}
+            dismissHandler={closeMessageFormHandler}
+            isOpen={openMessageForm}>
             {openMessageForm && <MessageForm owners={threadOwners} messageThreadId={messageThreadId} />}
         </Drawer>
     </div>);
