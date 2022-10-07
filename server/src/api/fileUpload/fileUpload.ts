@@ -16,7 +16,7 @@ router.post('/uploadPost', upload.array("files"), async (req: Request, res: Resp
     }
     res.status(200).json(response)
 })
-router.post('/uploadMessage', upload.array("files"), async (req: Request, res: Response) => {
+router.post('/uploadMessage', upload.array("files"), async (req: any, res: Response) => {
     let response;
     if (req.files) {
         const files = req.files
@@ -28,7 +28,7 @@ router.post('/uploadMessage', upload.array("files"), async (req: Request, res: R
                 file: dbFiles[0]._id,
                 content: req.body.type.charAt(0).toUpperCase() + req.body.type.slice(1),
             }
-            messageService.sendMessage(messageArgs, user._id);
+            messageService.sendMessage(messageArgs, user._id, req.pubSub);
         }
     }
     res.status(200).json(response)
