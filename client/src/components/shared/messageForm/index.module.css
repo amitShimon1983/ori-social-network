@@ -19,6 +19,7 @@
     border-radius: 4px;
     height: 75%;
     flex: 1;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-X: hidden;
     border: 1px solid #d1cbcb;
 }

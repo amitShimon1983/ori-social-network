@@ -1,10 +1,11 @@
 .container {
     display: flex;
     background: var(--speech-bubble-reply-to-message-background);
-    position: sticky;
+    position: absolute;
     align-items: center;
     justify-content: center;
-    max-width: 100%;
+    width: 95%;
+    margin: auto 0;
     overflow: hidden;
     -webkit-transition: all .1s, -webkit-transform .1s;
     transition: all .1s, transform .1s;
