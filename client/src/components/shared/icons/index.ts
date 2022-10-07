@@ -1,5 +1,5 @@
 export { AiOutlineClose, AiFillBackward, AiOutlineLogin, AiOutlineCamera, AiOutlineLogout, AiOutlineCloudUpload } from 'react-icons/ai';
-export { FiRefreshCw, FiVideoOff, FiVideo, FiInbox } from 'react-icons/fi';
+export { FiRefreshCw, FiVideoOff, FiVideo, FiInbox, FiCameraOff } from 'react-icons/fi';
 export { FcHome, FcLike, FcCancel } from 'react-icons/fc';
 export { FaRegComments, FaPencilAlt, FaMicrophoneAlt, FaMicrophoneAltSlash } from 'react-icons/fa';
 export { CgProfile } from 'react-icons/cg';
