@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { AiOutlineCamera, FaMicrophoneAlt, IconButton, TbSend } from "..";
+import { AiOutlineCamera, FiCameraOff, IconButton, TbSend } from "..";
 import { MicrophoneRecorder } from "../../microphone";
 import Input from "../input/Input";
 import classes from './index.module.css';
@@ -9,14 +9,15 @@ interface InputButtonProps {
     inputValue: string;
     handleSave: (event: any) => Promise<void> | void;
     disabled: boolean;
+    isCameraOpen?: boolean;
     handleRecorderSave?: (blob: Blob, type: string) => void | Promise<void>;
-    handleDisplayCamera?: () => Promise<void> | void
+    toggleCamera?: () => Promise<void> | void;
 }
-const InputButtonPanel: FunctionComponent<InputButtonProps> = ({ handleDisplayCamera, handleChange, placeholder, inputValue, handleSave, disabled, handleRecorderSave }) => {
+const InputButtonPanel: FunctionComponent<InputButtonProps> = ({ isCameraOpen, toggleCamera, handleChange, placeholder, inputValue, handleSave, disabled, handleRecorderSave }) => {
     return <div className={classes.container}>
-        <IconButton onClick={handleDisplayCamera} className={classes.button} color="info" aria-label="upload picture" component="label">
-            <AiOutlineCamera />
-        </IconButton>
+        {toggleCamera && <IconButton onClick={toggleCamera} className={classes.button} color="info" aria-label="upload picture" component="label">
+            {!isCameraOpen ? <AiOutlineCamera /> : <FiCameraOff />}
+        </IconButton>}
         <Input handleChange={handleChange}
             type={'text'}
             variant={'outlined'}
