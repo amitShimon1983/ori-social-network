@@ -15,6 +15,7 @@ mutation SendMessage($type: String, $recipient:String, $content:String, $parentM
                 originalname
             }
         }
+        messageThreadId
         recipient{
             _id
             name
