@@ -31,7 +31,8 @@ class ApolloProvider {
     _initializeApolloClient() {
         this.client = new ApolloClient({
             cache: new InMemoryCache(),
-            link: this._createApolloLinks()
+            link: this._createApolloLinks(),
+            credentials: 'include'
         });
         this._getUser();
     }
@@ -59,7 +60,6 @@ class ApolloProvider {
     _createApolloLinks() {
         const wsLink = new GraphQLWsLink(createClient({
             url: 'ws://localhost:3978/api/graphql',
-            connectionParams: { bla: 'bla' }
         }));
         const httpLink = this._createHttpLink();
         const authLink = this._createAuthMiddleware();
