@@ -21,7 +21,6 @@ const Inbox: FunctionComponent = () => {
         setHasMore(data?.getMessageThreads?.hasMore);
     });
     useEffect(() => {
-
         subscribeToMore({
             document: NEW_MESSAGE_THREAD_SUBSCRIPTION,
             updateQuery: (prev: any, { subscriptionData }: { subscriptionData: any }) => {
@@ -37,8 +36,7 @@ const Inbox: FunctionComponent = () => {
                 return newData
             }
         })
-
-    }, [])
+    }, []);
 
     const renderItem = (data: any) => {
         const message = data.messages[0];
@@ -108,7 +106,7 @@ const Inbox: FunctionComponent = () => {
                 </div> : 'New Message'}
             dismissHandler={closeMessageFormHandler}
             isOpen={openMessageForm}>
-            {openMessageForm && <MessageForm owners={threadOwners} messageThreadId={messageThreadId} />}
+            {openMessageForm && <MessageForm setThreadOwners={setThreadOwners} owners={threadOwners} messageThreadId={messageThreadId} />}
         </Drawer>
     </div>);
 }
