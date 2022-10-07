@@ -1,4 +1,4 @@
-import { Types } from 'mongoose';
+import { PubSubEngine } from 'type-graphql';
 import { SendMessageArgs, UpdateMessageArgs } from '../../apollo';
 import { IMessage, MessageModel, MessageThreadModel } from '../../model'
 import { IMessageThread } from '../../model/schema/message/types';
@@ -51,8 +51,9 @@ class MessageService {
         return { threads, hasMore, count: threadCount };
     }
 
-    async sendMessage(messageArgs: SendMessageArgs, userId: string) {
+    async sendMessage(messageArgs: SendMessageArgs, userId: string, pubSub: PubSubEngine) {
         let messageThread;
+        let fireCreateMessageThreadEvent = false;
         if (messageArgs.messageThreadId) {
             messageThread = await MessageThreadModel.findOne({ _id: messageArgs.messageThreadId, owners: { $in: [userId] } });
         } else {
@@ -60,12 +61,16 @@ class MessageService {
                 owners: [messageArgs.recipient, userId],
                 messages: []
             });
+            fireCreateMessageThreadEvent = true;
         }
         if (messageThread?._id) {
-            const newMessage = await this.createMessage(userId, messageArgs, messageThread);
+            const newMessage = await this.createMessage(userId, messageArgs, messageThread.toObject());
             if (newMessage) {
                 messageThread?.messages?.push(newMessage._id);
                 await messageThread.save();
+            }
+            if(fireCreateMessageThreadEvent){
+                pubSub.publish("NEW_MESSAGE_THREAD", messageThread);
             }
             return newMessage?.populate([{
                 path: 'recipient',
