@@ -1,28 +1,40 @@
 import { AuthenticationError } from 'apollo-server-errors';
-import { jwtService } from '../services';
+import { authenticationService, cookieService, jwtService } from '../services';
 import { PubSub } from 'graphql-subscriptions';
+import { Request, Response } from 'express';
 
-export const apolloHttpContext = (pubSub: PubSub) => ({ req, }: { req: any; }) => {
+export const apolloHttpContext = (pubSub: PubSub) => async ({ req, res }: { req: Request; res: Response }) => {
     if (req.body.operationName === 'IntrospectionQuery') {
         return {}
     }
     const token = req?.cookies?.user;
-    return authenticateRequest(token, pubSub);
+    return await authenticateRequest(token, pubSub, res);
 }
-export const apolloWsContext = (pubSub: PubSub, ctx: any, msg: any, args: any) => {
+export const apolloWsContext = async (pubSub: PubSub, ctx: any, msg: any, args: any) => {
     const req = ctx.extra.request;
     const cookie = req.rawHeaders.find((header: string) => header.includes('user='));
-    return authenticateRequest(cookie?.split?.('=')?.[1], pubSub);
+    return await authenticateRequest(cookie?.split?.('=')?.[1], pubSub);
 };
 
-function authenticateRequest(token: any, pubSub: PubSub) {
+async function authenticateRequest(token: string, pubSub: PubSub, res?: Response) {
     if (!token) {
         throw new AuthenticationError('UNAUTHENTICATED');
     }
-    const { data } = jwtService.verify(token);
+    const { data, error } = jwtService.verify(token);
+    if (error === 'UNAUTHENTICATED') {
+        throw new AuthenticationError('UNAUTHENTICATED');
+    }
+    if (error === 'refresh_token') {
+        const { isAuthenticate, token: resToken } = await authenticationService.refresh(token);
+        if (isAuthenticate && res) {
+            cookieService.setCookie(res, resToken, 'user');
+        }
+    }
     const user = JSON.parse(data);
     return {
         user,
         pubSub
     };
 }
+
+
