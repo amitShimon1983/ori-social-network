@@ -35,11 +35,9 @@ const Me: FunctionComponent<MeProps> = ({ displayEmailAddress, user, styles, dis
                 vertical: 'bottom',
                 horizontal: 'right',
             }} color={isOnline ? "success" : 'error'} count=" " >
-                {url && isVideo && <div className={styles?.imageClass}>
-                    <Video videoClassName={classes.video} type={type} link={url} />
+                <div className={styles?.imageClass}>
+                    {isVideo ? <Video videoClassName={classes.video} type={type} link={url} /> : <img className={styles?.imageClass} src={url} alt={'profilePicture'} />}
                 </div>
-                }
-                {url && !isVideo && <img className={styles?.imageClass} src={url} alt={'profilePicture'} />}
             </Badge>
             {displayEmailAddress && <p onClick={navigateOnClick ? handleNavigateToUser : () => { }} className={`${classes.email} ${styles?.emailClassName}`}>{isMe && label ? label : user?.email}</p>}
         </div>
