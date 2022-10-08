@@ -34,10 +34,10 @@ router.post('/uploadMessage', upload.array("files"), async (req: Request, res: R
     res.status(200).json(response)
 })
 
-router.get('/post/:postName', async (req: Request, res: Response) => {
+router.get('/:fileName', async (req: Request, res: Response) => {
     let pathTo;
     if (req.params) {
-        pathTo = path.join(__dirname, '../../../', 'uploads', req.params.postName);
+        pathTo = path.join(__dirname, '../../../', 'uploads', req.params.fileName);
         res.sendFile(pathTo);
     } else {
         res.status(200).json({})

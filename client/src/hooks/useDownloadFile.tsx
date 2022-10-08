@@ -9,7 +9,7 @@ const formatTime = (seconds: any) => {
         .filter(a => a)
         .join(':')
 }
-const filesUri = `${appConfig.serverUrl}${'/api/file/post/'}`
+const filesUri = `${appConfig.serverUrl}${'/api/file/'}`
 export function useDownloadFile({ fileName }: { fileName: string }) {
     const [url, setUrl] = useState<string>('');
     const [type, setType] = useState<string>('');
