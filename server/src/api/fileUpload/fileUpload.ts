@@ -16,7 +16,7 @@ router.post('/uploadPost', upload.array("files"), async (req: Request, res: Resp
     }
     res.status(200).json(response)
 })
-router.post('/uploadMessage', upload.array("files"), async (req: any, res: Response) => {
+router.post('/uploadMessage', upload.array("files"), async (req: Request, res: Response) => {
     let response;
     if (req.files) {
         const files = req.files
