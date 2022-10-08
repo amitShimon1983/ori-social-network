@@ -29,7 +29,7 @@ export class MessageResolver {
         return threads;
     }
     @Subscription(() => MessageThread, {
-        topics: 'NEW_MESSAGE_THREAD',
+        topics: ['NEW_MESSAGE_THREAD'],
         filter: ({ payload, context }) => {
             const { user } = context;
             const owner = payload?.owners?.find((owner: any) => {
@@ -40,5 +40,18 @@ export class MessageResolver {
     })
     async newMessageThread(@Root() newThreadPayload: MessageThread): Promise<MessageThread> {
         return newThreadPayload;
+    }
+    @Subscription(() => MessageThread, {
+        topics: ['NEW_MESSAGE'],
+        filter: ({ payload, context }) => {
+            const { user } = context;
+            const owner = payload?.owners?.find((owner: any) => {
+                return owner?._id?.toString() === user?._id
+            })
+            return !!owner
+        }
+    })
+    async newMessage(@Root() newMessagePayload: MessageThread): Promise<MessageThread> {
+        return newMessagePayload;
     }
 }
