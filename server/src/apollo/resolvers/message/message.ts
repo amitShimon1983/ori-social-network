@@ -1,4 +1,4 @@
-import { Arg, Mutation, Query, Resolver, Ctx, Subscription, Root, PubSubEngine, PubSub } from "type-graphql";
+import { Arg, Mutation, Query, Resolver, Ctx, Subscription, Root } from "type-graphql";
 import { AppContext, IUser } from "../../../model";
 import { messageService } from "../../../services";
 import { GetConversation, GetConversationArgs, GetMessageThreads, GetMessageThreadsArgs, Message, MessageThread, SendMessageArgs, UpdateMessageArgs } from "./types";
@@ -28,12 +28,13 @@ export class MessageResolver {
     @Query(() => GetConversation)
     async getConversation(@Arg('args', () => GetConversationArgs) args: GetConversationArgs, @Ctx() context: AppContext) {
         const { user } = context;
-        const { skip, limit, messageThreadId } = args;
+        const { skip, limit, messageThreadId, ownerId } = args;
         if (user._id) {
-            const threads = messageService.getConversation(user._id, messageThreadId, skip, limit);
+            const threads = messageService.getConversation(user._id, messageThreadId, ownerId, skip, limit);
             return threads;
         } return null;
     }
+
     @Subscription(() => MessageThread, {
         topics: ['NEW_MESSAGE_THREAD'],
         filter: ({ payload, context }) => {

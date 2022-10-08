@@ -1,12 +1,13 @@
 import { gql, useQuery } from '@apollo/client'
 
 const GET_CONVERSATION = gql`
-query GetConversation($messageThreadId:String, $skip:Int, $limit:Int){
-    getConversation(args:{ messageThreadId: $messageThreadId, skip: $skip, limit: $limit  }){
+query GetConversation($messageThreadId:String,$ownerId: String, $skip:Int, $limit:Int){
+    getConversation(args:{ messageThreadId: $messageThreadId, ownerId: $ownerId, skip: $skip, limit: $limit  }){
         messages{
             isRead
             _id
             type
+            messageThreadId
             file {
                 _id
                 originalname
@@ -53,12 +54,13 @@ query GetConversation($messageThreadId:String, $skip:Int, $limit:Int){
     }
 }
 `
-export function useGetConversation(messageThreadId?: string, onCompleted?: (data: any) => void) {
+export function useGetConversation(messageThreadId?: string, ownerId?: string, onCompleted?: (data: any) => void) {
     const { data, loading, error } = useQuery(GET_CONVERSATION, {
         variables: {
-            messageThreadId
+            messageThreadId,
+            ownerId
         },
-        skip: !messageThreadId,
+        skip: !messageThreadId && !ownerId,
         onCompleted
     })
     return { data, loading, error };

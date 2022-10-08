@@ -100,40 +100,49 @@ class MessageService {
         }
 
     }
-    async getConversation(userId: string, messageThreadId?: string, skip?: number, limit?: number) {
-        if (await MessageThreadModel.findOne({ _id: messageThreadId, owners: { $in: [userId] } })) {
 
-            const thread = await MessageModel.find({ messageThreadId },
-                {},
-                { skip, limit, sort: { lastUpdated: -1 } }).populate([{
-                    path: 'recipient',
-                    populate: {
-                        path: 'file'
-                    }
-                },
-                {
+    async getConversation(userId: string, messageThreadId?: string, ownerId?: string, skip?: number, limit?: number) {
+        let messageThread;
+        if (messageThreadId) {
+            messageThread = await MessageThreadModel.findOne({ _id: messageThreadId, owners: { $in: [userId] } })
+        } else if (!messageThreadId && ownerId) {
+            messageThread = await MessageThreadModel.findOne({ owners: { $in: [userId, ownerId] } });
+        }
+        if (messageThread?._id) {
+            return await this.getMessageThread(messageThread?._id, skip, limit);
+        }
+    }
+    private async getMessageThread(messageThreadId: string | undefined, skip: number | undefined, limit: number | undefined) {
+        const thread = await MessageModel.find({ messageThreadId },
+            {},
+            { skip, limit, sort: { lastUpdated: -1 } }).populate([{
+                path: 'recipient',
+                populate: {
+                    path: 'file'
+                }
+            },
+            {
+                path: 'sender',
+                populate: {
+                    path: 'file'
+                }
+            }, {
+                path: 'file',
+            },
+            {
+                path: 'parentMessageId',
+                populate: {
                     path: 'sender',
                     populate: {
                         path: 'file'
                     }
-                }, {
-                    path: 'file',
-
-                },
-                {
-                    path: 'parentMessageId',
-                    populate: {
-                        path: 'sender',
-                        populate: {
-                            path: 'file'
-                        }
-                    }
-                }]).lean();
-            const count = await MessageModel.count({ messageThreadId });
-            const hasMore = (thread.length || 0) + (skip || 0) < count;
-            return { messages: thread, hasMore, count };
-        }
+                }
+            }]).lean();
+        const count = await MessageModel.count({ messageThreadId });
+        const hasMore = (thread.length || 0) + (skip || 0) < count;
+        return { messages: thread, hasMore, count };
     }
+
     private async createMessage(userId: string, messageArgs: SendMessageArgs, messageThread: IMessageThread) {
         try {
             const message: IMessage = {

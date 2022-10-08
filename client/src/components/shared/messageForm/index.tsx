@@ -22,13 +22,17 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         setMessageThreadId(messageThreadId)
     }, [messageThreadId])
 
-    const { data, loading: getConversationLoading } = useGetConversation(messageThreadIdState);
+    const [selectedUsers, setSelectedUsers] = useState<any[]>();
+    const { searchContactsQuery, loading } = useSearchContacts();
+    const { data, loading: getConversationLoading } = useGetConversation(messageThreadIdState, selectedUsers?.[0]?._id, ({getConversation}) => {
+        if (!messageThreadIdState && getConversation.messages) {
+            setMessageThreadId(getConversation.messages[0].messageThreadId)
+        }
+    });
     const [inputData, setInputData] = useState<string>();
     const [isValid, setIsValid] = useState<boolean>(false);
     const [displayCamera, setDisplayCamera] = useState<boolean>(false);
-    const [selectedUsers, setSelectedUsers] = useState<any[]>();
     const [replyTo, setReplyTo] = useState<any>();
-    const { searchContactsQuery, loading } = useSearchContacts();
     const { sendMessageMutation, } = useSendMessage();
     const isFormValid = useCallback(() => {
         setIsValid(!!((selectedUsers?.length || owners?.length) && inputData?.length))
@@ -56,6 +60,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
                 setMessageThreadId(sendMessage.messageThreadId);
                 setThreadOwners([sendMessage.recipient]);
                 setDisplayListSkeleton(false);
+
             }
             setInputData(undefined);
             setReplyTo(undefined);
@@ -104,6 +109,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
     const handleReplyCardDismiss = (e: any) => { e.stopPropagation(); setReplyTo(undefined); }
     const onSelectHandler = (data: any) => {
         setSelectedUsers(data);
+        setThreadOwners(data);
         isFormValid();
     };
     const onItemClick: (item: any) => void | Promise<void> = (item) => {

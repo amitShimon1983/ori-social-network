@@ -31,6 +31,8 @@ export class GetConversation {
 export class GetConversationArgs {
     @Field(() => String, { nullable: true })
     messageThreadId?: string;
+    @Field(() => String, { nullable: true })
+    ownerId?: string;
     @Field(() => Int, { nullable: true })
     skip?: number;
     @Field(() => Int, { nullable: true })
