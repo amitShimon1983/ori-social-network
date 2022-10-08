@@ -1,6 +1,7 @@
 import { Arg, Mutation, Query, Resolver, Ctx, Subscription, Root } from "type-graphql";
 import { AppContext, IUser } from "../../../model";
 import { messageService } from "../../../services";
+import { ON_NEW_MESSAGE_CREATED, ON_NEW_MESSAGE_THREAD_CREATED } from "../../../utils";
 import { GetConversation, GetConversationArgs, GetMessageThreads, GetMessageThreadsArgs, Message, MessageThread, SendMessageArgs, UpdateMessageArgs } from "./types";
 
 @Resolver()
@@ -36,7 +37,7 @@ export class MessageResolver {
     }
 
     @Subscription(() => MessageThread, {
-        topics: ['NEW_MESSAGE_THREAD'],
+        topics: [ON_NEW_MESSAGE_THREAD_CREATED],
         filter: ({ payload, context }) => {
             const { user } = context;
             const owner = payload?.owners?.find((owner: IUser) => {
@@ -49,7 +50,7 @@ export class MessageResolver {
         return newThreadPayload;
     }
     @Subscription(() => MessageThread, {
-        topics: ['NEW_MESSAGE'],
+        topics: [ON_NEW_MESSAGE_CREATED],
         filter: ({ payload, context }) => {
             const { user } = context;
             const owner = payload?.owners?.find((owner: IUser) => {

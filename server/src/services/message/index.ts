@@ -2,6 +2,7 @@ import { PubSubEngine } from 'type-graphql';
 import { Message, MessageThread, SendMessageArgs, UpdateMessageArgs } from '../../apollo';
 import { IMessage, MessageModel, MessageThreadModel } from '../../model'
 import { IMessageThread } from '../../model/schema/message/types';
+import { ON_NEW_MESSAGE_CREATED, ON_NEW_MESSAGE_THREAD_CREATED } from '../../utils';
 class MessageService {
 
 
@@ -90,11 +91,11 @@ class MessageService {
                 }
             }]);
             if (fireCreateMessageThreadEvent) {
-                pubSub.publish("NEW_MESSAGE_THREAD", eventPayload);
+                pubSub.publish(ON_NEW_MESSAGE_THREAD_CREATED, eventPayload);
             }
             else if (!fireCreateMessageThreadEvent) {
                 eventPayload.messages = !!newMessage?._id ? [newMessage as Message] : []
-                pubSub.publish("NEW_MESSAGE", eventPayload);
+                pubSub.publish(ON_NEW_MESSAGE_CREATED, eventPayload);
             }
             return newMessage;
         }
