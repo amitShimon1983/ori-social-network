@@ -10,6 +10,7 @@ import { ReplyCard, SpeechBubbleList } from "..";
 import { appConfig } from "../../../configuration";
 import { cameraService } from "../../../services";
 import { CameraRoll } from "../../cameraRoll";
+import apolloQueries from "../../../queries";
 export interface MessageFormProps {
     owners: { [key: string]: any }[];
     messageThreadId?: string;
@@ -24,11 +25,23 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
 
     const [selectedUsers, setSelectedUsers] = useState<any[]>();
     const { searchContactsQuery, loading } = useSearchContacts();
-    const { data, loading: getConversationLoading } = useGetConversation(messageThreadIdState, selectedUsers?.[0]?._id, ({getConversation}) => {
+    const { data, loading: getConversationLoading, subscribeToMore } = useGetConversation(messageThreadIdState, selectedUsers?.[0]?._id, ({ getConversation }) => {
         if (!messageThreadIdState && getConversation.messages) {
             setMessageThreadId(getConversation.messages[0].messageThreadId)
         }
     });
+    useEffect(() => {
+        subscribeToMore({
+            document: apolloQueries.inboxQueries.NEW_MESSAGE_SUBSCRIPTION,
+            updateQuery: (prev: any, { subscriptionData }: { subscriptionData: any }) => {
+                const newMessage = subscriptionData?.data?.newMessage?.messages?.[0];
+                if (!newMessage) return prev;
+                // const newData = { ...prev, getConversation: { ...prev.getConversation, messages: [...prev.getConversation.messages, newMessage] } };
+                // console.log({ newData, prev });
+                return prev
+            }
+        })
+    }, []);
     const [inputData, setInputData] = useState<string>();
     const [isValid, setIsValid] = useState<boolean>(false);
     const [displayCamera, setDisplayCamera] = useState<boolean>(false);
