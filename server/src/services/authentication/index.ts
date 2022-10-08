@@ -16,12 +16,12 @@ export class AuthenticationService {
     email: string,
     password: string
   ): Promise<{
-    servicesRes: ApiResponse;
+    servicesRes: ApiResponse<IUser>;
     token?: string;
     isAuthenticate: boolean;
   }> {
     const user = await userService.findOneIfExists(email);
-    const servicesRes = new ApiResponse();
+    const servicesRes = new ApiResponse<IUser>();
     let token = "";
     let isAuthenticate = false;
     if (!user || !(await hashService.compare(password, user.password))) {
@@ -51,12 +51,12 @@ export class AuthenticationService {
   async refresh(
     oldToken: string
   ): Promise<{
-    servicesRes: ApiResponse;
+    servicesRes: ApiResponse<IUser>;
     token?: string;
     isAuthenticate: boolean;
   }> {
     const user = jwtService.getCookieData(oldToken);
-    const servicesRes = new ApiResponse();
+    const servicesRes = new ApiResponse<IUser>();
     let isAuthenticate = false;
     let token = "";
     if (user) {
@@ -67,8 +67,8 @@ export class AuthenticationService {
     }
     return { servicesRes, isAuthenticate, token };
   }
-  async register(user: IUser, file: IFile): Promise<ApiResponse> {
-    const res = new ApiResponse();
+  async register(user: IUser, file: IFile): Promise<ApiResponse<IUser>> {
+    const res = new ApiResponse<IUser>();
     const exists = await userService.findOneIfExists(user.email);
     if (exists) {
       res.setErrors(["Something went wrong please try again later."]);
@@ -80,7 +80,7 @@ export class AuthenticationService {
         file._id || "",
         user.dateOfBirth
       );
-      const payload = {
+      const payload: any = {
         name: newUser.name,
         email: newUser.email,
         file: newUser.file,

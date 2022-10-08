@@ -3,8 +3,11 @@
     "compilerOptions": {
         "outDir": "dist",
         "strictPropertyInitialization": false,
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
     },
+    "files": [
+        "./src/index.d.ts"
+    ],
     "include": [
         "src"
     ],
