@@ -1,31 +1,8 @@
-import { gql, useQuery, useLazyQuery } from "@apollo/client"
-const GET_POST_COMMENTS = gql`
-   query GetComments($postId: String, $commentId: String, $skip: Int, $limit: Int){
-    getComments(args: { postId: $postId, commentId: $commentId, limit: $limit, skip: $skip }){
-        count
-        hasMore
-        comments {
-            _id
-            user {
-              _id
-              name
-              email
-              lastSeen
-              file {
-                _id
-                originalname
-              }        
-            }
-            comments
-            content
-            createdAt
-            updatedAt
-        }
-    }
-   }
-`;
+import { useQuery, useLazyQuery } from "@apollo/client"
+import apolloQueries from "../queries"
+
 export const useGetPostComments = (postId: string, onCompleted?: (data: any) => void, onLazyCompleted?: (data: any) => void) => {
-    const { data, error, loading, fetchMore } = useQuery(GET_POST_COMMENTS, {
+    const { data, error, loading, fetchMore } = useQuery(apolloQueries.postQueries.GET_POST_COMMENTS, {
         variables: {
             postId,
             skip: 0,
@@ -34,7 +11,7 @@ export const useGetPostComments = (postId: string, onCompleted?: (data: any) => 
         skip: !postId,
         onCompleted
     })
-    const [getLazyComment, { data: lazyData, error: lazyError, loading: lazyLoading, fetchMore: lazyFetchMore }] = useLazyQuery(GET_POST_COMMENTS, {
+    const [getLazyComment, { data: lazyData, error: lazyError, loading: lazyLoading, fetchMore: lazyFetchMore }] = useLazyQuery(apolloQueries.postQueries.GET_POST_COMMENTS, {
         variables: {
             postId,
             commentId: undefined,

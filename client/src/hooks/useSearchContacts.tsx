@@ -1,22 +1,7 @@
-import { gql, useLazyQuery } from "@apollo/client";
-
-const SEARCH_CONTACTS = gql`
-query SearchContacts($queryString:String){
-    searchContacts(args:{queryString:$queryString}){
-        _id
-        name
-        email
-        lastSeen
-        file {
-            _id
-            originalname
-        }  
-    }
-}
-`;
-
+import { useLazyQuery } from "@apollo/client";
+import apolloQueries from "../queries";
 export const useSearchContacts = () => {
-    const [searchContactsQuery, { data, error, loading }] = useLazyQuery(SEARCH_CONTACTS)
+    const [searchContactsQuery, { data, error, loading }] = useLazyQuery(apolloQueries.searchQueries.SEARCH_CONTACTS)
     return { data, error, loading, searchContactsQuery }
 }
 

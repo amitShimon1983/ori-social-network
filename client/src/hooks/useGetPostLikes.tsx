@@ -1,17 +1,8 @@
-import { gql, useQuery } from "@apollo/client"
-const GET_POST_LIKES = gql`
-query GetPostLikes($postId:String){
-    getLikes(args:{postId:$postId}){
-        likes{
-            _id
-            post
-            user
-        }
-    }
-}
-`
+import { useQuery } from "@apollo/client"
+import apolloQueries from "../queries";
+
 export const useGetPostLikes = (postId: string) => {
-    const { data, loading, error } = useQuery(GET_POST_LIKES, {
+    const { data, loading, error } = useQuery(apolloQueries.postQueries.GET_POST_LIKES, {
         variables: {
             postId
         },

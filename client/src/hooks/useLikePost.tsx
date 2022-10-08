@@ -1,16 +1,7 @@
-import { useMutation, gql } from "@apollo/client"
-
-const LIKE_POST = gql`
-  mutation LikePost($postId:String,$action:String) {
-    likePost(args:{postId:$postId, action:$action}){
-        _id
-        user
-        post
-    }
-  }
-`;
+import { useMutation } from "@apollo/client"
+import apolloQueries from "../queries";
 
 export const useLikePost = () => {
-  const [likePostMutation, { data, loading, error }] = useMutation(LIKE_POST);
+  const [likePostMutation, { data, loading, error }] = useMutation(apolloQueries.postQueries.LIKE_POST);
   return { likePostMutation, data, loading, error };
 }

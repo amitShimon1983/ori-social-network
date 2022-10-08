@@ -1,38 +1,8 @@
 import { gql, useMutation } from '@apollo/client'
+import apolloQueries from '../queries';
 
-const SEND_MESSAGE = gql`
-mutation SendMessage($type: String, $recipient:String, $content:String, $parentMessageId:String, $messageThreadId:String){
-    sendMessage(args:{ type: $type, recipient: $recipient, content: $content, parentMessageId: $parentMessageId, messageThreadId: $messageThreadId }){
-        isRead
-        _id
-        sender{
-            _id
-            name
-            email
-            lastSeen
-            file {
-                _id
-                originalname
-            }
-        }
-        messageThreadId
-        recipient{
-            _id
-            name
-            email
-            lastSeen
-            file {
-                _id
-                originalname
-            }
-        }
-        content
-        createdAt
-    }
-}
-`
 export function useSendMessage() {
-    const [sendMessageMutation, { loading, data, error }] = useMutation(SEND_MESSAGE,
+    const [sendMessageMutation, { loading, data, error }] = useMutation(apolloQueries.messagesQueries.SEND_MESSAGE,
         {
             update(cache, { data: { sendMessage } }) {
                 cache.modify({

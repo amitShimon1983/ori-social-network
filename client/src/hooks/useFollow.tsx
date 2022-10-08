@@ -1,21 +1,7 @@
-import { gql, useMutation } from '@apollo/client';
-const FOLLOW = gql`
-    mutation Follow($userId: String){
-        follow(args:{ userId: $userId }){
-            _id
-            name
-            email
-            lastSeen
-            file {
-                _id
-                originalname
-            }
-            followers
-            following
-        }
-    }
-`
+import { useMutation } from '@apollo/client';
+import apolloQueries from '../queries';
+
 export default function useFollow() {
-    const [followMutation, { data, loading, error }] = useMutation(FOLLOW)
+    const [followMutation, { data, loading, error }] = useMutation(apolloQueries.followQueries.FOLLOW)
     return { followMutation, data, loading, error };
 }

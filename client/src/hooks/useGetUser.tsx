@@ -1,22 +1,8 @@
-import { gql, useQuery } from '@apollo/client'
-const GET_USER = gql`
-    query GetUser($userId: String){
-        getUser(args: { userId: $userId }){
-            _id
-            name
-            lastSeen
-            email
-            file {
-                _id
-                originalname
-            }
-            followers
-            following
-        }
-    }
-`
+import { useQuery } from '@apollo/client'
+import apolloQueries from '../queries'
+
 export function useGetUser(userId?: string) {
-    const { loading, error, data } = useQuery(GET_USER, {
+    const { loading, error, data } = useQuery(apolloQueries.userQueries.GET_USER, {
         variables: {
             userId
         },

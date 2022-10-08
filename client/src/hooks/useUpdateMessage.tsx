@@ -1,14 +1,8 @@
-import { gql, useMutation, useQuery } from '@apollo/client'
-const UPDATE_MESSAGE = gql`
-mutation UpdateMessage($isRead:Boolean, $id:String){
-    updateMessage(args:{isRead: $isRead, id: $id}){
-        isRead
-        _id
-    }
-}
-`;
+import { useMutation } from '@apollo/client'
+import apolloQueries from '../queries'
+
 export function useUpdateMessage() {
-    const [updateMessageMutation, { data, error, loading }] = useMutation(UPDATE_MESSAGE)
+    const [updateMessageMutation, { data, error, loading }] = useMutation(apolloQueries.messagesQueries.UPDATE_MESSAGE)
     const updateMessage = async (messageId: string, skip: boolean) => {
         if (!skip) {
             await updateMessageMutation({
