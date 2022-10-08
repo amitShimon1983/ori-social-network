@@ -1,143 +1,58 @@
-import { gql, useQuery } from "@apollo/client"
-const NEW_MESSAGE_SUBSCRIPTION = gql`
-subscription NewMessage {
-  newMessage {
-    _id
-    unreadMessages
-    owners{
-        _id
-        name
-        email
-        lastSeen
-        file {
-            _id
-            originalname
-        }
-    }
-    messages {
-        isRead
-        _id
-        sender{
-            _id
-            name
-            email
-            lastSeen
-            file {
-                _id
-                originalname
-            }
-        }
-        messageThreadId
-        recipient{
-            _id
-            name
-            email
-            file {
-                _id
-                originalname
-            }
-        }
-        content
-        createdAt
-    }
-  }
-}
-`
-const NEW_MESSAGE_THREAD_SUBSCRIPTION = gql`
-subscription NewMessageThread {
-  newMessageThread {
-    _id
-    unreadMessages
-    owners{
-        _id
-        name
-        email
-        lastSeen
-        file {
-            _id
-            originalname
-        }
-    }
-    messages {
-        isRead
-        _id
-        sender{
-            _id
-            name
-            email
-            lastSeen
-            file {
-                _id
-                originalname
-            }
-        }
-        messageThreadId
-        recipient{
-            _id
-            name
-            email
-            file {
-                _id
-                originalname
-            }
-        }
-        content
-        createdAt
-    }
-  }
-}
-`
-const GET_MESSAGE_THREADS = gql`
-query GetMessageThreads($skip:Int, $limit:Int){
-    getMessageThreads(args:{skip:$skip, limit:$limit}){
-        threads{
-            _id
-            unreadMessages
-            owners{
-                _id
-                name
-                email
-                lastSeen
-                file {
-                    _id
-                    originalname
-                }
-            }
-            messages {
-                isRead
-                _id
-                sender{
-                    _id
-                    name
-                    email
-                    lastSeen
-                    file {
-                        _id
-                        originalname
-                    }
-                }
-                messageThreadId
-                recipient{
-                    _id
-                    name
-                    email
-                    file {
-                        _id
-                        originalname
-                    }
-                }
-                content
-                createdAt
-            }
-        }
-        count
-        hasMore
-    }
-}
-`
+import { useQuery } from "@apollo/client"
+import { useEffect, useState } from "react";
+import apolloQueries from "../queries"
+
 export function useGetMessageThreads(onCompleted?: (data: any) => void | Promise<void>) {
-    const { data, loading, error, fetchMore, subscribeToMore } = useQuery(GET_MESSAGE_THREADS, {
-        onCompleted,
+    const [threads, setThreads] = useState<any[]>([]);
+    const [hasMore, setHasMore] = useState<boolean>(false);
+    const { loading, fetchMore, subscribeToMore } = useQuery(apolloQueries.inboxQueries.GET_MESSAGE_THREADS, {
+        onCompleted: (data: any) => {
+            setThreads((data?.getMessageThreads?.threads || []));
+            setHasMore(data?.getMessageThreads?.hasMore);
+            if (typeof onCompleted === 'function') {
+                onCompleted(data);
+            }
+        },
     })
-    return { data, loading, error, fetchMore, subscribeToMore, NEW_MESSAGE_SUBSCRIPTION, NEW_MESSAGE_THREAD_SUBSCRIPTION }
+
+    useEffect(() => {
+        subscribeToMore({
+            document: apolloQueries.inboxQueries.NEW_MESSAGE_THREAD_SUBSCRIPTION,
+            updateQuery: (prev: any, { subscriptionData }: { subscriptionData: any }) => {
+                if (!subscriptionData?.data?.newMessageThread) return prev;
+                const newData: any = {
+                    ...prev,
+                    getMessageThreads: {
+                        ...prev.getMessageThreads,
+                        threads: [subscriptionData.data.newMessageThread, ...(prev?.getMessageThreads?.threads || [])]
+                    }
+
+                };
+                return newData
+            }
+        })
+    }, []);
+    useEffect(() => {
+        subscribeToMore({
+            document: apolloQueries.inboxQueries.NEW_MESSAGE_SUBSCRIPTION,
+            updateQuery: (prev: any, { subscriptionData }: { subscriptionData: any }) => {
+                if (!subscriptionData?.data?.newMessage) return prev;
+                const newData: any = {
+                    ...prev,
+                    getMessageThreads: {
+                        ...prev.getMessageThreads,
+                        threads: prev?.getMessageThreads?.threads.map((thread: any) => {
+                            if (thread._id === subscriptionData.data.newMessage._id) {
+                                return subscriptionData.data.newMessage;
+                            }
+                            return thread
+                        })
+                    }
+
+                };
+                return newData
+            }
+        })
+    }, []);
+    return { threads, hasMore, loading, fetchMore, }
 }
