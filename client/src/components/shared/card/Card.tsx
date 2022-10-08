@@ -21,11 +21,8 @@ const Card: FunctionComponent<CardProps> = ({
     user,
     displayButtons,
     navigateOnClick }) => {
-
-
     const date = new Date(+createdAt);
     const diff = getPostDate(date);
-
     return (<div className={classes.container}>
         <div className={classes.header}>
             <div className={classes.details}>
@@ -42,7 +39,6 @@ const Card: FunctionComponent<CardProps> = ({
                 }
             </div>
         </div>
-
     </div>);
 }
 

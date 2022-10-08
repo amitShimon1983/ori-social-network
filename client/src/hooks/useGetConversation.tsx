@@ -1,4 +1,4 @@
-import { gql, useLazyQuery, useQuery } from '@apollo/client'
+import { gql, useQuery } from '@apollo/client'
 
 const GET_CONVERSATION = gql`
 query GetConversation($messageThreadId:String, $skip:Int, $limit:Int){
