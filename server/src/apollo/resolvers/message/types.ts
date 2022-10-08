@@ -77,7 +77,7 @@ export class Message {
     @Field(() => String)
     _id: string;
     @Field(() => Message)
-    parentMessageId: Message;
+    parentMessageId?: Message;
     @Field(() => User)
     sender?: User;
     @Field(() => User)

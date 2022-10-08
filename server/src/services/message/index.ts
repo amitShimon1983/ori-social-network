@@ -1,5 +1,5 @@
 import { PubSubEngine } from 'type-graphql';
-import { SendMessageArgs, UpdateMessageArgs } from '../../apollo';
+import { Message, MessageThread, SendMessageArgs, UpdateMessageArgs } from '../../apollo';
 import { IMessage, MessageModel, MessageThreadModel } from '../../model'
 import { IMessageThread } from '../../model/schema/message/types';
 class MessageService {
@@ -69,7 +69,7 @@ class MessageService {
                 messageThread?.messages?.push(newMessage._id);
                 await messageThread.save();
             }
-            const eventPayload: any = await messageThread.populate([{
+            const eventPayload: MessageThread = await messageThread.populate([{
                 path: 'messages',
                 populate: [{
                     path: 'recipient',
@@ -93,14 +93,14 @@ class MessageService {
                 pubSub.publish("NEW_MESSAGE_THREAD", eventPayload);
             }
             else if (!fireCreateMessageThreadEvent) {
-                eventPayload.messages = [newMessage]
+                eventPayload.messages = !!newMessage?._id ? [newMessage as Message] : []
                 pubSub.publish("NEW_MESSAGE", eventPayload);
             }
             return newMessage;
         }
 
     }
-    async getConversation(userId: any, messageThreadId?: string, skip?: number, limit?: number) {
+    async getConversation(userId: string, messageThreadId?: string, skip?: number, limit?: number) {
         if (await MessageThreadModel.findOne({ _id: messageThreadId, owners: { $in: [userId] } })) {
 
             const thread = await MessageModel.find({ messageThreadId },
