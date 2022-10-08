@@ -16,7 +16,7 @@ const Inbox: FunctionComponent = () => {
     const [openMessageForm, setOpenMessageForm] = useState<boolean>(false);
     const [messageThreadId, setMessageThreadId] = useState<string>();
     const ownerNames = threadOwners.map((owner: any) => owner.name)
-    const { loading, fetchMore, subscribeToMore, NEW_MESSAGE_THREAD_SUBSCRIPTION } = useGetMessageThreads((data: any) => {
+    const { loading, fetchMore, subscribeToMore, NEW_MESSAGE_THREAD_SUBSCRIPTION, NEW_MESSAGE_SUBSCRIPTION } = useGetMessageThreads((data: any) => {
         setThreads((data?.getMessageThreads?.threads || []));
         setHasMore(data?.getMessageThreads?.hasMore);
     });
@@ -37,6 +37,29 @@ const Inbox: FunctionComponent = () => {
             }
         })
     }, []);
+    useEffect(() => {
+        subscribeToMore({
+            document: NEW_MESSAGE_SUBSCRIPTION,
+            updateQuery: (prev: any, { subscriptionData }: { subscriptionData: any }) => {
+                if (!subscriptionData?.data?.newMessage) return prev;
+                const newData: any = {
+                    ...prev,
+                    getMessageThreads: {
+                        ...prev.getMessageThreads,
+                        threads: prev?.getMessageThreads?.threads.map((thread: any) => {
+                            debugger
+                            if (thread._id === subscriptionData.data.newMessage._id) {
+                                return subscriptionData.data.newMessage;
+                            }
+                            return thread
+                        })
+                    }
+
+                };
+                return newData
+            }
+        })
+    }, []);
 
     const renderItem = (data: any) => {
         const message = data.messages[0];
@@ -48,7 +71,7 @@ const Inbox: FunctionComponent = () => {
         }} className={classes.card_container}>
             <Card
                 displayButtons={false}
-                key={message._id + 'render_item_card_inbox'}
+                key={data._id + 'render_item_card_inbox'}
                 content={message.content}
                 user={tOwners[0]}
                 createdAt={message.createdAt}
