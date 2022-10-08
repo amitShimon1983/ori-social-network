@@ -9,15 +9,7 @@ export class CommentResolver {
     async commentPost(@Arg('args', () => CommentPostArgs) args: CommentPostArgs, @Ctx() context: AppContext): Promise<Comment | null | undefined> {
         const { user } = context;
         if (args.postId && user._id && args?.content) {
-            const payload: any = { message: "input.content" };
-            try {
-                await context.pubSub.publish("NOTIFICATIONS", payload);
-            }
-            catch (error: any) {
-                console.log(error);
-            }
             return commentService.commentPost(user._id, args.postId, args.content, args.commentId) as Comment
-
         }
     }
 

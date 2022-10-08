@@ -24,7 +24,7 @@ export class AuthenticationService {
     const servicesRes = new ApiResponse<IUser>();
     let token = "";
     let isAuthenticate = false;
-    if (!user || !(await hashService.compare(password, user.password))) {
+    if (!user || !user.password || !(await hashService.compare(password, user.password))) {
       servicesRes.setErrors(["Something went wrong please try again later."]);
     } else {
       const { payload, newToken } = this._onAuthenticateSuccess(user);
@@ -34,7 +34,7 @@ export class AuthenticationService {
     }
     return { servicesRes, token, isAuthenticate };
   }
-  _onAuthenticateSuccess(user: IUser): { payload: any; newToken: string } {
+  _onAuthenticateSuccess(user: IUser): { payload: IUser; newToken: string } {
     const payload = {
       name: user.name,
       email: user.email,
@@ -70,7 +70,7 @@ export class AuthenticationService {
   async register(user: IUser, file: IFile): Promise<ApiResponse<IUser>> {
     const res = new ApiResponse<IUser>();
     const exists = await userService.findOneIfExists(user.email);
-    if (exists) {
+    if (!user.password || exists) {
       res.setErrors(["Something went wrong please try again later."]);
     } else {
       const newUser = await userService.createUser(
@@ -80,7 +80,7 @@ export class AuthenticationService {
         file._id || "",
         user.dateOfBirth
       );
-      const payload: any = {
+      const payload: IUser = {
         name: newUser.name,
         email: newUser.email,
         file: newUser.file,

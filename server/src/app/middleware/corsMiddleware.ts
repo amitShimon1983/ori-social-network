@@ -2,7 +2,7 @@ import { Application, NextFunction, Request, Response } from "express"
 import { CorsMiddlewareOptions } from "../../model/cors"
 import cors from 'cors';
 
-const corsOptions = (whiteList: string[]) => (req: any, callback: any) => {
+const corsOptions = (whiteList: string[]) => (req: Request, callback: any) => {
     const getOriginValue = () => whiteList.find((origin: string) => origin === req.header('origin'))
     const options = {
         origin: getOriginValue(),
