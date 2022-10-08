@@ -1,4 +1,5 @@
 import { Resolver, Query, Ctx, Arg, Mutation } from "type-graphql";
+import { AppContext } from "../../../model";
 import { likeService } from "../../../services";
 import { Like, LikePostArgs, Likes, GetPostLikesArgs } from "./types";
 
@@ -7,7 +8,7 @@ import { Like, LikePostArgs, Likes, GetPostLikesArgs } from "./types";
 export class LikeResolver {
 
     @Mutation(() => Like)
-    async likePost(@Arg('args', () => LikePostArgs) args: LikePostArgs, @Ctx() context: any): Promise<Like | null | undefined> {
+    async likePost(@Arg('args', () => LikePostArgs) args: LikePostArgs, @Ctx() context: AppContext): Promise<Like | null | undefined> {
         const { user } = context;
         if (args.postId && user._id && args.action) {
             return likeService.likePost(args.postId, user._id, args.action) as Like;

@@ -1,28 +1,32 @@
 import { Arg, Mutation, Query, Resolver, Ctx, Subscription, Root, PubSubEngine, PubSub } from "type-graphql";
+import { AppContext } from "../../../model";
 import { messageService } from "../../../services";
 import { GetConversation, GetConversationArgs, GetMessageThreads, GetMessageThreadsArgs, Message, MessageThread, SendMessageArgs, UpdateMessageArgs } from "./types";
 
 @Resolver()
 export class MessageResolver {
     @Mutation(() => Message)
-    async sendMessage(@Arg('args', () => SendMessageArgs) args: SendMessageArgs, @Ctx() context: any) {
+    async sendMessage(@Arg('args', () => SendMessageArgs) args: SendMessageArgs, @Ctx() context: AppContext) {
         const { user, pubSub } = context;
-        return messageService.sendMessage(args, user._id, pubSub);
+        if (user._id) { return messageService.sendMessage(args, user._id, pubSub); } return null;
     }
     @Mutation(() => Message)
-    async updateMessage(@Arg('args', () => UpdateMessageArgs) args: UpdateMessageArgs, @Ctx() context: any) {
+    async updateMessage(@Arg('args', () => UpdateMessageArgs) args: UpdateMessageArgs, @Ctx() context: AppContext) {
         const { user } = context;
-        return messageService.updateMessage(args, user._id);
+        if (user._id) { return messageService.updateMessage(args, user._id) } return null;
     }
     @Query(() => GetMessageThreads)
-    async getMessageThreads(@Arg('args', () => GetMessageThreadsArgs) args: GetMessageThreadsArgs, @Ctx() context: any) {
+    async getMessageThreads(@Arg('args', () => GetMessageThreadsArgs) args: GetMessageThreadsArgs, @Ctx() context: AppContext) {
         const { user } = context;
         const { skip, limit } = args;
-        const threads = messageService.getMessages(user._id, skip, limit);
-        return threads;
+        if (user._id) {
+            const threads = messageService.getMessages(user._id, skip, limit);
+            return threads;
+        }
+        return null
     }
     @Query(() => GetConversation)
-    async getConversation(@Arg('args', () => GetConversationArgs) args: GetConversationArgs, @Ctx() context: any) {
+    async getConversation(@Arg('args', () => GetConversationArgs) args: GetConversationArgs, @Ctx() context: AppContext) {
         const { user } = context;
         const { skip, limit, messageThreadId } = args;
         const threads = messageService.getConversation(user._id, messageThreadId, skip, limit);

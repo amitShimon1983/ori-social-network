@@ -33,7 +33,6 @@ class EncryptionProvider {
             catch (error) {
                 console.log(error);
             }
-
         }
     }
     verify(input: string) {
@@ -42,8 +41,11 @@ class EncryptionProvider {
             token = jwt.verify(input, this._secret);
         }
         catch (error: any) {
-            const data = jwt.decode(input) as any
-            return { error: 'UNAUTHENTICATED', ...data };
+            if (error.name === 'TokenExpiredError') {
+                const data = jwt.decode(input) as any
+                return { ...data, error: 'refresh_token' };
+            }
+            return { error: 'UNAUTHENTICATED' };
         }
         return token
     }

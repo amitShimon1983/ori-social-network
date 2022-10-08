@@ -4,3 +4,4 @@ export * from './schema';
 export { Configuration } from './config';
 export { MongoStorage } from './mongodb';
 export { ApiResponse } from './response';
+export { AppContext } from './apolloContext';

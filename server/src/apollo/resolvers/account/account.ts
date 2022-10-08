@@ -1,20 +1,25 @@
+import { AuthenticationError } from "apollo-server-express";
 import { Resolver, Query, Mutation, Ctx, Arg } from "type-graphql";
+import { AppContext } from "../../../model";
 import { userService } from "../../../services";
 import { FollowArgs, GetUserArgs, User, SearchContactsArgs } from "./types";
 
 @Resolver()
 export class AccountResolver {
   @Query(() => User)
-  async getAccount(@Ctx() context: any): Promise<User> {
+  async getAccount(@Ctx() context: AppContext): Promise<User> {
     const { user } = context;
-    const dbUser = await userService.findOne(user._id);
-    return {
-      name: dbUser?.name,
-      email: dbUser?.email,
-      _id: dbUser?._id,
-      followers: dbUser.followers,
-      following: dbUser.following,
-    } as User;
+    if (user._id) {
+      const dbUser = await userService.findOne(user._id);
+      return {
+        name: dbUser?.name,
+        email: dbUser?.email,
+        _id: dbUser?._id,
+        followers: dbUser.followers,
+        following: dbUser.following,
+      } as User;
+    }
+    throw new AuthenticationError('UNAUTHENTICATED');
   }
   @Query(() => User)
   async getUser(
@@ -36,34 +41,40 @@ export class AccountResolver {
   @Mutation(() => User)
   async follow(
     @Arg("args", () => FollowArgs) args: FollowArgs,
-    @Ctx() context: any
+    @Ctx() context: AppContext
   ): Promise<User | null> {
-    const dbUser = await userService.follow(context.user._id, args.userId);
-    if (dbUser) {
-      return {
-        name: dbUser?.name,
-        email: dbUser?.email,
-        _id: dbUser?._id,
-        followers: dbUser?.followers,
-        following: dbUser?.following,
-      } as User;
+    const { user } = context;
+    if (user?._id) {
+      const dbUser = await userService.follow(user._id, args.userId);
+      if (dbUser) {
+        return {
+          name: dbUser?.name,
+          email: dbUser?.email,
+          _id: dbUser?._id,
+          followers: dbUser?.followers,
+          following: dbUser?.following,
+        } as User;
+      }
     }
     return null;
   }
   @Mutation(() => User)
   async unFollow(
     @Arg("args", () => FollowArgs) args: FollowArgs,
-    @Ctx() context: any
+    @Ctx() context: AppContext
   ): Promise<User | null> {
-    const dbUser = await userService.unFollow(context.user._id, args.userId);
-    if (dbUser) {
-      return {
-        name: dbUser?.name,
-        email: dbUser?.email,
-        _id: dbUser?._id,
-        followers: dbUser?.followers,
-        following: dbUser?.following,
-      } as User;
+    const { user } = context;
+    if (user?._id) {
+      const dbUser = await userService.unFollow(user._id, args.userId);
+      if (dbUser) {
+        return {
+          name: dbUser?.name,
+          email: dbUser?.email,
+          _id: dbUser?._id,
+          followers: dbUser?.followers,
+          following: dbUser?.following,
+        } as User;
+      }
     }
     return null;
   }
@@ -71,7 +82,7 @@ export class AccountResolver {
   @Query(() => [User])
   async searchContacts(
     @Arg("args", () => SearchContactsArgs) args: SearchContactsArgs,
-    @Ctx() context: any
+    @Ctx() context: AppContext
   ) {
     const { user } = context;
     const { queryString } = args;
@@ -82,8 +93,11 @@ export class AccountResolver {
   }
 
   @Mutation(() => Boolean)
-  async updateUserStatus(@Ctx() context: any): Promise<boolean> {
-    await userService.updateUserConnectionStatus(context.user._id);
-    return true;
+  async updateUserStatus(@Ctx() context: AppContext): Promise<boolean> {
+    const { user } = context;
+    if (user._id) {
+      return !!userService.updateUserConnectionStatus(user._id);
+    }
+    return false;
   }
 }
