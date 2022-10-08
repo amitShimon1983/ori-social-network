@@ -12,8 +12,8 @@ export const configureApp = async (app: Express, appConfig: Configuration) => {
     const { httpServer, pubSub } = await createApolloServer(app, appConfig);
     app.use((req: Request, res: Response, next) => {
         req.pubSub = pubSub;
-        next()
-    })
+        next();
+    });
 
     configureRoutes(app);
     await initDb(appConfig.dbConnectionString || '');
