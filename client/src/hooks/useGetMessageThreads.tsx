@@ -1,4 +1,48 @@
 import { gql, useQuery } from "@apollo/client"
+const NEW_MESSAGE_SUBSCRIPTION = gql`
+subscription NewMessage {
+  newMessage {
+    _id
+    unreadMessages
+    owners{
+        _id
+        name
+        email
+        lastSeen
+        file {
+            _id
+            originalname
+        }
+    }
+    messages {
+        isRead
+        _id
+        sender{
+            _id
+            name
+            email
+            lastSeen
+            file {
+                _id
+                originalname
+            }
+        }
+        messageThreadId
+        recipient{
+            _id
+            name
+            email
+            file {
+                _id
+                originalname
+            }
+        }
+        content
+        createdAt
+    }
+  }
+}
+`
 const NEW_MESSAGE_THREAD_SUBSCRIPTION = gql`
 subscription NewMessageThread {
   newMessageThread {
@@ -95,5 +139,5 @@ export function useGetMessageThreads(onCompleted?: (data: any) => void | Promise
     const { data, loading, error, fetchMore, subscribeToMore } = useQuery(GET_MESSAGE_THREADS, {
         onCompleted,
     })
-    return { data, loading, error, fetchMore, subscribeToMore, NEW_MESSAGE_THREAD_SUBSCRIPTION }
+    return { data, loading, error, fetchMore, subscribeToMore, NEW_MESSAGE_SUBSCRIPTION, NEW_MESSAGE_THREAD_SUBSCRIPTION }
 }
