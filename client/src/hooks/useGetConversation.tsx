@@ -59,7 +59,6 @@ export function useGetConversation(messageThreadId?: string, onCompleted?: (data
             messageThreadId
         },
         skip: !messageThreadId,
-        pollInterval: 1500,
         onCompleted
     })
     return { data, loading, error };

@@ -17,6 +17,7 @@ export interface MessageFormProps {
 }
 const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, owners, setThreadOwners }) => {
     const [messageThreadIdState, setMessageThreadId] = useState<string>();
+    const [displayListSkeleton, setDisplayListSkeleton] = useState(true)
     useEffect(() => {
         setMessageThreadId(messageThreadId)
     }, [messageThreadId])
@@ -54,6 +55,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             if (!messageThreadId && sendMessage?.messageThreadId) {
                 setMessageThreadId(sendMessage.messageThreadId);
                 setThreadOwners([sendMessage.recipient]);
+                setDisplayListSkeleton(false);
             }
             setInputData(undefined);
             setReplyTo(undefined);
@@ -119,12 +121,13 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         <div className={classes.text_area}>
             {!getConversationLoading && <>
                 <SpeechBubbleList
+                    displayInitialLoader={displayListSkeleton}
                     items={messages}
                     onItemClick={onItemClick} />
                 <ReplyCard display={!!replyTo} creator={replyTo?.sender} content={replyTo?.content} handleDismiss={handleReplyCardDismiss} />
             </>
             }
-            {getConversationLoading && <Spinner />}
+            {getConversationLoading && displayListSkeleton && <Spinner />}
         </div>
         <InputButtonPanel
             toggleCamera={() => setDisplayCamera(prev => (!prev))}

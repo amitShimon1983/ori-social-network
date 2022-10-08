@@ -4,14 +4,18 @@ import classes from './index.module.css';
 import Skeleton from "../../skeleton";
 interface SpeechBubbleListProps {
     items: any[];
-    onItemClick: (item: any) => void | Promise<void>
+    onItemClick: (item: any) => void | Promise<void>;
+    displayInitialLoader: boolean;
 }
 
-const SpeechBubbleList: FunctionComponent<SpeechBubbleListProps> = ({ items, onItemClick }) => {
+const SpeechBubbleList: FunctionComponent<SpeechBubbleListProps> = ({ items, onItemClick, displayInitialLoader }) => {
     let innerRef = useRef<HTMLSpanElement>(null);
     const [displaySkeleton, setDisplaySkeleton] = useState<boolean>(true);
     useEffect(() => {
-        if (displaySkeleton) {
+        if (!displayInitialLoader) {
+            setDisplaySkeleton(displayInitialLoader)
+        }
+        if (displaySkeleton && displayInitialLoader) {
             let timer = setTimeout(() => {
                 setDisplaySkeleton(false)
                 innerRef?.current?.scrollIntoView({
@@ -30,7 +34,7 @@ const SpeechBubbleList: FunctionComponent<SpeechBubbleListProps> = ({ items, onI
                 behavior: "smooth"
             });
         }
-    }, [items?.length, displaySkeleton])
+    }, [items?.length, displaySkeleton, displayInitialLoader])
     return (<>
         {items?.map((item: any, idx: number) => {
             const isLast = idx === items?.length - 1;
