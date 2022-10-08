@@ -69,28 +69,32 @@ class MessageService {
                 messageThread?.messages?.push(newMessage._id);
                 await messageThread.save();
             }
-            if (fireCreateMessageThreadEvent) {
-                const eventPayload = await messageThread.populate([{
-                    path: 'messages',
-                    populate: [{
-                        path: 'recipient',
-                        populate: {
-                            path: 'file'
-                        }
-                    }, {
-                        path: 'sender',
-                        populate: {
-                            path: 'file'
-                        }
-                    }],
-                },
-                {
-                    path: 'owners',
+            const eventPayload: any = await messageThread.populate([{
+                path: 'messages',
+                populate: [{
+                    path: 'recipient',
                     populate: {
                         path: 'file'
                     }
-                }]);
+                }, {
+                    path: 'sender',
+                    populate: {
+                        path: 'file'
+                    }
+                }],
+            },
+            {
+                path: 'owners',
+                populate: {
+                    path: 'file'
+                }
+            }]);
+            if (fireCreateMessageThreadEvent) {
                 pubSub.publish("NEW_MESSAGE_THREAD", eventPayload);
+            }
+            else if (!fireCreateMessageThreadEvent) {
+                eventPayload.messages = [newMessage]
+                pubSub.publish("NEW_MESSAGE", eventPayload);
             }
             return newMessage;
         }
