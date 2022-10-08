@@ -6,12 +6,14 @@ import {
 } from "apollo-server-core";
 import { WebSocketServer } from 'ws';
 import { useServer } from 'graphql-ws/lib/use/ws';
+import { SubscribeMessage } from 'graphql-ws';
 import { Express } from 'express'
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import { apolloHttpContext, apolloWsContext } from '../../../apollo';
 import resolvers from './resolvers';
 import { PubSub } from 'graphql-subscriptions';
+import { ExecutionArgs } from 'graphql';
 const pubSub = new PubSub();
 
 const createApolloServer = async (app: Express) => {
@@ -30,7 +32,7 @@ const createApolloServer = async (app: Express) => {
     });
     const serverCleanup = useServer({
         schema,
-        context: (ctx, msg, args) => {
+        context: (ctx, msg: SubscribeMessage, args: ExecutionArgs) => {
             return apolloWsContext(pubSub, ctx, msg, args);
         },
     }, wsServer);

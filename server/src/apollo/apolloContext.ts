@@ -2,6 +2,8 @@ import { AuthenticationError } from 'apollo-server-errors';
 import { authenticationService, cookieService, jwtService } from '../services';
 import { PubSub } from 'graphql-subscriptions';
 import { Request, Response } from 'express';
+import { SubscribeMessage } from 'graphql-ws';
+import { ExecutionArgs } from 'graphql';
 
 export const apolloHttpContext = (pubSub: PubSub) => async ({ req, res }: { req: Request; res: Response }) => {
     if (req.body.operationName === 'IntrospectionQuery') {
@@ -10,7 +12,7 @@ export const apolloHttpContext = (pubSub: PubSub) => async ({ req, res }: { req:
     const token = req?.cookies?.user;
     return await authenticateRequest(token, pubSub, res);
 }
-export const apolloWsContext = async (pubSub: PubSub, ctx: any, msg: any, args: any) => {
+export const apolloWsContext = async (pubSub: PubSub, ctx: any, msg: SubscribeMessage, args: ExecutionArgs) => {
     const req = ctx.extra.request;
     const cookie = req.rawHeaders.find((header: string) => header.includes('user='));
     return await authenticateRequest(cookie?.split?.('=')?.[1], pubSub);
