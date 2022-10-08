@@ -14,9 +14,10 @@ import { apolloHttpContext, apolloWsContext } from '../../../apollo';
 import resolvers from './resolvers';
 import { PubSub } from 'graphql-subscriptions';
 import { ExecutionArgs } from 'graphql';
+import { Configuration } from '../../../model';
 const pubSub = new PubSub();
 
-const createApolloServer = async (app: Express) => {
+const createApolloServer = async (app: Express, appConfig: Configuration) => {
 
     const schema = await buildSchema({
         resolvers: resolvers,
@@ -28,7 +29,7 @@ const createApolloServer = async (app: Express) => {
     const httpServer = createServer(app);
     const wsServer = new WebSocketServer({
         server: httpServer,
-        path: '/api/graphql',
+        path: appConfig.apolloServerPath,
     });
     const serverCleanup = useServer({
         schema,
@@ -56,7 +57,7 @@ const createApolloServer = async (app: Express) => {
         ],
     });
     await server.start()
-    server.applyMiddleware({ app, path: '/api/graphql', cors: false })
+    server.applyMiddleware({ app, path: appConfig.apolloServerPath, cors: false })
     return { httpServer, pubSub };
 }
 export default createApolloServer;
