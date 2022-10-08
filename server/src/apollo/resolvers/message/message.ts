@@ -29,8 +29,10 @@ export class MessageResolver {
     async getConversation(@Arg('args', () => GetConversationArgs) args: GetConversationArgs, @Ctx() context: AppContext) {
         const { user } = context;
         const { skip, limit, messageThreadId } = args;
-        const threads = messageService.getConversation(user._id, messageThreadId, skip, limit);
-        return threads;
+        if (user._id) {
+            const threads = messageService.getConversation(user._id, messageThreadId, skip, limit);
+            return threads;
+        } return null;
     }
     @Subscription(() => MessageThread, {
         topics: ['NEW_MESSAGE_THREAD'],
