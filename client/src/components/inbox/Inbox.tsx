@@ -47,7 +47,6 @@ const Inbox: FunctionComponent = () => {
                     getMessageThreads: {
                         ...prev.getMessageThreads,
                         threads: prev?.getMessageThreads?.threads.map((thread: any) => {
-                            debugger
                             if (thread._id === subscriptionData.data.newMessage._id) {
                                 return subscriptionData.data.newMessage;
                             }

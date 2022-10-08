@@ -19,7 +19,7 @@ const LoginForm: FunctionComponent<LoginFormProps> = () => {
     const [login, setLogin] = useState<Login>(initialState);
     const [loading, setLoading] = useState<boolean>(false);
     const [isValid, setIsValid] = useState<boolean>(false)
-    const [errors, setErrors] = useState<string[]>([])
+    const [errors, setErrors] = useState<string[]>([]);
     const navigate = useNavigate();
     const handleNavigateToSignUp = () => {
         navigate(`/sign-up`)

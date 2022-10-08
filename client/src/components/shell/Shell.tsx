@@ -2,7 +2,7 @@ import { useReactiveVar } from "@apollo/client";
 import { FunctionComponent } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { useUpdateUserStatus } from "../../hooks";
-import { authService } from "../../services";
+import { authService, storeService } from "../../services";
 import { appContextVar } from "../../services/store";
 import {
   AiOutlineLogout,
@@ -12,10 +12,10 @@ import {
   Toolbar,
   FiInbox,
 } from "../shared";
-import {Dialog} from "../shared/dialog/Dialog";
+import { Dialog } from "../shared/dialog/Dialog";
 import classes from "./Shell.module.css";
 import { useState } from "react";
-interface ShellProps {}
+interface ShellProps { }
 const Shell: FunctionComponent<ShellProps> = () => {
   const { isAuthenticate } = useReactiveVar(appContextVar);
   const [open, setDialogOpen] = useState<boolean>(false);
@@ -31,10 +31,12 @@ const Shell: FunctionComponent<ShellProps> = () => {
 
   const handleDialogLogout = async () => {
     if (isAuthenticate) {
-      await authService.logout(() => {
+      await storeService?.client?.clearStore()
+      await authService.logout(async () => {
         appContextVar({
           user: {},
           isAuthenticate: false,
+          loading: false
         });
         navigate("/login");
       });
@@ -44,7 +46,7 @@ const Shell: FunctionComponent<ShellProps> = () => {
   const navigateMyWall = () => handleNavigate("/myWall");
   const navigatePost = () => handleNavigate("/post");
   const navigateInbox = () => handleNavigate("/inbox");
-  
+
   const closeDialog = () => setDialogOpen(false)
   const title = "Are you sure you want to logout?"
 
@@ -54,7 +56,7 @@ const Shell: FunctionComponent<ShellProps> = () => {
         onDialogSuccess={handleDialogLogout}
         open={open}
         onDialogCancel={closeDialog}
-        title = {title}
+        title={title}
       />
       <div className={classes.outlet_container}>
         <Outlet />
