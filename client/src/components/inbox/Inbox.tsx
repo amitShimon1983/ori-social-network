@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useState } from "react";
 import { useGetMessageThreads } from "../../hooks";
 import { appContextVar } from "../../services/store";
 import { BackButton } from "../backButton";
@@ -8,58 +8,14 @@ import Card from "../shared/card/Card";
 import InfiniteScroll from "../shared/infiniteScrolling/InfiniteScroll";
 import { Hr } from "../styles";
 import classes from './Inbox.module.css';
+
 const Inbox: FunctionComponent = () => {
     const { user: me } = appContextVar();
-    const [threads, setThreads] = useState<any[]>([]);
+    const { threads, hasMore, loading, fetchMore } = useGetMessageThreads()
     const [threadOwners, setThreadOwners] = useState<any[]>([]);
-    const [hasMore, setHasMore] = useState<boolean>(false);
     const [openMessageForm, setOpenMessageForm] = useState<boolean>(false);
     const [messageThreadId, setMessageThreadId] = useState<string>();
     const ownerNames = threadOwners.map((owner: any) => owner.name)
-    const { loading, fetchMore, subscribeToMore, NEW_MESSAGE_THREAD_SUBSCRIPTION, NEW_MESSAGE_SUBSCRIPTION } = useGetMessageThreads((data: any) => {
-        setThreads((data?.getMessageThreads?.threads || []));
-        setHasMore(data?.getMessageThreads?.hasMore);
-    });
-    useEffect(() => {
-        subscribeToMore({
-            document: NEW_MESSAGE_THREAD_SUBSCRIPTION,
-            updateQuery: (prev: any, { subscriptionData }: { subscriptionData: any }) => {
-                if (!subscriptionData?.data?.newMessageThread) return prev;
-                const newData: any = {
-                    ...prev,
-                    getMessageThreads: {
-                        ...prev.getMessageThreads,
-                        threads: [subscriptionData.data.newMessageThread, ...(prev?.getMessageThreads?.threads || [])]
-                    }
-
-                };
-                return newData
-            }
-        })
-    }, []);
-    useEffect(() => {
-        subscribeToMore({
-            document: NEW_MESSAGE_SUBSCRIPTION,
-            updateQuery: (prev: any, { subscriptionData }: { subscriptionData: any }) => {
-                if (!subscriptionData?.data?.newMessage) return prev;
-                const newData: any = {
-                    ...prev,
-                    getMessageThreads: {
-                        ...prev.getMessageThreads,
-                        threads: prev?.getMessageThreads?.threads.map((thread: any) => {
-                            if (thread._id === subscriptionData.data.newMessage._id) {
-                                return subscriptionData.data.newMessage;
-                            }
-                            return thread
-                        })
-                    }
-
-                };
-                return newData
-            }
-        })
-    }, []);
-
     const renderItem = (data: any) => {
         const message = data.messages[0];
         const tOwners = data.owners.filter((owner: any) => (owner._id !== me._id));
