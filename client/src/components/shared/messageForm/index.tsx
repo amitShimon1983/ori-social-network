@@ -13,9 +13,15 @@ import { CameraRoll } from "../../cameraRoll";
 export interface MessageFormProps {
     owners: { [key: string]: any }[];
     messageThreadId?: string;
+    setThreadOwners: React.Dispatch<React.SetStateAction<any[]>>
 }
-const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, owners }) => {
-    const { data, loading: getConversationLoading } = useGetConversation(messageThreadId);
+const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, owners, setThreadOwners }) => {
+    const [messageThreadIdState, setMessageThreadId] = useState<string>();
+    useEffect(() => {
+        setMessageThreadId(messageThreadId)
+    }, [messageThreadId])
+
+    const { data, loading: getConversationLoading } = useGetConversation(messageThreadIdState);
     const [inputData, setInputData] = useState<string>();
     const [isValid, setIsValid] = useState<boolean>(false);
     const [displayCamera, setDisplayCamera] = useState<boolean>(false);
@@ -39,12 +45,16 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
                 content: inputData,
                 recipient: selectedUsers?.[0]?._id ?? owners[0]._id,
                 parentMessageId: replyTo?._id,
-                messageThreadId,
+                messageThreadId: messageThreadId ?? messageThreadIdState,
                 type: 'text'
             }
         }
         if (isValid) {
-            await sendMessageMutation(query);
+            const { data: { sendMessage } } = await sendMessageMutation(query);
+            if (!messageThreadId && sendMessage?.messageThreadId) {
+                setMessageThreadId(sendMessage.messageThreadId);
+                setThreadOwners([sendMessage.recipient]);
+            }
             setInputData(undefined);
             setReplyTo(undefined);
         }
@@ -98,7 +108,6 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         setReplyTo(item);
     };
     return (<div className={classes.container}>
-        {displayCamera && <CameraRoll onSave={onVideoSave} />}
         {!owners.length && <AutoComplete
             defaultValue={owners}
             renderOption={renderOption}
@@ -106,6 +115,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             loading={loading}
             fetchData={fetchContactData}
         />}
+        {displayCamera && <CameraRoll onSave={onVideoSave} />}
         <div className={classes.text_area}>
             {!getConversationLoading && <>
                 <SpeechBubbleList
@@ -117,7 +127,8 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             {getConversationLoading && <Spinner />}
         </div>
         <InputButtonPanel
-            handleDisplayCamera={() => setDisplayCamera(prev => (!prev))}
+            toggleCamera={() => setDisplayCamera(prev => (!prev))}
+            isCameraOpen={displayCamera}
             disabled={!isValid}
             handleChange={handleInputChange}
             inputValue={inputData || ''}
