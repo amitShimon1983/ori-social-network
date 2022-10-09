@@ -18,6 +18,7 @@ export interface MessageFormProps {
 }
 const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, owners, setThreadOwners }) => {
     const [messageThreadIdState, setMessageThreadId] = useState<string>();
+    const [hasMore, setHasMore] = useState<boolean>(false);
     useEffect(() => {
         setMessageThreadId(messageThreadId)
     }, [messageThreadId])
@@ -25,10 +26,9 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
     const [selectedUsers, setSelectedUsers] = useState<any[]>();
     const { searchContactsQuery, loading } = useSearchContacts();
     const { data, loading: getConversationLoading, subscribeToMore, fetchMore } = useGetConversation(messageThreadIdState, selectedUsers?.[0]?._id, ({ getConversation }) => {
+        setHasMore(getConversation?.hasMore);
         if (!messageThreadIdState && getConversation.messages) {
             setMessageThreadId(getConversation.messages[0].messageThreadId)
-            console.log(getConversation);
-
         }
     });
     useEffect(() => {
@@ -147,7 +147,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         {!getConversationLoading && <>
             <SpeechBubbleList
                 fetchMore={fetchMoreMessages}
-                hasMore={true}
+                hasMore={hasMore}
                 items={messages}
                 onItemClick={onItemClick} />
             <ReplyCard display={!!replyTo} creator={replyTo?.sender} content={replyTo?.content} handleDismiss={handleReplyCardDismiss} />
