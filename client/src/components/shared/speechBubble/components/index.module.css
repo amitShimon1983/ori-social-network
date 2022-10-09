@@ -10,6 +10,25 @@
     box-shadow: var(--box-shadow);
 }
 
+.list {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    position: relative;
+    padding-bottom: 0;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    height: 75%;
+    flex: 1;
+    overflow-y: scroll;
+    overflow-X: hidden;
+    border: 1px solid #d1cbcb;
+}
+
+.last_item {
+    width: 100%;
+}
+
 .speech_bubble_other {
     min-height: 50px;
     padding: 10px;

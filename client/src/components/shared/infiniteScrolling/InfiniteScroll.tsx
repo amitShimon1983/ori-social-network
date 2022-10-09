@@ -6,11 +6,12 @@ interface InfiniteScrollProps {
     initialData: any[];
     initialHasMore: boolean;
     renderItem: (item: any) => React.ReactNode;
-    scrollTop?: () => void
-    scrollTBottom?: () => void
+    scrollTop?: () => void;
+    scrollTBottom?: () => void;
+    styles?: { container?: string; lastItem?: string; };
 }
 
-const InfiniteScroll: FunctionComponent<InfiniteScrollProps> = ({ initialHasMore, fetchMore, initialData, renderItem }) => {
+const InfiniteScroll: FunctionComponent<InfiniteScrollProps> = ({ styles, initialHasMore, fetchMore, initialData, renderItem }) => {
     const [listItems, setListItems] = useState<any[]>([]);
     const [loading, setLoading] = useState<Boolean>(false);
     const [hasMore, setHasMore] = useState<Boolean>(false);
@@ -50,16 +51,16 @@ const InfiniteScroll: FunctionComponent<InfiniteScrollProps> = ({ initialHasMore
     }, [hasMore, loading, handleFetch])
 
     useEffect(() => {
-        if (initialData.length) {
+        if (initialData?.length) {
             setListItems(initialData);
             setHasMore(initialHasMore)
         }
     }, [initialData, initialHasMore])
 
-    return (<div className={classes.container}>
-        {!!listItems.length && listItems.map((item: any, idx: number) => {
+    return (<div className={`${classes.container} ${styles?.container}`}>
+        {!!listItems?.length && listItems.map((item: any, idx: number) => {
             const isLast = idx === listItems.length - 1;
-            return isLast ? <span ref={lastItemRef} key={item._id}>{renderItem(item)}</span> : renderItem(item);
+            return isLast ? <span className={`${styles?.lastItem}`} ref={lastItemRef} key={item._id}>{renderItem(item)}</span> : renderItem(item);
         })}
         {loading && <Spinner label='loading' />}
     </div>);

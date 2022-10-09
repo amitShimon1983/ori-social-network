@@ -24,9 +24,11 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
 
     const [selectedUsers, setSelectedUsers] = useState<any[]>();
     const { searchContactsQuery, loading } = useSearchContacts();
-    const { data, loading: getConversationLoading, subscribeToMore } = useGetConversation(messageThreadIdState, selectedUsers?.[0]?._id, ({ getConversation }) => {
+    const { data, loading: getConversationLoading, subscribeToMore, fetchMore } = useGetConversation(messageThreadIdState, selectedUsers?.[0]?._id, ({ getConversation }) => {
         if (!messageThreadIdState && getConversation.messages) {
             setMessageThreadId(getConversation.messages[0].messageThreadId)
+            console.log(getConversation);
+
         }
     });
     useEffect(() => {
@@ -125,6 +127,14 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
     const onItemClick: (item: any) => void | Promise<void> = (item) => {
         setReplyTo(item);
     };
+    const fetchMoreMessages = async (skip: number) => {
+        await fetchMore({
+            variables: {
+
+            }
+        })
+        return { items: [], hasMore: false }
+    }
     return (<div className={classes.container}>
         {!owners.length && <AutoComplete
             defaultValue={owners}
@@ -134,16 +144,15 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             fetchData={fetchContactData}
         />}
         {displayCamera && <CameraRoll onSave={onVideoSave} />}
-        <div className={classes.text_area}>
-            {!getConversationLoading && <>
-                <SpeechBubbleList
-                    items={messages}
-                    onItemClick={onItemClick} />
-                <ReplyCard display={!!replyTo} creator={replyTo?.sender} content={replyTo?.content} handleDismiss={handleReplyCardDismiss} />
-            </>
-            }
-            {getConversationLoading  && <Spinner />}
-        </div>
+        {!getConversationLoading && <>
+            <SpeechBubbleList
+                fetchMore={fetchMoreMessages}
+                hasMore={true}
+                items={messages}
+                onItemClick={onItemClick} />
+            <ReplyCard display={!!replyTo} creator={replyTo?.sender} content={replyTo?.content} handleDismiss={handleReplyCardDismiss} />
+        </>}
+        {getConversationLoading && <Spinner />}
         <InputButtonPanel
             toggleCamera={() => setDisplayCamera(prev => (!prev))}
             isCameraOpen={displayCamera}
