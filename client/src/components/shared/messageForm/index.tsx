@@ -25,7 +25,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
 
     const [selectedUsers, setSelectedUsers] = useState<any[]>();
     const { searchContactsQuery, loading } = useSearchContacts();
-    const { data, loading: getConversationLoading, subscribeToMore, fetchMore } = useGetConversation(messageThreadIdState, selectedUsers?.[0]?._id, ({ getConversation }) => {
+    const { data, loading: getConversationLoading, subscribeToMore, fetchMoreMessages } = useGetConversation(messageThreadIdState, selectedUsers?.[0]?._id, ({ getConversation }) => {
         setHasMore(getConversation?.hasMore);
         if (!messageThreadIdState && getConversation.messages) {
             setMessageThreadId(getConversation.messages[0].messageThreadId)
@@ -127,14 +127,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
     const onItemClick: (item: any) => void | Promise<void> = (item) => {
         setReplyTo(item);
     };
-    const fetchMoreMessages = async (skip: number) => {
-        const { data: { getConversation } } = await fetchMore({
-            variables: {
-                skip
-            }
-        })
-        return { items: getConversation?.messages || [], hasMore: !!getConversation?.hasMore }
-    }
+    
     return (<div className={classes.container}>
         {!owners.length && <AutoComplete
             defaultValue={owners}

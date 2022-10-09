@@ -11,6 +11,13 @@ export function useGetConversation(messageThreadId?: string, ownerId?: string, o
         skip: !messageThreadId && !ownerId,
         onCompleted
     })
-
-    return { data, loading, error, subscribeToMore, fetchMore };
+    const fetchMoreMessages = async (skip: number) => {
+        const { data: { getConversation } } = await fetchMore({
+            variables: {
+                skip
+            }
+        })
+        return { items: getConversation?.messages || [], hasMore: !!getConversation?.hasMore }
+    }
+    return { data, loading, error, subscribeToMore, fetchMoreMessages };
 }
