@@ -18,7 +18,7 @@
     padding-bottom: 0;
     margin-bottom: 10px;
     border-radius: 4px;
-    height: 75%;
+    height: 99% !important;
     flex: 1;
     overflow-y: scroll;
     overflow-X: hidden;

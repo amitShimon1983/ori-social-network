@@ -144,14 +144,14 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             fetchData={fetchContactData}
         />}
         {displayCamera && <CameraRoll onSave={onVideoSave} />}
-        {!getConversationLoading && <>
+        {!getConversationLoading && <div style={{ position: 'relative', height: '95%' }}>
             <SpeechBubbleList
                 fetchMore={fetchMoreMessages}
                 hasMore={hasMore}
                 items={messages}
                 onItemClick={onItemClick} />
             <ReplyCard display={!!replyTo} creator={replyTo?.sender} content={replyTo?.content} handleDismiss={handleReplyCardDismiss} />
-        </>}
+        </div>}
         {getConversationLoading && <Spinner />}
         <InputButtonPanel
             toggleCamera={() => setDisplayCamera(prev => (!prev))}
