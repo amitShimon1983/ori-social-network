@@ -103,7 +103,7 @@ class MessageService {
     private async getMessageThread(messageThreadId: string | undefined, skip: number | undefined, limit: number | undefined) {
         const thread = await MessageModel.find({ messageThreadId },
             {},
-            { skip, limit, sort: { lastUpdated: -1 } }).populate([{
+            { skip, limit, sort: { createdAt: -1 } }).populate([{
                 path: 'recipient',
                 populate: {
                     path: 'file'

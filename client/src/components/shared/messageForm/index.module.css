@@ -13,6 +13,9 @@
 }
 
 .text_area {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
     position: relative;
     padding-bottom: 0;
     margin-bottom: 10px;
