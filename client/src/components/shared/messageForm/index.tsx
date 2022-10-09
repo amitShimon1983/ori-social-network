@@ -128,12 +128,12 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         setReplyTo(item);
     };
     const fetchMoreMessages = async (skip: number) => {
-        await fetchMore({
+        const { data: { getConversation } } = await fetchMore({
             variables: {
-
+                skip
             }
         })
-        return { items: [], hasMore: false }
+        return { items: getConversation?.messages || [], hasMore: !!getConversation?.hasMore }
     }
     return (<div className={classes.container}>
         {!owners.length && <AutoComplete

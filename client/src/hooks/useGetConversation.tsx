@@ -5,7 +5,8 @@ export function useGetConversation(messageThreadId?: string, ownerId?: string, o
     const { data, loading, error, subscribeToMore, fetchMore } = useQuery(apolloQueries.messagesQueries.GET_CONVERSATION, {
         variables: {
             messageThreadId,
-            ownerId
+            ownerId,
+            limit: 15
         },
         skip: !messageThreadId && !ownerId,
         onCompleted
