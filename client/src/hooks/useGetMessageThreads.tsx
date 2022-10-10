@@ -5,7 +5,7 @@ import apolloQueries from "../queries"
 export function useGetMessageThreads(onCompleted?: (data: any) => void | Promise<void>) {
     const [threads, setThreads] = useState<any[]>([]);
     const [hasMore, setHasMore] = useState<boolean>(false);
-    const { loading, fetchMore, subscribeToMore } = useQuery(apolloQueries.inboxQueries.GET_MESSAGE_THREADS, {
+    const { loading, fetchMore, subscribeToMore, client } = useQuery(apolloQueries.inboxQueries.GET_MESSAGE_THREADS, {
         onCompleted: (data: any) => {
             setThreads((data?.getMessageThreads?.threads || []));
             setHasMore(data?.getMessageThreads?.hasMore);
@@ -37,16 +37,21 @@ export function useGetMessageThreads(onCompleted?: (data: any) => void | Promise
             document: apolloQueries.inboxQueries.NEW_MESSAGE_SUBSCRIPTION,
             updateQuery: (prev: any, { subscriptionData }: { subscriptionData: any }) => {
                 if (!subscriptionData?.data?.newMessage) return prev;
+                const restThreads = prev?.getMessageThreads?.threads.filter((thread: any) => {
+                    return thread._id !== subscriptionData.data.newMessage._id
+                });
+                const oldThread = prev?.getMessageThreads?.threads.find((thread: any) => {
+                    return thread._id === subscriptionData.data.newMessage._id
+                });
+                const newThread = {
+                    ...subscriptionData.data.newMessage,
+                    unreadMessages: oldThread.unreadMessages + 1
+                }
                 const newData: any = {
                     ...prev,
                     getMessageThreads: {
                         ...prev.getMessageThreads,
-                        threads: prev?.getMessageThreads?.threads.map((thread: any) => {
-                            if (thread._id === subscriptionData.data.newMessage._id) {
-                                return subscriptionData.data.newMessage;
-                            }
-                            return thread
-                        })
+                        threads: [newThread, ...restThreads]
                     }
 
                 };
@@ -54,5 +59,5 @@ export function useGetMessageThreads(onCompleted?: (data: any) => void | Promise
             }
         })
     }, []);
-    return { threads, hasMore, loading, fetchMore, }
+    return { threads, hasMore, loading, fetchMore, client }
 }
