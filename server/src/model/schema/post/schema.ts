@@ -4,6 +4,7 @@ import { IPost } from "./types";
 const postSchema = new Schema<IPost>({
     file: { type: Schema.Types.ObjectId, ref: 'File' },
     user: { type: Schema.Types.ObjectId, ref: 'User' },
+    views: [{ type: Schema.Types.ObjectId, ref: 'Views'}],
     title: String,
     createdAt: { type: Date, default: new Date() }
 });
