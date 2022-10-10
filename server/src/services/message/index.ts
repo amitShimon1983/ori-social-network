@@ -77,7 +77,7 @@ class MessageService {
                         path: 'file'
                     }
                 }]);
-            eventPayload.messages = !!newMessage?._id ? [newMessage as Message] : []
+            eventPayload.messages = !!newMessage?._id ? [newMessage as Message] : [];
             if (fireCreateMessageThreadEvent) {
                 pubSub.publish(ON_NEW_MESSAGE_THREAD_CREATED, eventPayload);
             }

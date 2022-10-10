@@ -15,8 +15,6 @@ const MediaCard: FunctionComponent<MediaCardProps> = ({ message, isMe, type }) =
         url: string;
         fileDuration: string;
     } = useDownloadFile({ fileName: message?.file?.originalname, skip: type === 'image' });
-    console.log(type);
-
     return (<>
         {type === 'audio' && url && <CardMedia src={url}>
             <audio preload="auto" className={`${classes.audio} ${isMe ? classes.me : classes.other}`} controls>
