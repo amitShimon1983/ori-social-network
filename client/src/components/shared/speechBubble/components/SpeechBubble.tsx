@@ -17,7 +17,7 @@ interface SpeechBubbleProps {
 const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, message }) => {
     const { content, sender, createdAt, isRead, type } = message;
     const { user: me } = appContextVar();
-    const isMe = me._id === sender._id
+    const isMe = me._id === sender._id;
     const { updateMessage }: {
         updateMessage: (messageId: string, skip: boolean) => Promise<void>
     } = useUpdateMessage();

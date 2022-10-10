@@ -25,6 +25,14 @@
     border: 1px solid #d1cbcb;
 }
 
+.fab {
+    right: 10px !important;
+    position: absolute !important;
+    bottom: 25px !important;
+    width: 35px !important;
+    height: 25px !important;
+}
+
 .last_item {
     width: 100%;
 }
