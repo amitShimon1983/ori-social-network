@@ -1,18 +1,11 @@
 import { gql } from "@apollo/client";
+import { CORE_USER_FIELDS } from "../fragments";
 
 const GET_USER = gql`
+${CORE_USER_FIELDS}
     query GetUser($userId: String){
         getUser(args: { userId: $userId }){
-            _id
-            name
-            lastSeen
-            email
-            file {
-                _id
-                originalname
-            }
-            followers
-            following
+            ...CoreUserFields
         }
     }
 `

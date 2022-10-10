@@ -1,18 +1,13 @@
 import { gql } from "@apollo/client";
+import { CORE_USER_FIELDS } from "../fragments";
 
 const COMMENT_POST = gql`
+${CORE_USER_FIELDS}
 mutation CommentPost($postId: String, $content: String, $commentId: String){
     commentPost(args: { postId: $postId, content: $content, commentId: $commentId }){
         _id
         user {
-            _id
-            name
-            email
-            lastSeen
-            file {
-                _id
-              originalname
-            }        
+            ...CoreUserFields
         }
         content
         createdAt

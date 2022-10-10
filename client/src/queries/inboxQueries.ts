@@ -1,195 +1,51 @@
 import { gql } from "@apollo/client"
+import { CORE_MESSAGE_FIELDS, CORE_USER_FIELDS } from "../fragments"
 
 const NEW_MESSAGE_SUBSCRIPTION = gql`
+${CORE_MESSAGE_FIELDS}
+${CORE_USER_FIELDS}
 subscription NewMessage {
   newMessage {
     _id
     unreadMessages
     owners{
-        _id
-        name
-        email
-        lastSeen
-        file {
-            _id
-            originalname
-        }
+        ...CoreUserFields
     }
     messages {
-        isRead
-        _id
-        type
-        messageThreadId
-        file {
-            _id
-            originalname
-        }
-        parentMessageId{
-            _id
-            content
-            sender{
-                _id
-                name
-                email
-                lastSeen
-                file {
-                    _id
-                    originalname
-                }
-            }
-        }
-        sender{
-            _id
-            name
-            email
-            lastSeen
-            file {
-                _id
-                originalname
-            }
-        }
-        recipient{
-            _id
-            name
-            email
-            lastSeen
-            file {
-                _id
-                originalname
-            }
-        }
-        content
-        createdAt
-
+        ...CoreMessageFields
     }
   }
 }
 `
 const NEW_MESSAGE_THREAD_SUBSCRIPTION = gql`
+${CORE_MESSAGE_FIELDS}
+${CORE_USER_FIELDS}
 subscription NewMessageThread {
   newMessageThread {
     _id
     unreadMessages
     owners{
-        _id
-        name
-        email
-        lastSeen
-        file {
-            _id
-            originalname
-        }
+        ...CoreUserFields
     }
     messages {
-        isRead
-            _id
-            type
-            messageThreadId
-            file {
-                _id
-                originalname
-            }
-            parentMessageId{
-                _id
-                content
-                sender{
-                    _id
-                    name
-                    email
-                    lastSeen
-                    file {
-                        _id
-                        originalname
-                    }
-                }
-            }
-            sender{
-                _id
-                name
-                email
-                lastSeen
-                file {
-                    _id
-                    originalname
-                }
-            }
-            recipient{
-                _id
-                name
-                email
-                lastSeen
-                file {
-                    _id
-                    originalname
-                }
-            }
-            content
-            createdAt
+        ...CoreMessageFields
     }
   }
 }
 `
 const GET_MESSAGE_THREADS = gql`
+${CORE_MESSAGE_FIELDS}
+${CORE_USER_FIELDS}
 query GetMessageThreads($skip:Int, $limit:Int){
     getMessageThreads(args:{skip:$skip, limit:$limit}){
         threads{
             _id
             unreadMessages
             owners{
-                _id
-                name
-                email
-                lastSeen
-                file {
-                    _id
-                    originalname
-                }
+                ...CoreUserFields
             }
             messages {
-                isRead
-            _id
-            type
-            messageThreadId
-            file {
-                _id
-                originalname
-            }
-            parentMessageId{
-                _id
-                content
-                sender{
-                    _id
-                    name
-                    email
-                    lastSeen
-                    file {
-                        _id
-                        originalname
-                    }
-                }
-            }
-            sender{
-                _id
-                name
-                email
-                lastSeen
-                file {
-                    _id
-                    originalname
-                }
-            }
-            recipient{
-                _id
-                name
-                email
-                lastSeen
-                file {
-                    _id
-                    originalname
-                }
-            }
-            content
-            createdAt
+                ...CoreMessageFields
             }
         }
         count

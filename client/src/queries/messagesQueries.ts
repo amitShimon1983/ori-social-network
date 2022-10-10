@@ -1,53 +1,12 @@
 import { gql } from "@apollo/client";
+import { CORE_MESSAGE_FIELDS } from "../fragments";
 
 const GET_CONVERSATION = gql`
+${CORE_MESSAGE_FIELDS}
 query GetConversation($messageThreadId:String,$ownerId: String, $skip:Int, $limit:Int){
     getConversation(args:{ messageThreadId: $messageThreadId, ownerId: $ownerId, skip: $skip, limit: $limit  }){
         messages{
-            isRead
-            _id
-            type
-            messageThreadId
-            file {
-                _id
-                originalname
-            }
-            parentMessageId{
-                _id
-                content
-                sender{
-                    _id
-                    name
-                    email
-                    lastSeen
-                    file {
-                        _id
-                        originalname
-                    }
-                }
-            }
-            sender{
-                _id
-                name
-                email
-                lastSeen
-                file {
-                    _id
-                    originalname
-                }
-            }
-            recipient{
-                _id
-                name
-                email
-                lastSeen
-                file {
-                    _id
-                    originalname
-                }
-            }
-            content
-            createdAt
+            ...CoreMessageFields
         }
         count
         hasMore
@@ -55,52 +14,10 @@ query GetConversation($messageThreadId:String,$ownerId: String, $skip:Int, $limi
 }
 `
 const SEND_MESSAGE = gql`
+${CORE_MESSAGE_FIELDS}
 mutation SendMessage($type: String, $recipient:String, $content:String, $parentMessageId:String, $messageThreadId:String){
     sendMessage(args:{ type: $type, recipient: $recipient, content: $content, parentMessageId: $parentMessageId, messageThreadId: $messageThreadId }){
-        isRead
-            _id
-        type
-        messageThreadId
-        file {
-            _id
-            originalname
-        }
-        parentMessageId{
-            _id
-            content
-            sender{
-                _id
-                name
-                email
-                lastSeen
-                file {
-                    _id
-                    originalname
-                }
-            }
-        }
-        sender{
-            _id
-            name
-            email
-            lastSeen
-            file {
-                _id
-                originalname
-            }
-        }
-        recipient{
-            _id
-            name
-            email
-            lastSeen
-            file {
-                _id
-                originalname
-            }
-        }
-        content
-        createdAt
+        ...CoreMessageFields
     }
 }
 `

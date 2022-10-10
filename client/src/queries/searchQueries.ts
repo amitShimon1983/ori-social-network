@@ -1,16 +1,11 @@
 import { gql } from "@apollo/client";
+import { CORE_USER_FIELDS } from "../fragments";
 
 const SEARCH_CONTACTS = gql`
+${CORE_USER_FIELDS}
 query SearchContacts($queryString:String){
     searchContacts(args:{queryString:$queryString}){
-        _id
-        name
-        email
-        lastSeen
-        file {
-            _id
-            originalname
-        }  
+        ...CoreUserFields
     }
 }
 `;

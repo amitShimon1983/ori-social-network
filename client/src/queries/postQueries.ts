@@ -1,19 +1,14 @@
 import { gql } from "@apollo/client";
+import { CORE_USER_FIELDS } from "../fragments";
 
 const GET_MY_POSTS = gql`
+${CORE_USER_FIELDS}
 query GetMyPosts($userId: String){
     getMyPosts(args:{ userId: $userId }){
         posts {
             _id
             user {
-                _id
-                name
-                email
-                lastSeen
-                file {
-                    _id
-                  originalname
-                }  
+                ...CoreUserFields
             }
             title
             createdAt
