@@ -23,6 +23,25 @@ export function useGetConversation(messageThreadId?: string, ownerId?: string, o
             }
         })
     }, []);
+
+    useEffect(() => {
+        subscribeToMore({
+            document: apolloQueries.inboxQueries.ON_MESSAGE_UPDATE_SUBSCRIPTION,
+            updateQuery: (prev: any, { subscriptionData }: { subscriptionData: any }) => {
+                console.log({ subscriptionData });
+                if (!subscriptionData.data) return prev;
+                const newMessage = subscriptionData.data.onMessageUpdate;
+                const newMessages = prev.getConversation.messages.map((message: any) => {
+                    if (message._id === newMessage._id) {
+                        return newMessage
+                    }
+                    return message;
+                });
+                const newData = { ...prev, getConversation: { ...prev.getConversation, messages: newMessages } };
+                return newData;
+            }
+        })
+    }, []);
     const fetchMoreMessages = async (skip: number) => {
         const { data: { getConversation } } = await fetchMore({
             variables: {
