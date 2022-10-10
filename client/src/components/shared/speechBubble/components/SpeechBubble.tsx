@@ -54,7 +54,7 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
                         {diff}
                     </span>
                     <span className={classes.icon}>
-                        {isRead || isMe ? <BsCheck2All /> : <BsCheck2 />}
+                        {isRead ? <BsCheck2All /> : <BsCheck2 />}
                     </span>
                 </div>
             </div>
