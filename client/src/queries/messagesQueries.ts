@@ -58,7 +58,27 @@ const SEND_MESSAGE = gql`
 mutation SendMessage($type: String, $recipient:String, $content:String, $parentMessageId:String, $messageThreadId:String){
     sendMessage(args:{ type: $type, recipient: $recipient, content: $content, parentMessageId: $parentMessageId, messageThreadId: $messageThreadId }){
         isRead
-        _id
+            _id
+        type
+        messageThreadId
+        file {
+            _id
+            originalname
+        }
+        parentMessageId{
+            _id
+            content
+            sender{
+                _id
+                name
+                email
+                lastSeen
+                file {
+                    _id
+                    originalname
+                }
+            }
+        }
         sender{
             _id
             name
@@ -69,7 +89,6 @@ mutation SendMessage($type: String, $recipient:String, $content:String, $parentM
                 originalname
             }
         }
-        messageThreadId
         recipient{
             _id
             name

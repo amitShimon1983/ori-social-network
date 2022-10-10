@@ -37,9 +37,8 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             updateQuery: (prev: any, { subscriptionData }: { subscriptionData: any }) => {
                 const newMessage = subscriptionData?.data?.newMessage?.messages?.[0];
                 if (!newMessage) return prev;
-                // const newData = { ...prev, getConversation: { ...prev.getConversation, messages: [...prev.getConversation.messages, newMessage] } };
-                // console.log({ newData, prev });
-                return prev
+                const newData = { ...prev, getConversation: { ...prev.getConversation, messages: [newMessage, ...prev.getConversation.messages] } };
+                return newData;
             }
         })
     }, []);
@@ -127,7 +126,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
     const onItemClick: (item: any) => void | Promise<void> = (item) => {
         setReplyTo(item);
     };
-    
+
     return (<div className={classes.container}>
         {!owners.length && <AutoComplete
             defaultValue={owners}
