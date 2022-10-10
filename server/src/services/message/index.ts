@@ -150,10 +150,22 @@ class MessageService {
                 populate: {
                     path: 'file'
                 }
-            }, {
+            },
+            {
                 path: 'sender',
                 populate: {
                     path: 'file'
+                }
+            }, {
+                path: 'file',
+            },
+            {
+                path: 'parentMessageId',
+                populate: {
+                    path: 'sender',
+                    populate: {
+                        path: 'file'
+                    }
                 }
             }]);
         } catch (error: any) {
