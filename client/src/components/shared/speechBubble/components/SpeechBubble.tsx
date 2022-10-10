@@ -25,7 +25,7 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
         if (message?._id && !isMe && !message.isRead) {
             updateMessage(message?._id, isMe)
         }
-    }, [message?._id, isMe, updateMessage, message.isRead])
+    }, [])
     const diff = getPostDate(new Date(+createdAt));
     const handleClick = () => {
         const elem = document.getElementById(message.parentMessageId._id);
@@ -55,7 +55,7 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
                         {diff}
                     </span>
                     <span className={classes.icon}>
-                        {isRead ? <BsCheck2All /> : <BsCheck2 />}
+                        {isRead || isMe ? <BsCheck2All /> : <BsCheck2 />}
                     </span>
                 </div>
             </div>
