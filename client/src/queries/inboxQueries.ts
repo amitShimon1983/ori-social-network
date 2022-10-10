@@ -1,6 +1,14 @@
 import { gql } from "@apollo/client"
 import { CORE_MESSAGE_FIELDS, CORE_USER_FIELDS } from "../fragments"
 
+const ON_MESSAGE_UPDATE_SUBSCRIPTION = gql`
+${CORE_MESSAGE_FIELDS}
+${CORE_USER_FIELDS}
+subscription OnMessageUpdate {
+    onMessageUpdate {
+        ...CoreMessageFields
+    }
+}`
 const NEW_MESSAGE_SUBSCRIPTION = gql`
 ${CORE_MESSAGE_FIELDS}
 ${CORE_USER_FIELDS}
@@ -51,5 +59,5 @@ query GetMessageThreads($skip:Int, $limit:Int){
     }
 }
 `
-const inboxQueries = { NEW_MESSAGE_SUBSCRIPTION, GET_MESSAGE_THREADS, NEW_MESSAGE_THREAD_SUBSCRIPTION }
+const inboxQueries = { NEW_MESSAGE_SUBSCRIPTION, GET_MESSAGE_THREADS, NEW_MESSAGE_THREAD_SUBSCRIPTION, ON_MESSAGE_UPDATE_SUBSCRIPTION }
 export default inboxQueries;
