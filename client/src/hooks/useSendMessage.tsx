@@ -17,8 +17,9 @@ export function useSendMessage() {
                                     }
                                 `
                             });
-                            const messages = [...(oldData?.messages || []), newMessageRef];
-                            return { ...oldData, messages };
+                            const messages = [newMessageRef, ...(oldData?.messages || [])];
+                            const newData = { ...oldData, messages };
+                            return newData;
                         }
                     }
                 });
