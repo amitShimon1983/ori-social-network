@@ -18,6 +18,26 @@ subscription NewMessage {
     messages {
         isRead
         _id
+        type
+        messageThreadId
+        file {
+            _id
+            originalname
+        }
+        parentMessageId{
+            _id
+            content
+            sender{
+                _id
+                name
+                email
+                lastSeen
+                file {
+                    _id
+                    originalname
+                }
+            }
+        }
         sender{
             _id
             name
@@ -28,11 +48,11 @@ subscription NewMessage {
                 originalname
             }
         }
-        messageThreadId
         recipient{
             _id
             name
             email
+            lastSeen
             file {
                 _id
                 originalname
@@ -40,6 +60,7 @@ subscription NewMessage {
         }
         content
         createdAt
+
     }
   }
 }
@@ -61,29 +82,49 @@ subscription NewMessageThread {
     }
     messages {
         isRead
-        _id
-        sender{
             _id
-            name
-            email
-            lastSeen
+            type
+            messageThreadId
             file {
                 _id
                 originalname
             }
-        }
-        messageThreadId
-        recipient{
-            _id
-            name
-            email
-            file {
+            parentMessageId{
                 _id
-                originalname
+                content
+                sender{
+                    _id
+                    name
+                    email
+                    lastSeen
+                    file {
+                        _id
+                        originalname
+                    }
+                }
             }
-        }
-        content
-        createdAt
+            sender{
+                _id
+                name
+                email
+                lastSeen
+                file {
+                    _id
+                    originalname
+                }
+            }
+            recipient{
+                _id
+                name
+                email
+                lastSeen
+                file {
+                    _id
+                    originalname
+                }
+            }
+            content
+            createdAt
     }
   }
 }
@@ -106,7 +147,16 @@ query GetMessageThreads($skip:Int, $limit:Int){
             }
             messages {
                 isRead
+            _id
+            type
+            messageThreadId
+            file {
                 _id
+                originalname
+            }
+            parentMessageId{
+                _id
+                content
                 sender{
                     _id
                     name
@@ -117,18 +167,29 @@ query GetMessageThreads($skip:Int, $limit:Int){
                         originalname
                     }
                 }
-                messageThreadId
-                recipient{
+            }
+            sender{
+                _id
+                name
+                email
+                lastSeen
+                file {
                     _id
-                    name
-                    email
-                    file {
-                        _id
-                        originalname
-                    }
+                    originalname
                 }
-                content
-                createdAt
+            }
+            recipient{
+                _id
+                name
+                email
+                lastSeen
+                file {
+                    _id
+                    originalname
+                }
+            }
+            content
+            createdAt
             }
         }
         count
