@@ -6,7 +6,8 @@ import classes from "./CameraRoll.module.css";
 import CameralRollPanel from "./CameraRollPanel";
 
 interface VideoProps {
-    onSave?: (blob: Blob) => void
+    onSave?: (blob: Blob, type?: string) => void;
+    styles?: { video?: string; camera?: string; picture?: string; hasPhoto?: string; canvas?: string };
 }
 const deviceMediaOptions = {
     video: {
@@ -22,7 +23,7 @@ const deviceMediaOptions = {
         }
     }, audio: true
 }
-const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
+const CameraRoll: FunctionComponent<VideoProps> = ({ onSave, styles }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const photoRef = useRef<any>(null);
     const [hasPhoto, setHasPhoto] = useState<boolean>(false);
@@ -87,9 +88,9 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
         }
     }
 
-    const handleSave = async (blobToSave: Blob) => {
+    const handleSave = async (blobToSave: Blob, type: string) => {
         if (typeof onSave === 'function') {
-            onSave(blobToSave)
+            onSave(blobToSave, type)
         } else {
             const url = `${appConfig.serverUrl}${appConfig.uploadPostEndpoint}`;
             await cameraService.saveFile(url, blobToSave);
@@ -98,14 +99,14 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
 
     const saveVideoHandler = () => {
         if (videoBlob) {
-            handleSave(videoBlob);
+            handleSave(videoBlob, 'video');
             setVideoBlob(undefined);
         }
     }
 
     const saveImageHandler = () => {
         if (imageBlob) {
-            handleSave(imageBlob);
+            handleSave(imageBlob, 'image');
             setImageBlob(undefined);
             setHasPhoto(false);
         }
@@ -123,11 +124,11 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave }) => {
     }
 
     return (
-        <div className={classes.camera}>
-            {!hasPhoto && <VideoElement className={classes.video} video={{ controls: false, muted: true, }} ref={videoRef}>
+        <div className={`${classes.camera} ${styles?.camera}`}>
+            {!hasPhoto && <VideoElement className={`${styles?.video} ${classes.video}`} video={{ controls: false, muted: true, }} ref={videoRef}>
             </VideoElement>}
-            <div className={`${classes.picture} ${hasPhoto && classes.hasPhoto}`}>
-                <canvas className={`${classes.canvas}`} ref={photoRef}></canvas>
+            <div className={`${classes.picture} ${styles?.picture} ${hasPhoto && classes.hasPhoto}`}>
+                <canvas className={`${classes.canvas} ${styles?.canvas}`} ref={photoRef}></canvas>
             </div>
             <CameralRollPanel
                 displayVideo={displayVideo}
