@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 import { getPostDate } from "../../../services/date";
 import MiniMe from "../../me/MiniMe";
 import { Counter } from "../counter";
@@ -23,7 +23,8 @@ const Card: FunctionComponent<CardProps> = ({
     navigateOnClick }) => {
     const date = new Date(+createdAt);
     const diff = getPostDate(date);
-    return (<div className={classes.container}>
+    const [badgeNumber, setBadgeNumber] = useState<number>(counter || 0);
+    return (<div className={classes.container} onClick={() => setBadgeNumber(0)}>
         <div className={classes.header}>
             <div className={classes.details}>
                 <div className={classes.mini_me_container}>
@@ -33,8 +34,8 @@ const Card: FunctionComponent<CardProps> = ({
             </div>
             <div className={classes.content_container}>
                 <ReadMore content={content} displayButtons={displayButtons} />
-                {!!counter && <span className={classes.counter_container}>
-                    <Counter counter={counter} />
+                {!!badgeNumber && <span className={classes.counter_container}>
+                    <Counter counter={badgeNumber} />
                 </span>
                 }
             </div>
