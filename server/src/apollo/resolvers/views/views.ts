@@ -1,13 +1,13 @@
-import { Resolver, Mutation, Arg, Ctx} from "type-graphql";
+import { Resolver, Mutation, Arg, Ctx, Query} from "type-graphql";
 import { viewsService } from "../../../services";
-import {  GetPostViewsArgs } from "./types";
+import {  AddPostViewsArgs } from "./types";
 
 
 @Resolver()
 export class ViewsResolver {
    
     @Mutation(() => Boolean)
-    async getViews(@Arg('args', () => GetPostViewsArgs) args: GetPostViewsArgs, @Ctx() context: any): Promise<boolean> {
+    async addViews(@Arg('args', () => AddPostViewsArgs) args: AddPostViewsArgs, @Ctx() context: any): Promise<boolean> {
         const { user } = context;
         if (args.postId && user._id) {
              viewsService.addViewedPosts(args.postId, user._id);
