@@ -56,7 +56,8 @@ export class MessageResolver {
             const owner = payload?.owners?.find((owner: IUser) => {
                 return owner?._id?.toString() === user?._id
             })
-            return !!owner
+            const message: Message = payload.messages[0]
+            return !!owner._id && message?.sender?._id?.toString?.() !== user._id
         }
     })
     async newMessage(@Root() newMessagePayload: MessageThread): Promise<MessageThread> {
