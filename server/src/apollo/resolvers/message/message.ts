@@ -57,7 +57,7 @@ export class MessageResolver {
                 return owner?._id?.toString() === user?._id
             })
             const message: Message = payload.messages[0]
-            return !!owner._id && message?.sender?._id?.toString?.() !== user._id
+            return !!owner._id && (message?.sender?._id?.toString?.() !== user._id || message.type !== 'text')
         }
     })
     async newMessage(@Root() newMessagePayload: MessageThread): Promise<MessageThread> {
