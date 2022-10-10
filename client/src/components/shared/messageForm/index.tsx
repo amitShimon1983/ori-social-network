@@ -122,8 +122,8 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             loading={loading}
             fetchData={fetchContactData}
         />}
-        {displayCamera && <CameraRoll onSave={onVideoSave} />}
         {!getConversationLoading && <div style={{ position: 'relative', height: '95%' }}>
+            {displayCamera && <div style={{ position: 'absolute', height: '100%', zIndex:2 }}><CameraRoll onSave={onVideoSave} /></div>}
             <SpeechBubbleList
                 setReplyTo={setReplyTo}
                 replyTo={replyTo}
