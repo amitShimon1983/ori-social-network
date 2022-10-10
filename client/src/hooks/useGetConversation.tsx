@@ -28,7 +28,6 @@ export function useGetConversation(messageThreadId?: string, ownerId?: string, o
         subscribeToMore({
             document: apolloQueries.inboxQueries.ON_MESSAGE_UPDATE_SUBSCRIPTION,
             updateQuery: (prev: any, { subscriptionData }: { subscriptionData: any }) => {
-                console.log({ subscriptionData });
                 if (!subscriptionData.data) return prev;
                 const newMessage = subscriptionData.data.onMessageUpdate;
                 const newMessages = prev.getConversation.messages.map((message: any) => {
