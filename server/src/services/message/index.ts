@@ -2,7 +2,7 @@ import { PubSubEngine } from 'type-graphql';
 import { Message, MessageThread, SendMessageArgs, UpdateMessageArgs } from '../../apollo';
 import { IMessage, MessageModel, MessageThreadModel } from '../../model'
 import { IMessageThread } from '../../model/schema/message/types';
-import { ON_NEW_MESSAGE_CREATED, ON_NEW_MESSAGE_THREAD_CREATED } from '../../utils';
+import { ON_MESSAGE_UPDATE, ON_NEW_MESSAGE_CREATED, ON_NEW_MESSAGE_THREAD_CREATED } from '../../utils';
 class MessageService {
 
 
@@ -100,6 +100,7 @@ class MessageService {
             return await this.getMessageThread(messageThread?._id, skip, limit);
         }
     }
+   
     private async getMessageThread(messageThreadId: string | undefined, skip: number | undefined, limit: number | undefined) {
         const thread = await MessageModel.find({ messageThreadId },
             {},
@@ -172,10 +173,35 @@ class MessageService {
             console.log({ error });
         }
     }
-    async updateMessage(args: UpdateMessageArgs, userId: string) {
-        return await MessageModel.findOneAndUpdate({ _id: args.id, recipient: userId }, { isRead: true }, {
+    
+    async updateMessage(args: UpdateMessageArgs, userId: string, pubSub: PubSubEngine) {
+        const message = await MessageModel.findOneAndUpdate({ _id: args.id, recipient: userId }, { isRead: true }, {
             new: true
-        })
+        }).populate([{
+            path: 'recipient',
+            populate: {
+                path: 'file'
+            }
+        },
+        {
+            path: 'sender',
+            populate: {
+                path: 'file'
+            }
+        }, {
+            path: 'file',
+        },
+        {
+            path: 'parentMessageId',
+            populate: {
+                path: 'sender',
+                populate: {
+                    path: 'file'
+                }
+            }
+        }]);
+        pubSub.publish(ON_MESSAGE_UPDATE, message);
+        return message;
     }
 }
 export default MessageService.getInstance();
