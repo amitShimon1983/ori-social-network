@@ -2,9 +2,11 @@ import { FunctionComponent } from "react";
 import SpeechBubble from "./SpeechBubble";
 import classes from './index.module.css';
 import InfiniteScroll from "../../infiniteScrolling/InfiniteScroll";
+import { ReplyCard } from "../../replyCard";
 interface SpeechBubbleListProps {
     items: any[];
-    onItemClick: (item: any) => void | Promise<void>;
+    replyTo: any;
+    setReplyTo: React.Dispatch<any>;
     fetchMore: (skip: number) => Promise<{
         items: any[];
         hasMore: boolean;
@@ -12,8 +14,11 @@ interface SpeechBubbleListProps {
     hasMore: boolean;
 }
 
-const SpeechBubbleList: FunctionComponent<SpeechBubbleListProps> = ({ items, onItemClick, fetchMore, hasMore }) => {
-
+const SpeechBubbleList: FunctionComponent<SpeechBubbleListProps> = ({ items, fetchMore, hasMore, setReplyTo, replyTo }) => {
+    const onItemClick: (item: any) => void | Promise<void> = (item) => {
+        setReplyTo(item);
+    };
+    const handleReplyCardDismiss = (e: any) => { e.stopPropagation(); setReplyTo(undefined); }
     const renderItem = (message: any) => {
         return (
             <span
@@ -28,12 +33,16 @@ const SpeechBubbleList: FunctionComponent<SpeechBubbleListProps> = ({ items, onI
             </span>
         )
     }
-    return (<InfiniteScroll
-        styles={{ container: classes.list, lastItem: classes.last_item }}
-        initialHasMore={hasMore}
-        renderItem={renderItem}
-        initialData={items}
-        fetchMore={fetchMore} />)
+    return (<>
+        <InfiniteScroll
+            styles={{ container: classes.list, lastItem: classes.last_item }}
+            initialHasMore={hasMore}
+            renderItem={renderItem}
+            initialData={items}
+            fetchMore={fetchMore} />
+        <ReplyCard display={!!replyTo} creator={replyTo?.sender} content={replyTo?.content} handleDismiss={handleReplyCardDismiss} />
+    </>
+    )
 }
 
 export default SpeechBubbleList;
