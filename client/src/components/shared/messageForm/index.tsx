@@ -25,23 +25,13 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
 
     const [selectedUsers, setSelectedUsers] = useState<any[]>();
     const { searchContactsQuery, loading } = useSearchContacts();
-    const { data, loading: getConversationLoading, subscribeToMore, fetchMoreMessages } = useGetConversation(messageThreadIdState, selectedUsers?.[0]?._id, ({ getConversation }) => {
+    const { data, loading: getConversationLoading, fetchMoreMessages } = useGetConversation(messageThreadIdState, selectedUsers?.[0]?._id, ({ getConversation }) => {
         setHasMore(getConversation?.hasMore);
         if (!messageThreadIdState && getConversation.messages) {
             setMessageThreadId(getConversation.messages[0].messageThreadId)
         }
     });
-    useEffect(() => {
-        subscribeToMore({
-            document: apolloQueries.inboxQueries.NEW_MESSAGE_SUBSCRIPTION,
-            updateQuery: (prev: any, { subscriptionData }: { subscriptionData: any }) => {
-                const newMessage = subscriptionData?.data?.newMessage?.messages?.[0];
-                if (!newMessage) return prev;
-                const newData = { ...prev, getConversation: { ...prev.getConversation, messages: [newMessage, ...prev.getConversation.messages] } };
-                return newData;
-            }
-        })
-    }, []);
+
     const [inputData, setInputData] = useState<string>();
     const [isValid, setIsValid] = useState<boolean>(false);
     const [displayCamera, setDisplayCamera] = useState<boolean>(false);
@@ -117,14 +107,11 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         setDisplayCamera(false)
     }
     const messages = data?.getConversation?.messages;
-    const handleReplyCardDismiss = (e: any) => { e.stopPropagation(); setReplyTo(undefined); }
+
     const onSelectHandler = (data: any) => {
         setSelectedUsers(data);
         setThreadOwners(data);
         isFormValid();
-    };
-    const onItemClick: (item: any) => void | Promise<void> = (item) => {
-        setReplyTo(item);
     };
 
     return (<div className={classes.container}>
@@ -138,11 +125,12 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         {displayCamera && <CameraRoll onSave={onVideoSave} />}
         {!getConversationLoading && <div style={{ position: 'relative', height: '95%' }}>
             <SpeechBubbleList
+                setReplyTo={setReplyTo}
+                replyTo={replyTo}
                 fetchMore={fetchMoreMessages}
                 hasMore={hasMore}
                 items={messages}
-                onItemClick={onItemClick} />
-            <ReplyCard display={!!replyTo} creator={replyTo?.sender} content={replyTo?.content} handleDismiss={handleReplyCardDismiss} />
+            />
         </div>}
         {getConversationLoading && <Spinner />}
         <InputButtonPanel
