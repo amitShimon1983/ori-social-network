@@ -7,7 +7,6 @@ ${CORE_USER_FIELDS}
 subscription NewMessage {
   newMessage {
     _id
-    unreadMessages
     owners{
         ...CoreUserFields
     }
@@ -23,7 +22,6 @@ ${CORE_USER_FIELDS}
 subscription NewMessageThread {
   newMessageThread {
     _id
-    unreadMessages
     owners{
         ...CoreUserFields
     }
