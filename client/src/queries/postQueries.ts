@@ -102,8 +102,15 @@ const LIKE_POST = gql`
  }
 `;
 
+const VIEW_POST = gql`
+mutation AddViews($postId:String) {
+    addViews(args:{postId:$postId})
+}
+`;
+
 const postQueries = {
     LIKE_POST,
+    VIEW_POST,
     GET_MY_POSTS,
     GET_POST_COMMENTS,
     GET_POST_LIKES,
