@@ -1,16 +1,15 @@
-import { FunctionComponent, useCallback, useEffect, useRef, useState } from "react";
+import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import AutoComplete from "../autoComplete";
-import { InputButtonPanel, Spinner } from "..";
+import { InputButtonPanel, ReplyCard, Spinner } from "..";
 import classes from './index.module.css';
 import { useGetConversation, useSearchContacts, useSendMessage } from "../../../hooks";
 import MiniMe from "../../me/MiniMe";
 import { Hr } from "../../styles";
 import { debounce } from "@mui/material";
-import { ReplyCard, SpeechBubbleList } from "..";
+import { SpeechBubbleList } from "..";
 import { appConfig } from "../../../configuration";
 import { cameraService } from "../../../services";
 import { CameraRoll } from "../../cameraRoll";
-import apolloQueries from "../../../queries";
 export interface MessageFormProps {
     owners: { [key: string]: any }[];
     messageThreadId?: string;
@@ -102,8 +101,8 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         </li>
         );
     };
-    const onVideoSave = (blob: Blob) => {
-        handleRecorderSave(blob, 'video');
+    const onVideoSave = (blob: Blob, type?: string) => {
+        handleRecorderSave(blob, type || 'video');
         setDisplayCamera(false)
     }
     const messages = data?.getConversation?.messages;
@@ -122,16 +121,19 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             loading={loading}
             fetchData={fetchContactData}
         />}
-        {!getConversationLoading && <div style={{ position: 'relative', height: '95%' }}>
-            {displayCamera && <div style={{ position: 'absolute', height: '100%', zIndex:2 }}><CameraRoll onSave={onVideoSave} /></div>}
-            <SpeechBubbleList
-                setReplyTo={setReplyTo}
-                replyTo={replyTo}
-                fetchMore={fetchMoreMessages}
-                hasMore={hasMore}
-                items={messages}
-            />
-        </div>}
+        {!getConversationLoading &&
+            <div className={classes.list_container}>
+                {displayCamera && <div className={classes.camera_container}>
+                    <CameraRoll styles={{ video: classes.video }} onSave={onVideoSave} />
+                </div>}
+                <SpeechBubbleList
+                    setReplyTo={setReplyTo}
+                    fetchMore={fetchMoreMessages}
+                    hasMore={hasMore}
+                    items={messages}
+                />
+                <ReplyCard display={!!replyTo} creator={replyTo?.sender} content={replyTo?.content} handleDismiss={() => setReplyTo(null)} />
+            </div>}
         {getConversationLoading && <Spinner />}
         <InputButtonPanel
             toggleCamera={() => setDisplayCamera(prev => (!prev))}

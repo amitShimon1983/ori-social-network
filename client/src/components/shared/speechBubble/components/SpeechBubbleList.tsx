@@ -1,11 +1,10 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useCallback, useRef, useState } from "react";
 import SpeechBubble from "./SpeechBubble";
 import classes from './index.module.css';
 import InfiniteScroll from "../../infiniteScrolling/InfiniteScroll";
-import { ReplyCard } from "../../replyCard";
+import { Fab, FaPencilAlt } from "../..";
 interface SpeechBubbleListProps {
     items: any[];
-    replyTo: any;
     setReplyTo: React.Dispatch<any>;
     fetchMore: (skip: number) => Promise<{
         items: any[];
@@ -14,14 +13,36 @@ interface SpeechBubbleListProps {
     hasMore: boolean;
 }
 
-const SpeechBubbleList: FunctionComponent<SpeechBubbleListProps> = ({ items, fetchMore, hasMore, setReplyTo, replyTo }) => {
+const SpeechBubbleList: FunctionComponent<SpeechBubbleListProps> = ({ items, fetchMore, hasMore, setReplyTo }) => {
     const onItemClick: (item: any) => void | Promise<void> = (item) => {
         setReplyTo(item);
     };
-    const handleReplyCardDismiss = (e: any) => { e.stopPropagation(); setReplyTo(undefined); }
-    const renderItem = (message: any) => {
+    const [displayButton, setDisplayButton] = useState<boolean>(false);
+    const observer = useRef<any>(null);
+    const firstItemRef = useCallback((node: any) => {
+
+        if (observer.current) {
+            observer.current.disconnect()
+        }
+
+        observer.current = new IntersectionObserver(entries => {
+            if (!entries[0].isIntersecting) {
+                setDisplayButton(true)
+                console.log(node);
+            } else {
+                setDisplayButton(false)
+            }
+        });
+
+        if (node) {
+            observer.current.observe(node)
+        }
+    }, [])
+    const renderItem = (message: any, idx?: number) => {
         return (
             <span
+                id={idx === 0 ? 'first_message' : message._id}
+                ref={idx === 0 ? firstItemRef : null}
                 className={classes.speech_container}
                 key={`SpeechBubble_${message._id}_item_Form_ref`}
             >
@@ -40,7 +61,11 @@ const SpeechBubbleList: FunctionComponent<SpeechBubbleListProps> = ({ items, fet
             renderItem={renderItem}
             initialData={items}
             fetchMore={fetchMore} />
-        <ReplyCard display={!!replyTo} creator={replyTo?.sender} content={replyTo?.content} handleDismiss={handleReplyCardDismiss} />
+        {displayButton && <Fab onClick={() => {
+            document.getElementById('first_message')?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'end' })
+        }} className={`${classes.fab}`} color="secondary" aria-label="edit">
+            <FaPencilAlt />
+        </Fab>}
     </>
     )
 }

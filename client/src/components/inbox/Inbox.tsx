@@ -1,3 +1,4 @@
+import { gql } from "@apollo/client";
 import { FunctionComponent, useState } from "react";
 import { useGetMessageThreads } from "../../hooks";
 import { appContextVar } from "../../services/store";
@@ -11,18 +12,35 @@ import classes from './Inbox.module.css';
 
 const Inbox: FunctionComponent = () => {
     const { user: me } = appContextVar();
-    const { threads, hasMore, loading, fetchMore } = useGetMessageThreads()
+    const { threads, hasMore, loading, fetchMore, client } = useGetMessageThreads();
     const [threadOwners, setThreadOwners] = useState<any[]>([]);
     const [openMessageForm, setOpenMessageForm] = useState<boolean>(false);
     const [messageThreadId, setMessageThreadId] = useState<string>();
     const ownerNames = threadOwners.map((owner: any) => owner.name)
+    const onItemClick = (data: any) => {
+        if (client) {
+            client.writeFragment({
+                id: 'MessageThread:' + data._id.toString(),
+                fragment: gql`
+                        fragment MessageThreadFragment on MessageThread {
+                            unreadMessages
+                        }
+                        `,
+                data: {
+                    unreadMessages: 0,
+                },
+            });
+        }
+
+    }
     const renderItem = (data: any) => {
         const message = data.messages[0];
         const tOwners = data.owners.filter((owner: any) => (owner._id !== me._id));
         return <div key={'render_list_item_thread_' + data._id} onClick={() => {
             setThreadOwners(tOwners || [])
             setOpenMessageForm(true);
-            setMessageThreadId(data._id)
+            setMessageThreadId(data._id);
+            onItemClick(data);
         }} className={classes.card_container}>
             <Card
                 displayButtons={false}
@@ -53,6 +71,7 @@ const Inbox: FunctionComponent = () => {
     const closeMessageFormHandler = () => {
         setOpenMessageForm(false);
         setMessageThreadId(undefined);
+        onItemClick({ _id: messageThreadId });
         setThreadOwners([])
     }
 

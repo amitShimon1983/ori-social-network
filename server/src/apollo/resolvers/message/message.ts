@@ -1,7 +1,7 @@
 import { Arg, Mutation, Query, Resolver, Ctx, Subscription, Root } from "type-graphql";
 import { AppContext, IUser } from "../../../model";
 import { messageService } from "../../../services";
-import { ON_NEW_MESSAGE_CREATED, ON_NEW_MESSAGE_THREAD_CREATED } from "../../../utils";
+import { ON_MESSAGE_UPDATE, ON_NEW_MESSAGE_CREATED, ON_NEW_MESSAGE_THREAD_CREATED } from "../../../utils";
 import { GetConversation, GetConversationArgs, GetMessageThreads, GetMessageThreadsArgs, Message, MessageThread, SendMessageArgs, UpdateMessageArgs } from "./types";
 
 @Resolver()
@@ -13,8 +13,8 @@ export class MessageResolver {
     }
     @Mutation(() => Message)
     async updateMessage(@Arg('args', () => UpdateMessageArgs) args: UpdateMessageArgs, @Ctx() context: AppContext) {
-        const { user } = context;
-        if (user._id) { return messageService.updateMessage(args, user._id) } return null;
+        const { user, pubSub } = context;
+        if (user._id) { return messageService.updateMessage(args, user._id, pubSub) } return null;
     }
     @Query(() => GetMessageThreads)
     async getMessageThreads(@Arg('args', () => GetMessageThreadsArgs) args: GetMessageThreadsArgs, @Ctx() context: AppContext) {
@@ -49,6 +49,7 @@ export class MessageResolver {
     async newMessageThread(@Root() newThreadPayload: MessageThread): Promise<MessageThread> {
         return newThreadPayload;
     }
+
     @Subscription(() => MessageThread, {
         topics: [ON_NEW_MESSAGE_CREATED],
         filter: ({ payload, context }) => {
@@ -61,6 +62,17 @@ export class MessageResolver {
         }
     })
     async newMessage(@Root() newMessagePayload: MessageThread): Promise<MessageThread> {
+        return newMessagePayload;
+    }
+
+    @Subscription(() => Message, {
+        topics: [ON_MESSAGE_UPDATE],
+        filter: ({ payload, context }) => {
+            const { user } = context;
+            return (payload?.sender?._id?.toString?.() === user._id)
+        }
+    })
+    async onMessageUpdate(@Root() newMessagePayload: Message): Promise<Message> {
         return newMessagePayload;
     }
 }

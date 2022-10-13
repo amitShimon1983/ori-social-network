@@ -17,7 +17,7 @@ interface SpeechBubbleProps {
 const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, message }) => {
     const { content, sender, createdAt, isRead, type } = message;
     const { user: me } = appContextVar();
-    const isMe = me._id === sender._id
+    const isMe = me._id === sender._id;
     const { updateMessage }: {
         updateMessage: (messageId: string, skip: boolean) => Promise<void>
     } = useUpdateMessage();
@@ -30,7 +30,7 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
     const handleClick = () => {
         const elem = document.getElementById(message.parentMessageId._id);
         elem?.classList.add(classes.selected)
-        elem?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+        elem?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
         setTimeout(() => {
             elem?.classList.remove(classes.selected);
         }, 3000)
@@ -48,14 +48,13 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
             } className={classes.details}>
                 <UserDetails className={`${isMe ? classes.sender_me : classes.sender_other}`} user={sender} />
                 {(!type || type === 'text') && <ReadMore content={content} displayButtons={true} />}
-                {(!!type && type === 'audio') && <MediaCard type={type} message={message} isMe={isMe} />}
-                {(!!type && type === 'video') && <MediaCard type={type} message={message} isMe={isMe} />}
+                {(!!type && type !== 'text') && <MediaCard type={type} message={message} isMe={isMe} />}
                 <div className={classes.footer}>
                     <span className={classes.time_stamp}>
                         {diff}
                     </span>
                     <span className={classes.icon}>
-                        {isRead || isMe ? <BsCheck2All /> : <BsCheck2 />}
+                        {isRead ? <BsCheck2All /> : <BsCheck2 />}
                     </span>
                 </div>
             </div>
