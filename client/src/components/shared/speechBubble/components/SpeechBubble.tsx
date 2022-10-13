@@ -62,7 +62,10 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
         {
             !isMe && <MiniMe styles={{
                 imageClass: classes.image
-            }} displayEmailAddress={false} navigateOnClick={false} user={sender} displaySpinner={false} />
+            }} displayEmailAddress={false}
+                navigateOnClick={false}
+                user={sender}
+                displaySpinner={false} />
         }
     </div >);
 }

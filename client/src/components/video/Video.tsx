@@ -1,3 +1,4 @@
+import React from "react";
 import { FunctionComponent, useRef, useState } from "react";
 import { VideoElement } from "..";
 import { cameraService } from "../../services";
@@ -34,4 +35,4 @@ const Video: FunctionComponent<VideoProps> = ({ type, link, containerClassName, 
     );
 }
 
-export default Video;
+export default React.memo(Video);

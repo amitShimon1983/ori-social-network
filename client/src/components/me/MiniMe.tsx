@@ -1,6 +1,7 @@
 import { FunctionComponent } from "react";
 import classes from "./MiniMe.module.css";
 import Me, { MeProps } from ".";
+import React from "react";
 
 interface MiniMeProps extends MeProps {
     user: any;
@@ -27,4 +28,4 @@ const MiniMe: FunctionComponent<MiniMeProps> = ({ user, displaySpinner, navigate
     </div>);
 }
 
-export default MiniMe;
+export default React.memo(MiniMe);
