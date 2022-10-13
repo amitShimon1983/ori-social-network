@@ -30,7 +30,7 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
     const handleClick = () => {
         const elem = document.getElementById(message.parentMessageId._id);
         elem?.classList.add(classes.selected)
-        elem?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+        elem?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'center' });
         setTimeout(() => {
             elem?.classList.remove(classes.selected);
         }, 3000)
