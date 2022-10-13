@@ -59,7 +59,6 @@ const InfiniteScroll: FunctionComponent<InfiniteScrollProps> = ({ styles, initia
 
     return (<div className={`${classes.container} ${styles?.container}`}>
         {!!listItems?.length && listItems.map((item: any, idx: number) => {
-             console.log(idx);
             const isLast = idx === listItems.length - 1;
             return isLast ? <span className={`${styles?.lastItem}`} ref={lastItemRef} key={item._id}>{renderItem(item, idx)}</span> : renderItem(item, idx);
         })}
