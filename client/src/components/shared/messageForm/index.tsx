@@ -1,6 +1,6 @@
 import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import AutoComplete from "../autoComplete";
-import { InputButtonPanel, Spinner } from "..";
+import { InputButtonPanel, ReplyCard, Spinner } from "..";
 import classes from './index.module.css';
 import { useGetConversation, useSearchContacts, useSendMessage } from "../../../hooks";
 import MiniMe from "../../me/MiniMe";
@@ -128,11 +128,11 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
                 </div>}
                 <SpeechBubbleList
                     setReplyTo={setReplyTo}
-                    replyTo={replyTo}
                     fetchMore={fetchMoreMessages}
                     hasMore={hasMore}
                     items={messages}
                 />
+                <ReplyCard display={!!replyTo} creator={replyTo?.sender} content={replyTo?.content} handleDismiss={() => setReplyTo(null)} />
             </div>}
         {getConversationLoading && <Spinner />}
         <InputButtonPanel

@@ -1,7 +1,7 @@
 .container {
     display: flex;
     background: var(--speech-bubble-reply-to-message-background);
-    position: absolute;
+
     align-items: center;
     justify-content: center;
     width: 95%;
@@ -9,11 +9,12 @@
     overflow: hidden;
     -webkit-transition: all .1s, -webkit-transform .1s;
     transition: all .1s, transform .1s;
-    max-height: 200px;
+    height: 0px;
 }
 
 .display {
-    bottom: -1px;
+    max-height: 200px;
+    min-height: 80px;
     padding: 10px;
 }
 
