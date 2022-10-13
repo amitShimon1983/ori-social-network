@@ -1,6 +1,6 @@
 import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import AutoComplete from "../autoComplete";
-import { InputButtonPanel, ReplyCard, Spinner } from "..";
+import { Drawer, InputButtonPanel, ReplyCard, Spinner } from "..";
 import classes from './index.module.css';
 import { useGetConversation, useSearchContacts, useSendMessage } from "../../../hooks";
 import MiniMe from "../../me/MiniMe";
@@ -123,9 +123,11 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         />}
         {!getConversationLoading &&
             <div className={classes.list_container}>
-                {displayCamera && <div className={classes.camera_container}>
-                    <CameraRoll styles={{ video: classes.video }} onSave={onVideoSave} />
-                </div>}
+                <Drawer isOpen={displayCamera} >
+                    {displayCamera && <div className={classes.camera_container}>
+                        <CameraRoll styles={{ video: classes.video }} onSave={onVideoSave} />
+                    </div>}
+                </Drawer>
                 <SpeechBubbleList
                     setReplyTo={setReplyTo}
                     fetchMore={fetchMoreMessages}
