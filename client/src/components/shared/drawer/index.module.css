@@ -6,7 +6,7 @@
     height: 100%;
     width: 100%;
     background: var(--light-background);
-    z-index: 1;
+    z-index: 2;
 }
 
 .container_close {
