@@ -29,6 +29,8 @@ export class Post {
     createdAt?: string;
     @Field(() => File)
     file?: File;
+    @Field(() => [String])
+    views?: string[];
 }
 
 @ObjectType()
