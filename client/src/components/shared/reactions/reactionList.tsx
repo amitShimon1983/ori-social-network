@@ -43,6 +43,7 @@ const ReactionList: FunctionComponent<ReactionListProps> = ({ popoverSx, onItemC
                 open={open}
                 anchorEl={anchorEl}
                 onClose={handleClose}
+                closeAfterTransition
                 anchorOrigin={anchorOrigin ?? {
                     vertical: 'top',
                     horizontal: 'center',
@@ -55,7 +56,10 @@ const ReactionList: FunctionComponent<ReactionListProps> = ({ popoverSx, onItemC
                 <div className={`${classes.list} `}>
                     {reactions.map((reaction: Reaction) => {
                         return (<Zoom style={itemStyles} in={open}>
-                            <span className={classes.reaction_item} onClick={() => onItemClick(reaction)} key={`reaction_item_${reaction._id}`}>{reaction.emoji}</span>
+                            <span className={classes.reaction_item} onClick={() => {
+                                onItemClick(reaction);
+                                setAnchorEl(null);
+                            }} key={`reaction_item_${reaction._id}`}>{reaction.emoji}</span>
                         </Zoom>)
                     })}
                 </div>
