@@ -1,8 +1,9 @@
 import { model, Schema } from "mongoose";
+import { UserReactionSchema } from "../userReaction/schema";
 import { IMessage, IMessageThread } from "./types";
 
 const messageSchema = new Schema<IMessage>({
-    reaction: { type: Schema.Types.ObjectId, ref: 'Reaction', required: false },
+    reactions: [UserReactionSchema],
     sender: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     recipient: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     parentMessageId: { type: Schema.Types.ObjectId, ref: 'Message', required: false },
