@@ -1,4 +1,4 @@
-import { ObjectType, Int, Field, InputType } from "type-graphql";
+import { ObjectType, Int, Field, InputType, ID } from "type-graphql";
 import { User } from "../account/types";
 import { File } from "../post/types";
 
@@ -11,6 +11,7 @@ export class GetMessageThreads {
     @Field(() => Boolean, { nullable: true })
     hasMore: boolean;
 }
+
 @InputType()
 export class GetMessageThreadsArgs {
     @Field(() => Int, { nullable: true })
@@ -18,6 +19,7 @@ export class GetMessageThreadsArgs {
     @Field(() => Int, { nullable: true })
     limit?: number;
 }
+
 @ObjectType()
 export class GetConversation {
     @Field(() => [Message], { nullable: true })
@@ -27,6 +29,7 @@ export class GetConversation {
     @Field(() => Boolean, { nullable: true })
     hasMore: boolean;
 }
+
 @InputType()
 export class GetConversationArgs {
     @Field(() => String, { nullable: true })
@@ -38,13 +41,17 @@ export class GetConversationArgs {
     @Field(() => Int, { nullable: true })
     limit?: number;
 }
+
 @InputType()
 export class UpdateMessageArgs {
     @Field(() => String)
     id: string;
-    @Field(() => Boolean)
-    isRead: boolean;
+    @Field(() => Boolean, { nullable: true })
+    isRead?: boolean;
+    @Field(() => String, { nullable: true })
+    reactionId?: string;
 }
+
 @InputType()
 export class SendMessageArgs {
     @Field(() => String)
@@ -72,6 +79,17 @@ export class MessageThread {
     @Field(() => [User], { nullable: true })
     owners: User[];
 }
+
+@ObjectType()
+export class UserReaction {
+    @Field(() => String)
+    _id: string;
+    @Field(() => String)
+    user: string;
+    @Field(() => String)
+    reaction: string
+}
+
 @ObjectType()
 export class Message {
     @Field(() => Boolean)
@@ -84,6 +102,8 @@ export class Message {
     sender?: User;
     @Field(() => User)
     recipient?: User;
+    @Field(() => [UserReaction], { nullable: true })
+    reactions?: UserReaction[];
     @Field(() => String)
     content: string;
     @Field(() => String)
