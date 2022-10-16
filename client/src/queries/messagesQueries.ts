@@ -24,7 +24,11 @@ mutation SendMessage($type: String, $recipient:String, $content:String, $parentM
 const UPDATE_MESSAGE = gql`
 mutation UpdateMessage($isRead:Boolean, $reactionId: String, $id:String){
     updateMessage(args:{isRead: $isRead, id: $id, reactionId: $reactionId}){
-        reactions
+        reactions{
+            _id
+            user
+            reaction
+        }
         isRead
         _id
     }
