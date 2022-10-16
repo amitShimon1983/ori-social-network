@@ -5,7 +5,7 @@ import { PostDetails } from "./types";
 import classes from './Post.module.css';
 import { appContextVar } from "../../services/store";
 import { useDownloadFile, useGetPostComments, useGetPostLikes, useViewPost } from "../../hooks";
-import { Paper, Skeleton } from "../shared";
+import { FaEye, Paper, Skeleton } from "../shared";
 interface PostProps {
     post: PostDetails;
     displayToolbar?: boolean;
@@ -27,9 +27,10 @@ interface PostProps {
 }
 const Post: FunctionComponent<PostProps> = ({ post, styles, displayToolbar }) => {
     const { data: commentsData, } = useGetPostComments(post?._id || '');
+    const postViews = post?.views?.length;
     const { user } = appContextVar();
     const { data: likesData } = useGetPostLikes(post?._id || '');
-    const { viewPostMutation } = useViewPost()
+    const { viewPostMutation } = useViewPost();
     const { url, loading, type }: {
         url: string;
         type: string;
@@ -55,6 +56,7 @@ const Post: FunctionComponent<PostProps> = ({ post, styles, displayToolbar }) =>
                     likes={likesData?.getLikes?.likes}
                     comments={commentsData?.getComments?.comments} styles={styles?.footerStyles} />
             </div>}
+            {!!post?._id && !displayToolbar && <div className={classes.views}><p>{postViews} <FaEye /></p></div>}
         </Paper>
 
     );

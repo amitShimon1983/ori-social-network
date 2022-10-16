@@ -1,6 +1,7 @@
 .container {
     height: 100%;
     scroll-snap-align: start;
+    position: relative;
 }
 
 .image {
@@ -21,4 +22,14 @@
     top: 10px;
     right: 10px;
     z-index: 1;
+}
+
+.views {
+    background-color: rgba(189, 195, 199, 0.3);
+    color: whitesmoke;
+    position: absolute;
+    bottom: 10%;
+    left: 5%;
+    padding: 0.25em;
+    z-index: 10;
 }
