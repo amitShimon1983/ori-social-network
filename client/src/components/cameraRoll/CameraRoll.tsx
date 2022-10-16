@@ -1,7 +1,7 @@
 import { FunctionComponent, useCallback, useEffect, useRef, useState } from "react";
 import { appConfig } from "../../configuration";
 import { cameraService, Recorder } from "../../services";
-import { VideoElement } from "../shared";
+import { Spinner, VideoElement } from "../shared";
 import classes from "./CameraRoll.module.css";
 import CameralRollPanel from "./CameraRollPanel";
 
@@ -27,6 +27,7 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave, styles }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const photoRef = useRef<any>(null);
     const [hasPhoto, setHasPhoto] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     const [displayVideo, setDisplayVideo] = useState<boolean>(true);
     const [isRecording, setIsRecording] = useState<boolean>(false);
     const [recorder, setRecorder] = useState<Recorder>();
@@ -45,8 +46,9 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave, styles }) => {
         const userStream = await cameraService.getCameraStream(deviceMediaOptions, handleStream);
         if (userStream) {
             setStream(userStream)
+            setLoading(false)
         }
-    }, [handleStream]);
+    }, [handleStream, setLoading]);
 
     useEffect(() => {
         if (!stream) { getUserVideo(); }
@@ -122,10 +124,12 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave, styles }) => {
     const handleDeleteVideo = () => {
         setVideoBlob(undefined);
     }
+    console.log(!hasPhoto && !loading);
 
     return (
         <div className={`${classes.camera} ${styles?.camera}`}>
-            {!hasPhoto && <VideoElement className={`${styles?.video} ${classes.video}`} video={{ controls: false, muted: true, }} ref={videoRef}>
+            {loading && <Spinner />}
+            {!hasPhoto && <VideoElement className={`${styles?.video} ${classes.video} ${loading && classes.video_loading}`} video={{ controls: false, muted: true, }} ref={videoRef}>
             </VideoElement>}
             <div className={`${classes.picture} ${styles?.picture} ${hasPhoto && classes.hasPhoto}`}>
                 <canvas className={`${classes.canvas} ${styles?.canvas}`} ref={photoRef}></canvas>
