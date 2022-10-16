@@ -55,12 +55,14 @@ const ReactionList: FunctionComponent<ReactionListProps> = ({ popoverSx, onItemC
             >
                 <div className={`${classes.list} `}>
                     {reactions.map((reaction: Reaction) => {
-                        return (<Zoom style={itemStyles} in={open}>
-                            <span className={classes.reaction_item} onClick={() => {
-                                onItemClick(reaction);
-                                setAnchorEl(null);
-                            }} key={`reaction_item_${reaction._id}`}>{reaction.emoji}</span>
-                        </Zoom>)
+                        return (<span key={`reaction_item_${reaction._id}`}>
+                            <Zoom style={itemStyles} in={open}>
+                                <span className={classes.reaction_item} onClick={() => {
+                                    onItemClick(reaction);
+                                    setAnchorEl(null);
+                                }} >{reaction.emoji}</span>
+                            </Zoom>
+                        </span>)
                     })}
                 </div>
             </Popover>
