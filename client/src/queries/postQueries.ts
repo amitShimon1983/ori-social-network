@@ -1,31 +1,18 @@
 import { gql } from "@apollo/client";
-import { CORE_USER_FIELDS } from "../fragments";
+import { CORE_POST_FIELDS, CORE_USER_FIELDS } from "../fragments";
 
 const GET_MY_POSTS = gql`
-${CORE_USER_FIELDS}
+${CORE_POST_FIELDS}
 query GetMyPosts($userId: String){
     getMyPosts(args:{ userId: $userId }){
         posts {
-            _id
-            user {
-                ...CoreUserFields
-            }
-            title
-            createdAt
-            file {
-                _id
-                originalname
-                encoding
-                mimetype
-                filename
-                path
-                size
-            }
+            ...CorePostFields
         }
     }
 }
 `
 const GET_POST_COMMENTS = gql`
+${CORE_USER_FIELDS}
    query GetComments($postId: String, $commentId: String, $skip: Int, $limit: Int){
     getComments(args: { postId: $postId, commentId: $commentId, limit: $limit, skip: $skip }){
         count
@@ -33,14 +20,7 @@ const GET_POST_COMMENTS = gql`
         comments {
             _id
             user {
-              _id
-              name
-              email
-              lastSeen
-              file {
-                _id
-                originalname
-              }        
+              ...CoreUserFields
             }
             comments
             content
@@ -63,31 +43,11 @@ query GetPostLikes($postId:String){
 `
 
 const GET_RANDOM_POSTS = gql`
+${CORE_POST_FIELDS}
  query GetRandomPosts{
      getRandomPosts{
-         posts{
-             _id
-             title
-             createdAt
-             user {
-                _id
-                name
-                email
-                lastSeen
-                file {
-                    _id
-                  originalname
-                }        
-             }
-             file {
-                _id
-                 originalname
-                 encoding
-                 mimetype
-                 filename
-                 path
-                 size
-             }
+         posts {
+             ...CorePostFields
          }
      }
  }
