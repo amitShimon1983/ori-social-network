@@ -34,7 +34,7 @@ const Me: FunctionComponent<MeProps> = ({ displayEmailAddress, user, styles, dis
             <Badge sx={userStatusStyles} overlap="circular" variant="dot" anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'right',
-            }} color={isOnline ? "success" : 'error'} count=" " >
+            }} color={isOnline ? "success" : 'error'} badgeContent=" " >
                 <div className={styles?.imageClass}>
                     {isVideo ? <Video videoClassName={classes.video} type={type} link={url} /> : <img className={styles?.imageClass} src={url} alt={'profilePicture'} />}
                 </div>
