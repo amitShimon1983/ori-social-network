@@ -10,6 +10,7 @@ const formatTime = (seconds: any) => {
         .join(':')
 }
 const filesUri = `${appConfig.serverUrl}${'/api/file/'}`
+const fileTypes = ['audio', 'video'];
 export function useDownloadFile({ fileName, skip }: { fileName: string; skip?: boolean; }) {
 
     const [url, setUrl] = useState<string>(filesUri + fileName);
@@ -26,16 +27,28 @@ export function useDownloadFile({ fileName, skip }: { fileName: string; skip?: b
         }
     }, []);
     useEffect(() => {
-        setLoading(true);
         const loadFile = async () => {
             const blob: any = await httpService.getStream(url);
             const objectURL = URL.createObjectURL(blob);
-            await getBlobDuration(blob)
+            try {
+                if (blob?.type) {
+                    const blobType = blob?.type.split('/')[0]
+                    if (fileTypes.includes(blobType)) {
+                        await getBlobDuration(blob)
+                    }
+                }
+            }
+            catch (error) {
+                console.error(error);
+                console.log(blob?.type);
+
+            }
             setType(blob?.type);
             setUrl(objectURL);
             setLoading(false);
         }
         if (fileName && !skip) {
+            setLoading(true);
             loadFile();
         }
     }, []);
