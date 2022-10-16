@@ -5,3 +5,4 @@ export { CommentResolver } from './comment';
 export { MessageResolver } from './message';
 export { ViewsResolver } from './views';
 export * from './message';
+export * from './appMetadata';

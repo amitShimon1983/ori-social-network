@@ -1,3 +1,4 @@
+import appMetadataQueries from './appMetadataQueries';
 import commentQueries from './commentQueries';
 import messagesQueries from './messagesQueries';
 import followQueries from './followQueries';
@@ -7,6 +8,7 @@ import searchQueries from './searchQueries';
 import userQueries from './userQueries';
 
 const apolloQueries = {
+    appMetadataQueries,
     commentQueries,
     followQueries,
     inboxQueries,
