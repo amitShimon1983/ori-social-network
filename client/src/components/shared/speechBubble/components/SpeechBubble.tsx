@@ -21,8 +21,9 @@ const popoverSx = {
     }
 }
 const userReactionStyles = {
-    width: '100%',
-    display: 'block'
+    width: '85%',
+    height: '10o%',
+    display: 'flex'
 }
 const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, message }) => {
     const { content, sender, createdAt, isRead, type, _id, reactions } = message;
@@ -70,15 +71,15 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
                 }} />
             </div>
         }
-        <div id={message._id} className={`${isMe ? classes.speech_bubble_me : classes.speech_bubble_other} ${isMe ? classes.me : classes.other}`}>
-            <Badge
-                variant="standard"
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: isMe ? 'right' : 'left',
-                }}
-                sx={userReactionStyles}
-                badgeContent={reactionEle} >
+        <Badge
+            variant="standard"
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: isMe ? 'right' : 'left',
+            }}
+            sx={userReactionStyles}
+            badgeContent={reactionEle} >
+            <div id={message._id} className={`${isMe ? classes.speech_bubble_me : classes.speech_bubble_other} ${isMe ? classes.me : classes.other}`}>
                 <div className={classes.message_container} onClick={handleClick}>
                     {message?.parentMessageId && <MessagePreview creator={message?.parentMessageId?.sender} content={message.parentMessageId.content} />}
                 </div>
@@ -92,8 +93,8 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
                     {(!!type && type !== 'text') && <MediaCard type={type} message={message} isMe={isMe} />}
                     {timeStampEle}
                 </div>
-            </Badge>
-        </div>
+            </div>
+        </Badge>
         {
             !isMe && <div className={classes.not_me_container}>
                 <ReactionList popoverSx={popoverSx} onItemClick={onSelectedReaction} id={_id} />

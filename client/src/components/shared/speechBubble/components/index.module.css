@@ -5,8 +5,8 @@
     display: flex;
     flex-direction: column;
     border-radius: .5em;
-    min-width: 75%;
-    max-width: 80%;
+    min-width: 85%;
+    max-width: 90%;
     margin-right: auto;
     box-shadow: var(--box-shadow);
 }
@@ -47,15 +47,13 @@
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    margin-right: auto;
 }
 
 .not_me_container {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
-    margin-left: auto;
 }
 
 .fab {
@@ -78,8 +76,8 @@
     display: flex;
     flex-direction: column;
     border-radius: .5em;
-    min-width: 75%;
-    max-width: 80%;
+    min-width: 85%;
+    max-width: 90%;
     box-shadow: var(--box-shadow);
 }
 
@@ -98,7 +96,7 @@
 
 .speech_container {
     padding: 16px;
-    width: 90%;
+    width: 85%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -118,7 +116,8 @@
 .container {
     padding: 5px;
     display: flex;
-    width: 100%;
+    justify-content: space-around;
+    width: 95%;
 }
 
 .footer {
