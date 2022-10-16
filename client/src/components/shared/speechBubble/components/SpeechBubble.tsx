@@ -16,7 +16,7 @@ interface SpeechBubbleProps {
 }
 const popoverSx = {
     ".MuiPopover-paper": {
-        borderRadius: '20px',
+        borderRadius: '30px',
         padding: '5px'
     }
 }

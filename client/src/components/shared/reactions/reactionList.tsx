@@ -1,4 +1,4 @@
-import { PopoverOrigin, SxProps, Theme } from "@mui/material";
+import { PopoverOrigin, SxProps, Theme, Zoom } from "@mui/material";
 import { FunctionComponent, useState } from "react";
 import { BiSmile, IconButton, Popover } from "..";
 import { Reaction } from "../../../models";
@@ -10,6 +10,7 @@ interface ReactionListProps {
     onItemClick: (item: Reaction) => Promise<void> | void;
     popoverSx?: SxProps<Theme>;
 }
+const itemStyles = { transitionDelay: '100ms' }
 const reactions: Reaction[] = [
     { emoji: '❤️', _id: '1' },
     { emoji: '😆', _id: '2' },
@@ -37,12 +38,7 @@ const ReactionList: FunctionComponent<ReactionListProps> = ({ popoverSx, onItemC
                 <BiSmile />
             </IconButton>
             <Popover
-                sx={popoverSx ?? {
-                    ".MuiPopover-paper": {
-                        borderRadius: '20px',
-                        padding: '10px'
-                    }
-                }}
+                sx={popoverSx}
                 id={'ReactionList_' + id}
                 open={open}
                 anchorEl={anchorEl}
@@ -56,9 +52,13 @@ const ReactionList: FunctionComponent<ReactionListProps> = ({ popoverSx, onItemC
                     horizontal: 'right',
                 }}
             >
-                {reactions.map((reaction: Reaction) => {
-                    return <span onClick={() => onItemClick(reaction)} key={reaction._id}>{reaction.emoji}</span>
-                })}
+                <div className={`${classes.list} `}>
+                    {reactions.map((reaction: Reaction) => {
+                        return (<Zoom style={itemStyles} in={open}>
+                            <span className={classes.reaction_item} onClick={() => onItemClick(reaction)} key={`reaction_item_${reaction._id}`}>{reaction.emoji}</span>
+                        </Zoom>)
+                    })}
+                </div>
             </Popover>
         </div>
 

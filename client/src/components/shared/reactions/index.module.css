@@ -8,3 +8,16 @@
 .button {
     box-shadow: var(--box-shadow);
 }
+
+.reaction_item {
+    font-size: 1rem;
+    transition: all .3s, transform .3s;
+}
+
+.reaction_item:hover {
+    font-size: 1.25rem;
+}
+
+.list {
+    display: flex;
+}
