@@ -11,7 +11,9 @@
 
 .reaction_item {
     font-size: 1rem;
-    transition: all .3s, transform .3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .reaction_item:hover {
@@ -19,5 +21,6 @@
 }
 
 .list {
+    transition: all 1s, transform 1s;
     display: flex;
 }
