@@ -18,7 +18,9 @@
     padding-bottom: 0;
     margin-bottom: 10px;
     border-radius: 4px;
-    height: 99% !important;
+    min-height: 80% !important;
+    -webkit-transition: all .3s, -webkit-transform .3s;
+    transition: all .3s, -webkit-transform .3s;
     flex: 1;
     overflow-y: scroll;
     overflow-X: hidden;
