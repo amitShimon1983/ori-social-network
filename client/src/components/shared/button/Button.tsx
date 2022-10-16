@@ -2,7 +2,7 @@ import Button from '@mui/material/Button';
 import { FunctionComponent } from "react";
 
 export interface ButtonProps {
-    handleClick: ({ target }: { target: any }) => void;
+    handleClick: (event: any) => void;
     children: React.ReactNode;
     disabled?: boolean;
     className?: string;
