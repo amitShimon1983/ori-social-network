@@ -94,7 +94,7 @@ class MessageService {
         if (messageThreadId) {
             messageThread = await MessageThreadModel.findOne({ _id: messageThreadId, owners: { $in: [userId] } })
         } else if (!messageThreadId && ownerId) {
-            messageThread = await MessageThreadModel.findOne({ owners: { $in: [userId, ownerId] } });
+            messageThread = await MessageThreadModel.findOne({ owners: { $all: [userId, ownerId] } });
         }
         if (messageThread?._id) {
             return await this.getMessageThread(messageThread?._id, skip, limit);
