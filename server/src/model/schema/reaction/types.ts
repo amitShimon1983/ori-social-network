@@ -1,4 +1,4 @@
 export interface IReaction {
-    _id: string;
+    _id?: string;
     emoji: string;
 }

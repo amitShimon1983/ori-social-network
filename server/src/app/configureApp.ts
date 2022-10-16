@@ -3,7 +3,7 @@ import express, { Express, Request, Response } from 'express';
 import cookieParser from "cookie-parser";
 import { corsMiddleware } from "./middleware";
 import configureRoutes from "./route";
-import { initDb, createApolloServer } from "./clients";
+import { initDb, createApolloServer, seedDb } from "./clients";
 
 export const configureApp = async (app: Express, appConfig: Configuration) => {
     app.use(cookieParser());
@@ -17,5 +17,6 @@ export const configureApp = async (app: Express, appConfig: Configuration) => {
 
     configureRoutes(app);
     await initDb(appConfig.dbConnectionString || '');
+    seedDb()
     return httpServer;
 }
