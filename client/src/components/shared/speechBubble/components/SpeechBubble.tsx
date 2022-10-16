@@ -21,7 +21,8 @@ const popoverSx = {
     }
 }
 const userReactionStyles = {
-    width: '80%'
+    width: '100%',
+    display: 'block'
 }
 const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, message }) => {
     const { content, sender, createdAt, isRead, type, _id, reactions } = message;
@@ -49,6 +50,17 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
     const onSelectedReaction = async (reaction: Reaction) => {
         if (reaction._id) { updateMessage(message?._id, false, undefined, reaction._id) }
     }
+    const timeStampEle = (<div className={`${classes.footer} ${!isMe && classes.footer_other}`}>
+        <span className={classes.time_stamp}>
+            {diff}
+        </span>
+        <span className={classes.icon}>
+            {isRead ? <BsCheck2All /> : <BsCheck2 />}
+        </span>
+    </div>)
+
+    const reactionEle = <div className={classes.reactions}>{reactions?.map((userReaction: any) => (<span className={classes.emoji} key={'reactions_' + userReaction.reaction + userReaction.user + message._id}>{flatList?.[userReaction.reaction]}</span>))}</div>;
+
     return (<div className={classes.container}>
         {isMe &&
             <div className={classes.me_container}>
@@ -58,15 +70,15 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
                 }} />
             </div>
         }
-        <Badge
-            variant="standard"
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: isMe ? 'right' : 'left',
-            }}
-            sx={userReactionStyles}
-            badgeContent={reactions?.map((userReaction: any) => (<span className={classes.emoji} key={'reactions_' + userReaction.reaction + userReaction.user + message._id}>{flatList?.[userReaction.reaction]}</span>))} >
-            <div id={message._id} className={`${isMe ? classes.speech_bubble_me : classes.speech_bubble_other} ${isMe ? classes.me : classes.other}`}>
+        <div id={message._id} className={`${isMe ? classes.speech_bubble_me : classes.speech_bubble_other} ${isMe ? classes.me : classes.other}`}>
+            <Badge
+                variant="standard"
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: isMe ? 'right' : 'left',
+                }}
+                sx={userReactionStyles}
+                badgeContent={reactionEle} >
                 <div className={classes.message_container} onClick={handleClick}>
                     {message?.parentMessageId && <MessagePreview creator={message?.parentMessageId?.sender} content={message.parentMessageId.content} />}
                 </div>
@@ -78,17 +90,10 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
                     <UserDetails className={`${isMe ? classes.sender_me : classes.sender_other}`} user={sender} />
                     {(!type || type === 'text') && <ReadMore content={content} displayButtons={true} />}
                     {(!!type && type !== 'text') && <MediaCard type={type} message={message} isMe={isMe} />}
-                    <div className={classes.footer}>
-                        <span className={classes.time_stamp}>
-                            {diff}
-                        </span>
-                        <span className={classes.icon}>
-                            {isRead ? <BsCheck2All /> : <BsCheck2 />}
-                        </span>
-                    </div>
+                    {timeStampEle}
                 </div>
-            </div>
-        </Badge>
+            </Badge>
+        </div>
         {
             !isMe && <div className={classes.not_me_container}>
                 <ReactionList popoverSx={popoverSx} onItemClick={onSelectedReaction} id={_id} />
