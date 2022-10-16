@@ -1,0 +1,1 @@
+export interface Reaction { emoji: string; _id: string }

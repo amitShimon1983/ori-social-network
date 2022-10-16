@@ -27,6 +27,13 @@
     border: 1px solid #d1cbcb;
 }
 
+.me_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
 .fab {
     right: 10px !important;
     z-index: 1 !important;

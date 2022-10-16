@@ -1,6 +1,7 @@
 import { FunctionComponent, useEffect } from "react";
-import { MediaCard } from "../..";
+import { MediaCard, ReactionList } from "../..";
 import { useUpdateMessage } from "../../../../hooks";
+import { Reaction } from "../../../../models";
 import { getPostDate } from "../../../../services/date";
 import { appContextVar } from "../../../../services/store";
 import MiniMe from "../../../me/MiniMe";
@@ -13,9 +14,14 @@ interface SpeechBubbleProps {
     message: { [key: string]: any }
     onClickHandler: (message: any) => void | Promise<void>;
 }
-
+const popoverSx = {
+    ".MuiPopover-paper": {
+        borderRadius: '20px',
+        padding: '5px'
+    }
+}
 const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, message }) => {
-    const { content, sender, createdAt, isRead, type } = message;
+    const { content, sender, createdAt, isRead, type, _id } = message;
     const { user: me } = appContextVar();
     const isMe = me._id === sender._id;
     const { updateMessage }: {
@@ -36,7 +42,15 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
         }, 3000)
 
     }
+    const onSelectedReaction = async (reaction: Reaction) => {
+        console.log({ reaction });
+    }
+
     return (<div className={classes.container}>
+        {isMe && <ReactionList popoverSx={popoverSx} onItemClick={onSelectedReaction} id={_id} transformOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+        }} />}
         <div id={message._id} className={`${isMe ? classes.speech_bubble_me : classes.speech_bubble_other} ${isMe ? classes.me : classes.other}`}>
             <div className={classes.message_container} onClick={handleClick}>
                 {message?.parentMessageId && <MessagePreview creator={message?.parentMessageId?.sender} content={message.parentMessageId.content} />}
@@ -60,12 +74,15 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
             </div>
         </div>
         {
-            !isMe && <MiniMe styles={{
-                imageClass: classes.image
-            }} displayEmailAddress={false}
-                navigateOnClick={false}
-                user={sender}
-                displaySpinner={false} />
+            !isMe && <div className={classes.me_container}>
+                <ReactionList popoverSx={popoverSx} onItemClick={onSelectedReaction} id={_id} />
+                <MiniMe styles={{
+                    imageClass: classes.image
+                }} displayEmailAddress={false}
+                    navigateOnClick={false}
+                    user={sender}
+                    displaySpinner={false} />
+            </div>
         }
     </div >);
 }
