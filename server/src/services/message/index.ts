@@ -240,40 +240,10 @@ class MessageService {
                     message.reactions = [userReaction]
                 }
                 await message.save();
-               
+
             }
         }
-        console.log(message);
-
-        // const message = await MessageModel.findOneAndUpdate(
-        //     { _id: args.id, recipient: userId },
-        //     { isRead: true, reaction: args.reactionId },
-        //     {
-        //         new: true
-        // }).populate([{
-        //     path: 'recipient',
-        //     populate: {
-        //         path: 'file'
-        //     }
-        // },
-        // {
-        //     path: 'sender',
-        //     populate: {
-        //         path: 'file'
-        //     }
-        // }, {
-        //     path: 'file',
-        // },
-        // {
-        //     path: 'parentMessageId',
-        //     populate: {
-        //         path: 'sender',
-        //         populate: {
-        //             path: 'file'
-        //         }
-        //     }
-        // }]);
-        const messageObj = await (await message?.populate({ path: 'reactions' }))?.toObject();
+        const messageObj = (await message?.populate({ path: 'reactions' }))?.toObject();
         pubSub.publish(ON_MESSAGE_UPDATE, message?.toObject());
         return messageObj;
     }
