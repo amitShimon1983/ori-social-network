@@ -29,7 +29,7 @@ interface TreeProps {
 const Tree: FunctionComponent<TreeProps> = ({ hasMore, data = [], fetchMore, styles, renderItem, setReplyTo }) => {
     return (
         <div className={` ${styles.treeClassName}`}>
-            {data?.map((tree) => (<div>
+            {data?.map((tree) => (<div key={tree._id + 'treeNode_main'}>
                 <TreeNode hasMore={hasMore} setReplyTo={setReplyTo} renderItem={renderItem} styles={styles} fetchMore={fetchMore} key={tree._id + 'treeNode'} node={tree} />
             </div>)
             )}

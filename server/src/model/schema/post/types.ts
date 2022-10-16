@@ -5,4 +5,5 @@ export interface IPost {
     createdAt?: Date;
     likes?: string[]
     comments?: string[]
+    views?: string[]
 }
