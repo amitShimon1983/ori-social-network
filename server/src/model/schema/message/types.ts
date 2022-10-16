@@ -9,6 +9,7 @@ export interface IMessage {
     messageThreadId?: string;
     type?: string;
     file?: string;
+    reaction?: string;
 }
 export interface IMessageThread {
     _id: string;
