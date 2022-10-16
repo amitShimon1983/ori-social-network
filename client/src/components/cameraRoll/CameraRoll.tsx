@@ -96,6 +96,7 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave, styles }) => {
         } else {
             const url = `${appConfig.serverUrl}${appConfig.uploadPostEndpoint}`;
             await cameraService.saveFile(url, blobToSave);
+            setStream(undefined)
         }
     }
 
@@ -124,7 +125,6 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave, styles }) => {
     const handleDeleteVideo = () => {
         setVideoBlob(undefined);
     }
-    console.log(!hasPhoto && !loading);
 
     return (
         <div className={`${classes.camera} ${styles?.camera}`}>
