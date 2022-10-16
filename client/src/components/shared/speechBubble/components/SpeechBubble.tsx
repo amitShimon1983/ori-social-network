@@ -25,11 +25,11 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
     const { user: me } = appContextVar();
     const isMe = me._id === sender._id;
     const { updateMessage }: {
-        updateMessage: (messageId: string, skip: boolean, reactionId?: string) => Promise<void>
+        updateMessage: (messageId: string, skip: boolean, isRead?: boolean, reactionId?: string) => Promise<void>
     } = useUpdateMessage();
     useEffect(() => {
         if (message?._id && !isMe && !message.isRead) {
-            updateMessage(message?._id, isMe)
+            updateMessage(message?._id, isMe, true)
         }
     }, [])
     const diff = getPostDate(new Date(+createdAt));
@@ -44,7 +44,7 @@ const SpeechBubble: FunctionComponent<SpeechBubbleProps> = ({ onClickHandler, me
     }
     const onSelectedReaction = async (reaction: Reaction) => {
         console.log({ reaction });
-        if (reaction._id) { updateMessage(message?._id, false, reaction._id) }
+        if (reaction._id) { updateMessage(message?._id, false, undefined, reaction._id) }
     }
 
     return (<div className={classes.container}>
