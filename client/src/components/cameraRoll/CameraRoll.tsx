@@ -34,21 +34,19 @@ const CameraRoll: FunctionComponent<VideoProps> = ({ onSave, styles }) => {
     const [stream, setStream] = useState<MediaStream>()
     const [videoBlob, setVideoBlob] = useState<Blob>();
     const [imageBlob, setImageBlob] = useState<Blob>();
-    const handleStream = useCallback(async (stream: MediaStream) => {
-        const video: any = videoRef.current;
-        if (video) {
-            video.srcObject = stream;
-            video.play();
-        }
-    }, [videoRef])
 
     const getUserVideo = useCallback(async () => {
-        const userStream = await cameraService.getCameraStream(deviceMediaOptions, handleStream);
+        const userStream = await cameraService.getCameraStream(deviceMediaOptions);
         if (userStream) {
+            const video: any = videoRef.current;
+            if (video) {
+                video.srcObject = userStream;
+                video.play();
+            }
             setStream(userStream)
             setLoading(false)
         }
-    }, [handleStream, setLoading]);
+    }, [setLoading]);
 
     useEffect(() => {
         if (!stream) { getUserVideo(); }
