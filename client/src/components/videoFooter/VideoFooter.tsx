@@ -72,7 +72,7 @@ const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments,
                     anchorOrigin={{
                         vertical: 'bottom',
                         horizontal: 'left',
-                    }} style={badgeStyle} max={99} count={comments?.length || 0}>
+                    }} style={badgeStyle} max={99} badgeContent={comments?.length || 0}>
                     <FaRegComments className={classes.icon} onClick={onCommentClick} />
                 </Badge>,
                 name: 'Comments'
@@ -83,7 +83,7 @@ const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments,
                     anchorOrigin={{
                         vertical: 'bottom',
                         horizontal: 'left',
-                    }} style={badgeStyle} max={99} count={internalLikes?.length || 0}>
+                    }} style={badgeStyle} max={99} badgeContent={internalLikes?.length || 0}>
                     <FcLike onClick={onLikeClick} className={`${classes.icon} ${styles?.icon} ${iLikeIt ? classes.like_icon_selected : classes.like_icon_not_selected}`} />
                 </Badge>,
                 name: 'Liks'

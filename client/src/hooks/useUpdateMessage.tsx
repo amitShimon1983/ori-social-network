@@ -3,11 +3,12 @@ import apolloQueries from '../queries'
 
 export function useUpdateMessage() {
     const [updateMessageMutation, { data, error, loading }] = useMutation(apolloQueries.messagesQueries.UPDATE_MESSAGE)
-    const updateMessage = async (messageId: string, skip: boolean) => {
+    const updateMessage = async (messageId: string, skip: boolean, isRead?: boolean, reactionId?: string) => {
         if (!skip) {
             await updateMessageMutation({
                 variables: {
-                    isRead: true,
+                    isRead,
+                    reactionId,
                     id: messageId
                 }
             })

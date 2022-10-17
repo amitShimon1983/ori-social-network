@@ -2,6 +2,7 @@ import { PubSubEngine } from 'type-graphql';
 import { Message, MessageThread, SendMessageArgs, UpdateMessageArgs } from '../../apollo';
 import { IMessage, MessageModel, MessageThreadModel } from '../../model'
 import { IMessageThread } from '../../model/schema/message/types';
+import { IUserReaction } from '../../model/schema/userReaction';
 import { ON_MESSAGE_UPDATE, ON_NEW_MESSAGE_CREATED, ON_NEW_MESSAGE_THREAD_CREATED } from '../../utils';
 class MessageService {
 
@@ -94,13 +95,13 @@ class MessageService {
         if (messageThreadId) {
             messageThread = await MessageThreadModel.findOne({ _id: messageThreadId, owners: { $in: [userId] } })
         } else if (!messageThreadId && ownerId) {
-            messageThread = await MessageThreadModel.findOne({ owners: { $in: [userId, ownerId] } });
+            messageThread = await MessageThreadModel.findOne({ owners: { $all: [userId, ownerId] } });
         }
         if (messageThread?._id) {
             return await this.getMessageThread(messageThread?._id, skip, limit);
         }
     }
-   
+
     private async getMessageThread(messageThreadId: string | undefined, skip: number | undefined, limit: number | undefined) {
         const thread = await MessageModel.find({ messageThreadId },
             {},
@@ -173,10 +174,14 @@ class MessageService {
             console.log({ error });
         }
     }
-    
+
     async updateMessage(args: UpdateMessageArgs, userId: string, pubSub: PubSubEngine) {
-        const message = await MessageModel.findOneAndUpdate({ _id: args.id, recipient: userId }, { isRead: true }, {
-            new: true
+
+        const message = await MessageModel.findOne({
+            $or: [
+                { _id: args.id, recipient: userId },
+                { _id: args.id, sender: userId }
+            ]
         }).populate([{
             path: 'recipient',
             populate: {
@@ -199,9 +204,48 @@ class MessageService {
                     path: 'file'
                 }
             }
-        }]);
-        pubSub.publish(ON_MESSAGE_UPDATE, message);
-        return message;
+        },
+        {
+            path: 'parentMessageId',
+            populate: {
+                path: 'sender',
+                populate: {
+                    path: 'file'
+                }
+            }
+        }
+        ]);
+        if (message) {
+            if (!message.isRead) { message.isRead = true; }
+            if (args.reactionId) {
+                const userReaction: IUserReaction = {
+                    user: userId,
+                    reaction: args.reactionId
+                }
+                if (message?.reactions?.length) {
+                    const findUserReaction = (reaction: any) => {
+                        return reaction?.user?.toString() === userId
+                    }
+                    const filterUserReaction = (reaction: any) => {
+                        return reaction?.user?.toString() !== userId
+                    }
+                    const existing = message.reactions?.find(findUserReaction);
+                    if (!existing) {
+                        message.reactions.push(userReaction);
+                    } else {
+                        const notExisting = message.reactions?.filter(filterUserReaction);
+                        message.reactions = [...notExisting, userReaction]
+                    }
+                } else {
+                    message.reactions = [userReaction]
+                }
+                await message.save();
+
+            }
+        }
+        const messageObj = (await message?.populate({ path: 'reactions' }))?.toObject();
+        pubSub.publish(ON_MESSAGE_UPDATE, message?.toObject());
+        return messageObj;
     }
 }
 export default MessageService.getInstance();

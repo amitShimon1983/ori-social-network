@@ -69,9 +69,9 @@ const Inbox: FunctionComponent = () => {
         setOpenMessageForm(true);
     }
     const closeMessageFormHandler = () => {
+        if (messageThreadId) { onItemClick({ _id: messageThreadId }); }
         setOpenMessageForm(false);
         setMessageThreadId(undefined);
-        onItemClick({ _id: messageThreadId });
         setThreadOwners([])
     }
 
@@ -103,7 +103,10 @@ const Inbox: FunctionComponent = () => {
                 </div> : 'New Message'}
             dismissHandler={closeMessageFormHandler}
             isOpen={openMessageForm}>
-            {openMessageForm && <MessageForm setThreadOwners={setThreadOwners} owners={threadOwners} messageThreadId={messageThreadId} />}
+            {openMessageForm && <MessageForm
+                setThreadOwners={setThreadOwners}
+                owners={threadOwners}
+                messageThreadId={messageThreadId} />}
         </Drawer>
     </div>);
 }

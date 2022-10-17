@@ -1,6 +1,5 @@
-import { IconButton } from "@mui/material";
 import { FunctionComponent, useState } from "react";
-import { FaMicrophoneAlt, FaMicrophoneAltSlash, AiOutlineCloudUpload, FcCancel, BsStopCircle } from "..";
+import { IconButton, FaMicrophoneAlt, FaMicrophoneAltSlash, AiOutlineCloudUpload, FcCancel, BsStopCircle } from "..";
 import { cameraService, Recorder } from "../../services";
 import classes from './MicrophoneRecorder.module.css';
 interface MicrophoneRecorderProps {

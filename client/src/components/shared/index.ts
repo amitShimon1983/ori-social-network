@@ -29,3 +29,4 @@ export * from './speechBubble';
 export * from './userDetail';
 export * from './counter';
 export * from './mediaCard';
+export * from './reactions';

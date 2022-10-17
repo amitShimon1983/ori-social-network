@@ -28,7 +28,6 @@ const SpeechBubbleList: FunctionComponent<SpeechBubbleListProps> = ({ items, fet
         observer.current = new IntersectionObserver(entries => {
             if (!entries[0].isIntersecting) {
                 setDisplayButton(true)
-                console.log(node);
             } else {
                 setDisplayButton(false)
             }

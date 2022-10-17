@@ -13,6 +13,11 @@ export const CORE_MESSAGE_FIELDS = gql`
     file {
      ...CoreFileFields
     }
+    reactions{
+      _id
+      user
+      reaction
+    }
     parentMessageId{
       _id
       content

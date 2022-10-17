@@ -1,1 +1,2 @@
-export { Configuration } from './config'
+export { Configuration } from './config';
+export * from './reaction';

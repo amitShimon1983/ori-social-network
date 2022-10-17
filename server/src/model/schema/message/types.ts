@@ -1,3 +1,5 @@
+import { IUserReaction } from "../userReaction";
+
 export interface IMessage {
     _id?: string;
     sender?: string;
@@ -9,6 +11,7 @@ export interface IMessage {
     messageThreadId?: string;
     type?: string;
     file?: string;
+    reactions?: IUserReaction[];
 }
 export interface IMessageThread {
     _id: string;

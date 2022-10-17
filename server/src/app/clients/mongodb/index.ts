@@ -1,5 +1,5 @@
 import { MongoStorage } from "../../../model"
-
+export { seedDb } from './seedDb';
 
 export const initDb = async (connectionString: string) => {
     if (!connectionString) {

@@ -6,7 +6,12 @@ import { authenticateRequestMiddleware } from '../middleware/authenticationMiddl
 const configureRoutes = (app: Application) => {
     app.use('/api/auth', authRouter)
     app.use('/api/file', async (req: Request, res: Response, next) => {
-        await authenticateRequestMiddleware(req.cookies.user)
+        try {
+            await authenticateRequestMiddleware(req.cookies.user)
+        }
+        catch (error) {
+            console.log(error);
+        }
         next();
     }, fileUpload)
 };

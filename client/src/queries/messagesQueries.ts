@@ -22,13 +22,19 @@ mutation SendMessage($type: String, $recipient:String, $content:String, $parentM
 }
 `
 const UPDATE_MESSAGE = gql`
-mutation UpdateMessage($isRead:Boolean, $id:String){
-    updateMessage(args:{isRead: $isRead, id: $id}){
+mutation UpdateMessage($isRead:Boolean, $reactionId: String, $id:String){
+    updateMessage(args:{isRead: $isRead, id: $id, reactionId: $reactionId}){
+        reactions{
+            _id
+            user
+            reaction
+        }
         isRead
         _id
     }
 }
 `;
+
 const messagesQueries = { GET_CONVERSATION, SEND_MESSAGE, UPDATE_MESSAGE };
 
 export default messagesQueries;
