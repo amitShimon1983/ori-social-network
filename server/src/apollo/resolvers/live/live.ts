@@ -10,7 +10,7 @@ export class LiveResolver {
         topics: [ON_CALL_START],
         filter: ({ payload, context }) => {
             const { user } = context;
-            return (payload?.email === user.email)
+            return (payload?.addressee === user.email)
         }
     })
     async onCallStart(@Root() payload: StartCall): Promise<StartCall> {
@@ -20,11 +20,13 @@ export class LiveResolver {
     @Mutation(() => Boolean)
     async startCall(@Arg('args', () => StartCallArgs) args: StartCallArgs, @Ctx() context: AppContext) {
         const { user, pubSub } = context;
-        UserModel.findOne({})
-        pubSub.publish(ON_CALL_START, {
-            caller: user.email,
-            ...args
-        });
+        const userDb = await UserModel.findOne({ email: args.addressee })
+        if (userDb) {
+            pubSub.publish(ON_CALL_START, {
+                caller: user.email,
+                ...args
+            });
+        }
         return true;
     }
 }

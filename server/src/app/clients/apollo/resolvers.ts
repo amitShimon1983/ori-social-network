@@ -1,5 +1,5 @@
 import { NonEmptyArray, } from 'type-graphql';
-import { AccountResolver, PostResolver, LikeResolver, CommentResolver, MessageResolver, ViewsResolver, AppMetadata } from '../../../apollo';
+import { AccountResolver, PostResolver, LikeResolver, CommentResolver, MessageResolver, ViewsResolver, AppMetadata, LiveResolver } from '../../../apollo';
 import { SampleResolver } from '../../../apollo/resolvers/notifications/notification';
 export default [
     AccountResolver,
@@ -9,5 +9,6 @@ export default [
     MessageResolver,
     SampleResolver,
     ViewsResolver,
-    AppMetadata
+    AppMetadata,
+    LiveResolver
 ] as NonEmptyArray<any> | NonEmptyArray<string>
