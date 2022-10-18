@@ -6,6 +6,7 @@ import inboxQueries from './inboxQueries';
 import postQueries from './postQueries';
 import searchQueries from './searchQueries';
 import userQueries from './userQueries';
+import liveQueries from './liveQueries';
 
 const apolloQueries = {
     appMetadataQueries,
@@ -15,7 +16,8 @@ const apolloQueries = {
     messagesQueries,
     postQueries,
     searchQueries,
-    userQueries
+    userQueries,
+    liveQueries
 };
 
 export default apolloQueries;
