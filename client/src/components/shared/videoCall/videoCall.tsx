@@ -1,7 +1,9 @@
 import { FunctionComponent, useCallback, useEffect, useRef, useState } from "react";
-import { useAnswerCall, useOnCallAnswer, useOnCallCreated, useSendIceCandidate, useStartCall } from "../../../hooks";
+import { Fab, HiOutlinePhoneIncoming, TbPhoneOff, VideoElement } from "..";
+import { useAnswerCall, useSendIceCandidate, useStartCall } from "../../../hooks";
 import useOnIceCandidate from "../../../hooks/useOnIceCandidate";
 import { cameraService } from "../../../services";
+import classes from './videoCall.module.css';
 
 interface VideoCallProps {
     callTo?: string;
@@ -27,6 +29,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
     const visitorVideoRef = useRef<HTMLVideoElement | null>(null);
     const pc = useRef<RTCPeerConnection | null>(null);
     const [stream, setStream] = useState<MediaStream>();
+    const [callStarted, serCallStarted] = useState<boolean>(false);
     const { startCallMutation } = useStartCall();
     const { answerCallMutation } = useAnswerCall();
     const { sendIceCandidateMutation } = useSendIceCandidate();
@@ -47,6 +50,9 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
                 }
             }
             pc.current.oniceconnectionstatechange = (e) => {
+                if (e?.isTrusted) {
+                    serCallStarted(e.isTrusted)
+                }
                 console.log(e);
             }
             pc.current.ontrack = (e) => {
@@ -147,43 +153,23 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
         if (stream) { cameraService.closeCamera(stream); }
     }
     return (
-        <div style={{
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'column',
-            position: 'relative'
-        }}>
-            <span style={{
-                position: 'absolute',
-                top: 20,
-                textAlign: 'center',
-                color: 'white'
-            }}>{callTo}</span>
-            <video muted style={{
-                width: '100%',
-                height: '100%',
-                background: 'black',
-                objectFit: 'fill',
-            }} autoPlay ref={creatorVideoRef} />
-            <video style={{
-                width: '40%',
-                height: '30%',
-                position: 'absolute',
-                bottom: 20,
-                background: 'red',
-                right: 10,
-                objectFit: 'fill',
-            }} autoPlay ref={visitorVideoRef} />
-            <div style={{
-                position: 'absolute',
-                bottom: 20,
-                left: 0,
-            }}>
-                <button onClick={createAnswer}>Answer</button>
-                <button onClick={close}>close</button>
+        <div className={classes.container}>
+            <span className={classes.caller_inform}>{callTo}</span>
+            <VideoElement className={`${classes.video_me}`} video={{ controls: false, muted: true, autoPlay: true }} ref={creatorVideoRef} />
+            <VideoElement className={`${classes.video_visitor} ${callStarted && classes.shadow}`} video={{ controls: false, autoPlay: true }} ref={visitorVideoRef} />
+            <div className={classes.buttons_container}>
+                {!callStarted && callerSdp && <Fab
+                    color="success"
+                    className={`${classes.fab} ${!callStarted && callerSdp && classes.fab_incoming}`}
+                    onClick={createAnswer}>
+                    <HiOutlinePhoneIncoming />
+                </Fab>}
+                <Fab
+                    color="error"
+                    className={`${classes.fab} ${!callStarted && classes.fab_close}`}
+                    onClick={close}>
+                    <TbPhoneOff />
+                </Fab>
             </div>
         </div>
     );
