@@ -8,6 +8,5 @@ export { GiArrowDunk } from 'react-icons/gi';
 export { BsCloudDownload, BsSave, BsCheck2All, BsCheck2, BsStopCircle } from 'react-icons/bs';
 export { RiDeleteBin2Fill } from 'react-icons/ri';
 export { ImFilesEmpty } from 'react-icons/im';
-export { TbSend } from 'react-icons/tb';
+export { TbSend,TbPhoneOff } from 'react-icons/tb';
 export { HiOutlinePhoneIncoming, HiOutlinePhoneOutgoing } from 'react-icons/hi';
-
