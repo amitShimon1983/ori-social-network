@@ -4,7 +4,7 @@ import { useGetMessageThreads } from "../../hooks";
 import { appContextVar } from "../../services/store";
 import { BackButton } from "../backButton";
 import MiniMe from "../me/MiniMe";
-import { Drawer, Fab, FaPencilAlt, Header, ImFilesEmpty, MessageForm, Spinner } from "../shared";
+import { Drawer, Fab, FaPencilAlt, Header, HiOutlinePhoneIncoming, HiOutlinePhoneOutgoing, ImFilesEmpty, MessageForm, Spinner } from "../shared";
 import Card from "../shared/card/Card";
 import InfiniteScroll from "../shared/infiniteScrolling/InfiniteScroll";
 import { Hr } from "../styles";
@@ -12,6 +12,7 @@ import classes from './Inbox.module.css';
 
 const Inbox: FunctionComponent = () => {
     const { user: me } = appContextVar();
+    const [call, setCall] = useState<boolean>(false);
     const { threads, hasMore, loading, fetchMore, client } = useGetMessageThreads();
     const [threadOwners, setThreadOwners] = useState<any[]>([]);
     const [openMessageForm, setOpenMessageForm] = useState<boolean>(false);
@@ -73,6 +74,7 @@ const Inbox: FunctionComponent = () => {
         setOpenMessageForm(false);
         setMessageThreadId(undefined);
         setThreadOwners([])
+        setCall(false)
     }
 
     return (<div className={classes.container}>
@@ -94,16 +96,25 @@ const Inbox: FunctionComponent = () => {
         <Drawer
             headerStyles={{ container: classes.drawer_header_container, header: classes.drawer_header_header }}
             label={ownerNames.length ?
-                <div className={classes.mini_me}>
-                    <MiniMe
-                        displayEmailAddress={true}
-                        user={threadOwners[0]}
-                        displaySpinner={false}
-                        navigateOnClick={false} />
+                <div className={classes.header_container}>
+                    <div className={classes.mini_me}>
+                        <MiniMe
+                            displayEmailAddress={true}
+                            user={threadOwners[0]}
+                            displaySpinner={false}
+                            navigateOnClick={false} />
+                    </div>
+                    <Fab
+                        color="primary"
+                        className={classes.phone_fab}
+                        onClick={() => setCall(prev => !prev)}>
+                        <HiOutlinePhoneOutgoing />
+                    </Fab>
                 </div> : 'New Message'}
             dismissHandler={closeMessageFormHandler}
             isOpen={openMessageForm}>
             {openMessageForm && <MessageForm
+                calling={call}
                 setThreadOwners={setThreadOwners}
                 owners={threadOwners}
                 messageThreadId={messageThreadId} />}
