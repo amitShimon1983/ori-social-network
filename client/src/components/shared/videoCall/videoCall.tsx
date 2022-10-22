@@ -1,8 +1,11 @@
 import { FunctionComponent, useCallback, useEffect, useRef, useState } from "react";
+import { useAnswerCall, useOnCallAnswer, useSendIceCandidate, useStartCall } from "../../../hooks";
+import useOnIceCandidate from "../../../hooks/useOnIceCandidate";
 import { cameraService } from "../../../services";
 
 interface VideoCallProps {
-
+    callerSdp: string;
+    caller: string;
 }
 const deviceMediaOptions = {
     video: {
@@ -18,26 +21,35 @@ const deviceMediaOptions = {
         }
     }, audio: true
 }
-const VideoCall: FunctionComponent<VideoCallProps> = () => {
+const VideoCall: FunctionComponent<VideoCallProps> = ({ callerSdp, caller }) => {
+    const { startCallMutation } = useStartCall();
+    const { answerCallMutation } = useAnswerCall();
+    const { sendIceCandidateMutation } = useSendIceCandidate();
+    const { data: candidateData } = useOnIceCandidate();
     const creatorVideoRef = useRef<HTMLVideoElement | null>(null);
     const visitorVideoRef = useRef<HTMLVideoElement | null>(null);
     const textRef = useRef<HTMLTextAreaElement | null>(null);
     const pc = useRef<RTCPeerConnection | null>(null);
     const [stream, setStream] = useState<MediaStream>();
-    const getUserVideo = useCallback(async () => {
+
+    const getUserVideo = async () => {
         const userStream = await cameraService.getCameraStream(deviceMediaOptions);
         if (userStream) {
             const _pc = new RTCPeerConnection();
             _pc.onicecandidate = (e) => {
                 if (e.candidate) {
-                    console.log(e.candidate);
+                    sendIceCandidateMutation({
+                        variables: {
+                            icecandidate: JSON.stringify(e.candidate),
+                            addressee: caller || 'test1@test1.com'
+                        }
+                    })
                 }
             }
             _pc.oniceconnectionstatechange = (e) => {
                 console.log(e);
             }
             _pc.ontrack = (e) => {
-                console.log(e);
                 if (visitorVideoRef.current) { visitorVideoRef.current.srcObject = e.streams[0] }
             }
             userStream.getTracks().forEach(track => {
@@ -51,8 +63,19 @@ const VideoCall: FunctionComponent<VideoCallProps> = () => {
             setStream(userStream);
             pc.current = _pc
         }
-    }, []);
-
+    };
+    useEffect(() => {
+        if (callerSdp) {
+            const sdp = JSON.parse(callerSdp);
+            remoteDescription(sdp)
+        }
+    }, [callerSdp])
+    useEffect(() => {
+        if (candidateData?.onIceCandidate?.icecandidate) {
+            const icecandidate = JSON.parse(candidateData?.onIceCandidate?.icecandidate);
+            addCandidates(icecandidate)
+        }
+    }, [candidateData?.onIceCandidate?.icecandidate])
     useEffect(() => {
         if (!stream) {
             getUserVideo();
@@ -60,7 +83,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = () => {
         return () => {
             if (stream) { cameraService.closeCamera(stream); }
         }
-    }, [stream, getUserVideo])
+    }, [])
 
     const createOffer = async () => {
         try {
@@ -69,8 +92,13 @@ const VideoCall: FunctionComponent<VideoCallProps> = () => {
                     offerToReceiveAudio: true,
                     offerToReceiveVideo: true,
                 });
-                console.log(sdp);
                 if (sdp) {
+                    startCallMutation({
+                        variables: {
+                            sdp: JSON.stringify(sdp),
+                            addressee: 'test1@test1.com'
+                        }
+                    })
                     pc.current.setLocalDescription(sdp)
                 }
             }
@@ -85,7 +113,12 @@ const VideoCall: FunctionComponent<VideoCallProps> = () => {
                     offerToReceiveAudio: true,
                     offerToReceiveVideo: true,
                 });
-                console.log(sdp);
+                answerCallMutation({
+                    variables: {
+                        sdp: JSON.stringify(sdp),
+                        addressee: caller
+                    }
+                })
                 if (sdp) {
                     pc.current.setLocalDescription(sdp)
                 }
@@ -94,28 +127,26 @@ const VideoCall: FunctionComponent<VideoCallProps> = () => {
             console.log('createOffer', error);
         }
     }
-    const remoteDescription = async () => {
-        const sdp = JSON.parse(textRef?.current?.value || '');
+    const remoteDescription = async (sdp: any) => {
+
         pc.current?.setRemoteDescription(new RTCSessionDescription(sdp))
     }
-    const addCandidates = async () => {
-        const candidate = JSON.parse(textRef?.current?.value || '');
+    const addCandidates = async (candidate: any) => {
         pc.current?.addIceCandidate(new RTCIceCandidate(candidate))
     }
     const close = async () => {
         if (stream) { cameraService.closeCamera(stream); }
     }
     return (<>
+        {caller}
         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
             <video muted style={{ width: 180, height: 180, background: 'black' }} autoPlay ref={creatorVideoRef} />
             <video style={{ width: 180, height: 180, background: 'black' }} autoPlay ref={visitorVideoRef} />
         </div>
         <div style={{ width: '100%', height: '100%', display: 'block' }}>
-            <button onClick={createOffer}>Create offer</button>
-            <button onClick={createAnswer}>Create answer</button>
+            <button onClick={createOffer}>Call</button>
+            <button onClick={createAnswer}>Answer</button>
             <textarea ref={textRef}></textarea>
-            <button onClick={remoteDescription}>Set remote description</button>
-            <button onClick={addCandidates}>Add candidates</button>
             <button onClick={close}>close</button>
         </div>
     </>
