@@ -30,6 +30,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
     const { startCallMutation } = useStartCall();
     const { answerCallMutation } = useAnswerCall();
     const { sendIceCandidateMutation } = useSendIceCandidate();
+    const { data: candidateData } = useOnIceCandidate();
     const getUserVideo = useCallback(async () => {
         const userStream = await cameraService.getCameraStream(deviceMediaOptions);
         if (userStream) {
@@ -62,24 +63,24 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
             pc.current = _pc
         }
     }, []);
-    const { data: candidateData } = useOnIceCandidate();
+
     useEffect(() => {
         if (recipientSdp) {
             const sdp = JSON.parse(recipientSdp);
             remoteDescription(sdp)
         }
     }, [recipientSdp])
+
     useEffect(() => {
         if (candidateData?.onIceCandidate?.icecandidate) {
             const icecandidate = JSON.parse(candidateData?.onIceCandidate?.icecandidate);
             if (icecandidate) { addCandidates(icecandidate); }
         }
     }, [candidateData?.onIceCandidate?.icecandidate])
-    
+
     const remoteDescription = async (sdp: any) => {
         pc.current?.setRemoteDescription(new RTCSessionDescription(sdp))
     }
-
 
     useEffect(() => {
         if (!stream) {
@@ -88,7 +89,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
         return () => {
             if (stream) { cameraService.closeCamera(stream); }
         }
-    }, [])
+    }, [stream, getUserVideo])
 
     const createOffer = async () => {
         try {
