@@ -1,11 +1,12 @@
 import { FunctionComponent, useCallback, useEffect, useRef, useState } from "react";
-import { useAnswerCall, useOnCallAnswer, useSendIceCandidate, useStartCall } from "../../../hooks";
+import { useAnswerCall, useOnCallAnswer, useOnCallCreated, useSendIceCandidate, useStartCall } from "../../../hooks";
 import useOnIceCandidate from "../../../hooks/useOnIceCandidate";
 import { cameraService } from "../../../services";
 
 interface VideoCallProps {
-    callerSdp: string;
-    caller: string;
+    callTo?: string;
+    callerSdp?: string;
+    recipientSdp?: string;
 }
 const deviceMediaOptions = {
     video: {
@@ -21,18 +22,15 @@ const deviceMediaOptions = {
         }
     }, audio: true
 }
-const VideoCall: FunctionComponent<VideoCallProps> = ({ callerSdp, caller }) => {
+const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recipientSdp }) => {
+    const creatorVideoRef = useRef<HTMLVideoElement | null>(null);
+    const visitorVideoRef = useRef<HTMLVideoElement | null>(null);
+    const pc = useRef<RTCPeerConnection | null>(null);
+    const [stream, setStream] = useState<MediaStream>();
     const { startCallMutation } = useStartCall();
     const { answerCallMutation } = useAnswerCall();
     const { sendIceCandidateMutation } = useSendIceCandidate();
-    const { data: candidateData } = useOnIceCandidate();
-    const creatorVideoRef = useRef<HTMLVideoElement | null>(null);
-    const visitorVideoRef = useRef<HTMLVideoElement | null>(null);
-    const textRef = useRef<HTMLTextAreaElement | null>(null);
-    const pc = useRef<RTCPeerConnection | null>(null);
-    const [stream, setStream] = useState<MediaStream>();
-
-    const getUserVideo = async () => {
+    const getUserVideo = useCallback(async () => {
         const userStream = await cameraService.getCameraStream(deviceMediaOptions);
         if (userStream) {
             const _pc = new RTCPeerConnection();
@@ -41,7 +39,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callerSdp, caller }) => 
                     sendIceCandidateMutation({
                         variables: {
                             icecandidate: JSON.stringify(e.candidate),
-                            addressee: caller || 'test1@test1.com'
+                            addressee: callTo
                         }
                     })
                 }
@@ -63,19 +61,26 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callerSdp, caller }) => 
             setStream(userStream);
             pc.current = _pc
         }
-    };
+    }, []);
+    const { data: candidateData } = useOnIceCandidate();
     useEffect(() => {
-        if (callerSdp) {
-            const sdp = JSON.parse(callerSdp);
+        if (recipientSdp) {
+            const sdp = JSON.parse(recipientSdp);
             remoteDescription(sdp)
         }
-    }, [callerSdp])
+    }, [recipientSdp])
     useEffect(() => {
         if (candidateData?.onIceCandidate?.icecandidate) {
             const icecandidate = JSON.parse(candidateData?.onIceCandidate?.icecandidate);
-            addCandidates(icecandidate)
+            if (icecandidate) { addCandidates(icecandidate); }
         }
     }, [candidateData?.onIceCandidate?.icecandidate])
+    
+    const remoteDescription = async (sdp: any) => {
+        pc.current?.setRemoteDescription(new RTCSessionDescription(sdp))
+    }
+
+
     useEffect(() => {
         if (!stream) {
             getUserVideo();
@@ -96,7 +101,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callerSdp, caller }) => 
                     startCallMutation({
                         variables: {
                             sdp: JSON.stringify(sdp),
-                            addressee: 'test1@test1.com'
+                            addressee: callTo
                         }
                     })
                     pc.current.setLocalDescription(sdp)
@@ -109,6 +114,10 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callerSdp, caller }) => 
     const createAnswer = async () => {
         try {
             if (pc.current) {
+                if (callerSdp) {
+                    const sdp = JSON.parse(callerSdp);
+                    remoteDescription(sdp)
+                }
                 const sdp = await pc.current.createAnswer({
                     offerToReceiveAudio: true,
                     offerToReceiveVideo: true,
@@ -116,7 +125,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callerSdp, caller }) => 
                 answerCallMutation({
                     variables: {
                         sdp: JSON.stringify(sdp),
-                        addressee: caller
+                        addressee: callTo
                     }
                 })
                 if (sdp) {
@@ -124,32 +133,57 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callerSdp, caller }) => 
                 }
             }
         } catch (error: any) {
-            console.log('createOffer', error);
+            console.log('createAnswer', error);
         }
     }
-    const remoteDescription = async (sdp: any) => {
 
-        pc.current?.setRemoteDescription(new RTCSessionDescription(sdp))
-    }
     const addCandidates = async (candidate: any) => {
         pc.current?.addIceCandidate(new RTCIceCandidate(candidate))
     }
     const close = async () => {
         if (stream) { cameraService.closeCamera(stream); }
     }
-    return (<>
-        {caller}
-        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-            <video muted style={{ width: 180, height: 180, background: 'black' }} autoPlay ref={creatorVideoRef} />
-            <video style={{ width: 180, height: 180, background: 'black' }} autoPlay ref={visitorVideoRef} />
+    return (
+        <div style={{
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            position: 'relative'
+        }}>
+            <span style={{
+                position: 'absolute',
+                top: 20,
+                textAlign: 'center',
+                color: 'white'
+            }}>{callTo}</span>
+            <video muted style={{
+                width: '100%',
+                height: '100%',
+                background: 'black',
+                objectFit: 'fill',
+            }} autoPlay ref={creatorVideoRef} />
+            <video style={{
+                width: '40%',
+                height: '30%',
+                position: 'absolute',
+                bottom: 20,
+                background: 'red',
+                right: 10,
+                objectFit: 'fill',
+            }} autoPlay ref={visitorVideoRef} />
+            <div style={{
+                position: 'absolute',
+                bottom: 20,
+                left: 0,
+            }}>
+                <button onClick={createOffer}>Call</button>
+                <button onClick={createAnswer}>Answer</button>
+                <button onClick={close}>close</button>
+            </div>
         </div>
-        <div style={{ width: '100%', height: '100%', display: 'block' }}>
-            <button onClick={createOffer}>Call</button>
-            <button onClick={createAnswer}>Answer</button>
-            <textarea ref={textRef}></textarea>
-            <button onClick={close}>close</button>
-        </div>
-    </>
     );
 }
 

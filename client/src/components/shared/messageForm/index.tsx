@@ -1,8 +1,8 @@
 import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import AutoComplete from "../autoComplete";
-import { Drawer, InputButtonPanel, ReplyCard, Spinner } from "..";
+import { Drawer, HiOutlinePhoneIncoming, InputButtonPanel, ReplyCard, Spinner } from "..";
 import classes from './index.module.css';
-import { useGetConversation, useSearchContacts, useSendMessage } from "../../../hooks";
+import { useGetConversation, useOnCallAnswer, useSearchContacts, useSendMessage } from "../../../hooks";
 import MiniMe from "../../me/MiniMe";
 import { Hr } from "../../styles";
 import { debounce } from "@mui/material";
@@ -10,13 +10,17 @@ import { SpeechBubbleList } from "..";
 import { appConfig } from "../../../configuration";
 import { cameraService } from "../../../services";
 import { CameraRoll } from "../../cameraRoll";
+import { VideoCall } from "../videoCall";
+import { appContextVar } from "../../../services/store";
 export interface MessageFormProps {
     owners: { [key: string]: any }[];
     messageThreadId?: string;
     setThreadOwners: React.Dispatch<React.SetStateAction<any[]>>
 }
 const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, owners, setThreadOwners }) => {
+    const { user: me } = appContextVar();
     const [messageThreadIdState, setMessageThreadId] = useState<string>();
+    const [call, setCall] = useState<boolean>(false);
     const [hasMore, setHasMore] = useState<boolean>(false);
     useEffect(() => {
         setMessageThreadId(messageThreadId)
@@ -112,8 +116,14 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         setThreadOwners(data);
         isFormValid();
     };
-
+    const { data: answerCallData } = useOnCallAnswer();
+    debugger
     return (<div className={classes.container}>
+        <button onClick={() => setCall(prev => !prev)}><HiOutlinePhoneIncoming /></button>
+        {call && <VideoCall
+            callTo={selectedUsers?.[0]?.email ?? owners[0].email}
+            recipientSdp={answerCallData?.onCallAnswer?.sdp}
+        />}
         {!owners.length && <AutoComplete
             defaultValue={owners}
             renderOption={renderOption}

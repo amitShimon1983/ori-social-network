@@ -1,7 +1,7 @@
 import { useReactiveVar } from "@apollo/client";
 import { FunctionComponent } from "react";
 import { Outlet, useNavigate } from "react-router";
-import { useUpdateUserStatus } from "../../hooks";
+import { useOnCallCreated, useUpdateUserStatus } from "../../hooks";
 import { authService, storeService } from "../../services";
 import { appContextVar } from "../../services/store";
 import {
@@ -15,8 +15,10 @@ import {
 import { Dialog } from "../shared/dialog/Dialog";
 import classes from "./Shell.module.css";
 import { useState } from "react";
+import { VideoCall } from "../shared/videoCall";
 interface ShellProps { }
 const Shell: FunctionComponent<ShellProps> = () => {
+  const { data: createCallData } = useOnCallCreated();
   const { isAuthenticate } = useReactiveVar(appContextVar);
   const [open, setDialogOpen] = useState<boolean>(false);
   useUpdateUserStatus();
@@ -49,6 +51,7 @@ const Shell: FunctionComponent<ShellProps> = () => {
 
   const closeDialog = () => setDialogOpen(false)
   const title = "Are you sure you want to logout?"
+  console.log('shael', { onCallStart: createCallData?.onCallStart });
 
   return (
     <div className={classes.container}>
@@ -59,6 +62,11 @@ const Shell: FunctionComponent<ShellProps> = () => {
         title={title}
       />
       <div className={classes.outlet_container}>
+        {createCallData?.onCallStart?.sdp &&
+          <VideoCall
+            callTo={createCallData?.onCallStart?.caller}
+            callerSdp={createCallData?.onCallStart?.sdp}
+          />}
         <Outlet />
       </div>
       <Toolbar
