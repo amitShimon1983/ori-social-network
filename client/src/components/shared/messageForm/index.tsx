@@ -120,10 +120,6 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
     debugger
     return (<div className={classes.container}>
         <button onClick={() => setCall(prev => !prev)}><HiOutlinePhoneIncoming /></button>
-        {call && <VideoCall
-            callTo={selectedUsers?.[0]?.email ?? owners[0].email}
-            recipientSdp={answerCallData?.onCallAnswer?.sdp}
-        />}
         {!owners.length && <AutoComplete
             defaultValue={owners}
             renderOption={renderOption}
@@ -133,7 +129,11 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         />}
         {!getConversationLoading &&
             <div className={classes.list_container}>
-                <Drawer isOpen={displayCamera} >
+                <Drawer isOpen={displayCamera || call} >
+                    {call && <VideoCall
+                        callTo={selectedUsers?.[0]?.email ?? owners[0].email}
+                        recipientSdp={answerCallData?.onCallAnswer?.sdp}
+                    />}
                     {displayCamera && <div className={classes.camera_container}>
                         <CameraRoll styles={{ video: classes.video }} onSave={onVideoSave} />
                     </div>}
