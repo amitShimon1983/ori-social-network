@@ -1,6 +1,6 @@
 import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import AutoComplete from "../autoComplete";
-import { Drawer, HiOutlinePhoneIncoming, InputButtonPanel, ReplyCard, Spinner } from "..";
+import { Drawer, InputButtonPanel, ReplyCard, Spinner, Fab } from "..";
 import classes from './index.module.css';
 import { useGetConversation, useOnCallAnswer, useSearchContacts, useSendMessage } from "../../../hooks";
 import MiniMe from "../../me/MiniMe";
@@ -11,16 +11,16 @@ import { appConfig } from "../../../configuration";
 import { cameraService } from "../../../services";
 import { CameraRoll } from "../../cameraRoll";
 import { VideoCall } from "../videoCall";
-import { appContextVar } from "../../../services/store";
 export interface MessageFormProps {
     owners: { [key: string]: any }[];
+    calling: boolean;
     messageThreadId?: string;
     setThreadOwners: React.Dispatch<React.SetStateAction<any[]>>
 }
-const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, owners, setThreadOwners }) => {
-    const { user: me } = appContextVar();
+const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, owners, setThreadOwners, calling }) => {
+
     const [messageThreadIdState, setMessageThreadId] = useState<string>();
-    const [call, setCall] = useState<boolean>(false);
+
     const [hasMore, setHasMore] = useState<boolean>(false);
     useEffect(() => {
         setMessageThreadId(messageThreadId)
@@ -117,9 +117,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         isFormValid();
     };
     const { data: answerCallData } = useOnCallAnswer();
-    debugger
     return (<div className={classes.container}>
-        <button onClick={() => setCall(prev => !prev)}><HiOutlinePhoneIncoming /></button>
         {!owners.length && <AutoComplete
             defaultValue={owners}
             renderOption={renderOption}
@@ -129,8 +127,8 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         />}
         {!getConversationLoading &&
             <div className={classes.list_container}>
-                <Drawer isOpen={displayCamera || call} >
-                    {call && <VideoCall
+                <Drawer isOpen={displayCamera || calling} >
+                    {calling && <VideoCall
                         callTo={selectedUsers?.[0]?.email ?? owners[0].email}
                         recipientSdp={answerCallData?.onCallAnswer?.sdp}
                     />}
