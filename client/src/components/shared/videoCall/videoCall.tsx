@@ -4,13 +4,13 @@ import { useAnswerCall, useSendIceCandidate, useStartCall } from "../../../hooks
 import useOnIceCandidate from "../../../hooks/useOnIceCandidate";
 import { cameraService } from "../../../services";
 import Me from "../../me";
-import MiniMe from "../../me/MiniMe";
 import classes from './videoCall.module.css';
 
 interface VideoCallProps {
     callTo?: { [key: string]: any };
     callerSdp?: string;
     recipientSdp?: string;
+    onCloseHandler?: () => void;
 }
 const deviceMediaOptions = {
     video: {
@@ -26,7 +26,7 @@ const deviceMediaOptions = {
         }
     }, audio: true
 }
-const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recipientSdp }) => {
+const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recipientSdp, onCloseHandler }) => {
     const creatorVideoRef = useRef<HTMLVideoElement | null>(null);
     const visitorVideoRef = useRef<HTMLVideoElement | null>(null);
     const pc = useRef<RTCPeerConnection | null>(null);
@@ -153,6 +153,12 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
     }
     const close = async () => {
         if (stream) { cameraService.closeCamera(stream); }
+        if (pc.current) {
+            pc.current.close()
+        }
+        if (typeof onCloseHandler === 'function') {
+            onCloseHandler()
+        }
     }
     return (
         <div className={classes.container}>
