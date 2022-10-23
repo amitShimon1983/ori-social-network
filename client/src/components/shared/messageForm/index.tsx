@@ -19,9 +19,7 @@ export interface MessageFormProps {
     setIsActiveCall: () => void
 }
 const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, owners, setThreadOwners, calling, setIsActiveCall }) => {
-
     const [messageThreadIdState, setMessageThreadId] = useState<string>();
-
     const [hasMore, setHasMore] = useState<boolean>(false);
     useEffect(() => {
         setMessageThreadId(messageThreadId)

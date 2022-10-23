@@ -1,5 +1,5 @@
 import { useReactiveVar } from "@apollo/client";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { useOnCallCreated, useUpdateUserStatus } from "../../hooks";
 import { authService, storeService } from "../../services";
@@ -21,11 +21,9 @@ interface ShellProps { }
 const Shell: FunctionComponent<ShellProps> = () => {
   const [isActiveCall, setIsActiveCall] = useState<boolean>(false)
   const { data: createCallData } = useOnCallCreated(({ subscriptionData }) => {
-    console.log(subscriptionData);
     if (subscriptionData?.data) {
       setIsActiveCall(true)
     }
-
   });
   const { isAuthenticate } = useReactiveVar(appContextVar);
   const [open, setDialogOpen] = useState<boolean>(false);
@@ -66,7 +64,7 @@ const Shell: FunctionComponent<ShellProps> = () => {
         title={title}
       />
       <div className={classes.outlet_container}>
-        {isActiveCall &&
+        {isActiveCall && createCallData?.onCallStart?.caller &&
           <VideoCall
             callTo={createCallData?.onCallStart?.caller}
             callerSdp={createCallData?.onCallStart?.sdp}
