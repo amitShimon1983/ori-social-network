@@ -16,8 +16,9 @@ export interface MessageFormProps {
     calling: boolean;
     messageThreadId?: string;
     setThreadOwners: React.Dispatch<React.SetStateAction<any[]>>
+    setIsActiveCall: () => void
 }
-const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, owners, setThreadOwners, calling }) => {
+const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, owners, setThreadOwners, calling, setIsActiveCall }) => {
 
     const [messageThreadIdState, setMessageThreadId] = useState<string>();
 
@@ -129,6 +130,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             <div className={classes.list_container}>
                 <Drawer isOpen={displayCamera || calling} >
                     {calling && <VideoCall
+                        onCloseHandler={() => setIsActiveCall()}
                         callTo={selectedUsers?.[0] ?? owners[0]}
                         recipientSdp={answerCallData?.onCallAnswer?.sdp}
                     />}

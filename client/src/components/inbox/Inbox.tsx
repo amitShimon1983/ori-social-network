@@ -12,7 +12,7 @@ import classes from './Inbox.module.css';
 
 const Inbox: FunctionComponent = () => {
     const { user: me } = appContextVar();
-    const [call, setCall] = useState<boolean>(false);
+    const [isActiveCall, setIsActiveCall] = useState<boolean>(false);
     const { threads, hasMore, loading, fetchMore, client } = useGetMessageThreads();
     const [threadOwners, setThreadOwners] = useState<any[]>([]);
     const [openMessageForm, setOpenMessageForm] = useState<boolean>(false);
@@ -74,7 +74,7 @@ const Inbox: FunctionComponent = () => {
         setOpenMessageForm(false);
         setMessageThreadId(undefined);
         setThreadOwners([])
-        setCall(false)
+        setIsActiveCall(false)
     }
 
     return (<div className={classes.container}>
@@ -107,14 +107,15 @@ const Inbox: FunctionComponent = () => {
                     <Fab
                         color="primary"
                         className={classes.phone_fab}
-                        onClick={() => setCall(prev => !prev)}>
+                        onClick={() => setIsActiveCall(prev => !prev)}>
                         <HiOutlinePhoneOutgoing />
                     </Fab>
                 </div> : 'New Message'}
             dismissHandler={closeMessageFormHandler}
             isOpen={openMessageForm}>
             {openMessageForm && <MessageForm
-                calling={call}
+                setIsActiveCall={() => setIsActiveCall(prev => !prev)}
+                calling={isActiveCall}
                 setThreadOwners={setThreadOwners}
                 owners={threadOwners}
                 messageThreadId={messageThreadId} />}

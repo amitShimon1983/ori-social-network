@@ -19,7 +19,14 @@ import { VideoCall } from "../shared/videoCall";
 const title = "Are you sure you want to logout?"
 interface ShellProps { }
 const Shell: FunctionComponent<ShellProps> = () => {
-  const { data: createCallData } = useOnCallCreated();
+  const [isActiveCall, setIsActiveCall] = useState<boolean>(false)
+  const { data: createCallData } = useOnCallCreated(({ subscriptionData }) => {
+    console.log(subscriptionData);
+    if (subscriptionData?.data) {
+      setIsActiveCall(true)
+    }
+
+  });
   const { isAuthenticate } = useReactiveVar(appContextVar);
   const [open, setDialogOpen] = useState<boolean>(false);
   useUpdateUserStatus();
@@ -49,11 +56,7 @@ const Shell: FunctionComponent<ShellProps> = () => {
   const navigateMyWall = () => handleNavigate("/myWall");
   const navigatePost = () => handleNavigate("/post");
   const navigateInbox = () => handleNavigate("/inbox");
-
-  const closeDialog = () => setDialogOpen(false)
- 
-  console.log('caller', { caller: createCallData?.onCallStart?.caller});
-
+  const closeDialog = () => setDialogOpen(false);
   return (
     <div className={classes.container}>
       <Dialog
@@ -63,10 +66,11 @@ const Shell: FunctionComponent<ShellProps> = () => {
         title={title}
       />
       <div className={classes.outlet_container}>
-        {createCallData?.onCallStart?.sdp &&
+        {isActiveCall &&
           <VideoCall
             callTo={createCallData?.onCallStart?.caller}
             callerSdp={createCallData?.onCallStart?.sdp}
+            onCloseHandler={() => { setIsActiveCall(prev => !prev) }}
           />}
         <Outlet />
       </div>
