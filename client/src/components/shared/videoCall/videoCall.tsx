@@ -3,10 +3,12 @@ import { Fab, HiOutlinePhoneIncoming, TbPhoneOff, VideoElement } from "..";
 import { useAnswerCall, useSendIceCandidate, useStartCall } from "../../../hooks";
 import useOnIceCandidate from "../../../hooks/useOnIceCandidate";
 import { cameraService } from "../../../services";
+import Me from "../../me";
+import MiniMe from "../../me/MiniMe";
 import classes from './videoCall.module.css';
 
 interface VideoCallProps {
-    callTo?: string;
+    callTo?: { [key: string]: any };
     callerSdp?: string;
     recipientSdp?: string;
 }
@@ -44,7 +46,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
                     sendIceCandidateMutation({
                         variables: {
                             icecandidate: JSON.stringify(e.candidate),
-                            addressee: callTo
+                            addressee: callTo?.email
                         }
                     })
                 }
@@ -81,9 +83,9 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
         }
     }, [stream, getUserVideo])
     useEffect(() => {
-        if (recipientSdp) {
+        if (!!recipientSdp) {
             const sdp = JSON.parse(recipientSdp);
-            remoteDescription(sdp)
+            if (!!sdp) { remoteDescription(sdp) }
         }
     }, [recipientSdp])
 
@@ -109,7 +111,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
                     startCallMutation({
                         variables: {
                             sdp: JSON.stringify(sdp),
-                            addressee: callTo
+                            addressee: callTo?.email
                         }
                     })
                     pc.current.setLocalDescription(sdp)
@@ -118,14 +120,14 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
         } catch (error: any) {
             console.log('createOffer', error);
         }
-    }, [callTo, startCallMutation])
+    }, [callTo?.email, startCallMutation])
 
     const createAnswer = async () => {
         try {
             if (pc.current) {
-                if (callerSdp) {
+                if (!!callerSdp) {
                     const sdp = JSON.parse(callerSdp);
-                    remoteDescription(sdp)
+                    if (!!sdp) { remoteDescription(sdp) }
                 }
                 const sdp = await pc.current.createAnswer({
                     offerToReceiveAudio: true,
@@ -134,7 +136,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
                 answerCallMutation({
                     variables: {
                         sdp: JSON.stringify(sdp),
-                        addressee: callTo
+                        addressee: callTo?.email
                     }
                 })
                 if (sdp) {
@@ -154,8 +156,21 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
     }
     return (
         <div className={classes.container}>
-            <span className={classes.caller_inform}>{callTo}</span>
-            <VideoElement className={`${classes.video_me}`} video={{ controls: false, muted: true, autoPlay: true }} ref={creatorVideoRef} />
+            {!callStarted && <span className={` ${!callStarted ? classes.visible : classes.hidden}`}>
+                <Me
+                    label="You"
+                    displayEmailAddress={true}
+                    navigateOnClick={false}
+                    displaySpinner={false}
+                    styles={{
+                        imageClass: classes.me_image,
+                        containerClassName: classes.me_container,
+                        emailClassName: classes.me_email
+                    }}
+                    user={callTo}
+                />
+            </span>}
+            <VideoElement className={`${classes.video_me} ${callStarted ? classes.visible : classes.hidden}`} video={{ controls: false, muted: true, autoPlay: true }} ref={creatorVideoRef} />
             <VideoElement className={`${classes.video_visitor} ${callStarted && classes.shadow}`} video={{ controls: false, autoPlay: true }} ref={visitorVideoRef} />
             <div className={classes.buttons_container}>
                 {!callStarted && callerSdp && <Fab

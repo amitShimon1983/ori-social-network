@@ -129,7 +129,7 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
             <div className={classes.list_container}>
                 <Drawer isOpen={displayCamera || calling} >
                     {calling && <VideoCall
-                        callTo={selectedUsers?.[0]?.email ?? owners[0].email}
+                        callTo={selectedUsers?.[0] ?? owners[0]}
                         recipientSdp={answerCallData?.onCallAnswer?.sdp}
                     />}
                     {displayCamera && <div className={classes.camera_container}>

@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import { CORE_USER_FIELDS } from "../fragments";
 const SEND_ICE_CANDIDATE = gql`
 mutation SendIceCandidate($addressee: String, $icecandidate: String){
     sendIceCandidate(args: {
@@ -17,11 +18,14 @@ const ON_ICE_CANDIDATE = gql`
  }
 `
 const ON_CALL_START = gql`
+${CORE_USER_FIELDS}
  subscription OnCallStart{
     onCallStart{
         addressee
         sdp
-        caller
+        caller{
+            ...CoreUserFields
+        }
     }
  }
 `

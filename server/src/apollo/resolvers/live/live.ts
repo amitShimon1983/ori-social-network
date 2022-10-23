@@ -1,7 +1,7 @@
 import { Arg, Ctx, Mutation, Resolver, Root, Subscription } from "type-graphql";
 import { AppContext, UserModel } from "../../../model";
 import { ON_CALL_ANSWER, ON_CALL_START, ON_ICE_CANDIDATE } from "../../../utils";
-import { CallDetails, IceCandidate, SendIceCandidateArgs, StartCallArgs } from "./types";
+import { CallDetails, IceCandidate, SendIceCandidateArgs, StartCallArgs, StartCallDetails } from "./types";
 
 
 @Resolver()
@@ -17,14 +17,14 @@ export class LiveResolver {
     async onIceCandidate(@Root() payload: IceCandidate): Promise<IceCandidate> {
         return payload;
     }
-    @Subscription(() => CallDetails, {
+    @Subscription(() => StartCallDetails, {
         topics: [ON_CALL_START],
-        filter: ({ payload, context }: { payload: CallDetails, context: AppContext }) => {
+        filter: ({ payload, context }: { payload: StartCallDetails, context: AppContext }) => {
             const { user } = context;
             return (payload?.addressee === user.email)
         }
     })
-    async onCallStart(@Root() payload: CallDetails): Promise<CallDetails> {
+    async onCallStart(@Root() payload: StartCallDetails): Promise<StartCallDetails> {
         return payload;
     }
 
@@ -46,7 +46,7 @@ export class LiveResolver {
         const userDb = await UserModel.findOne({ email: args.addressee })
         if (userDb) {
             pubSub.publish(ON_CALL_START, {
-                caller: user.email,
+                caller: user,
                 ...args
             });
         }

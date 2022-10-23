@@ -16,6 +16,7 @@ import { Dialog } from "../shared/dialog/Dialog";
 import classes from "./Shell.module.css";
 import { useState } from "react";
 import { VideoCall } from "../shared/videoCall";
+const title = "Are you sure you want to logout?"
 interface ShellProps { }
 const Shell: FunctionComponent<ShellProps> = () => {
   const { data: createCallData } = useOnCallCreated();
@@ -50,8 +51,8 @@ const Shell: FunctionComponent<ShellProps> = () => {
   const navigateInbox = () => handleNavigate("/inbox");
 
   const closeDialog = () => setDialogOpen(false)
-  const title = "Are you sure you want to logout?"
-  console.log('shael', { onCallStart: createCallData?.onCallStart });
+ 
+  console.log('caller', { caller: createCallData?.onCallStart?.caller});
 
   return (
     <div className={classes.container}>
