@@ -32,7 +32,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
     const visitorVideoRef = useRef<HTMLVideoElement | null>(null);
     const pc = useRef<RTCPeerConnection | null>(null);
     const [stream, setStream] = useState<MediaStream>();
-    const [callStarted, serCallStarted] = useState<boolean>(false);
+    const [callStarted, setCallStarted] = useState<boolean>(false);
     const { startCallMutation } = useStartCall();
     const { answerCallMutation } = useAnswerCall();
     const { sendIceCandidateMutation } = useSendIceCandidate();
@@ -42,7 +42,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
         pc.current = new RTCPeerConnection();
         const userStream = await cameraService.getCameraStream(deviceMediaOptions);
         if (userStream) {
-            const id = uuidv4()
+            const id = uuidv4();
             pc.current.onicecandidate = (e) => {
                 if (e.candidate) {
                     sendIceCandidateMutation({
@@ -54,12 +54,39 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
                     })
                 }
             }
-            pc.current.oniceconnectionstatechange = (e) => {
-                if (e?.isTrusted) {
-                    serCallStarted(e.isTrusted)
+            pc.current.onconnectionstatechange = (ev) => {
+                switch (pc.current?.connectionState) {
+                    case "new":
+                        break;
+                    case "connected":
+                        setCallStarted(true)
+                        break;
+                    case "disconnected":
+                    case "closed":
+                    case "failed":
+                        setCallStarted(false);
+                        onCloseHandler?.()
+                        close();
+                        break;
+                    default:
+                        break;
                 }
-                console.log(e);
             }
+
+            pc.current.addEventListener("connectionstatechange", (ev) => {
+                switch (pc.current?.connectionState) {
+                    case "disconnected":
+                    case "closed":
+                    case "failed":
+                        setCallStarted(false);
+                        onCloseHandler?.()
+                        close();
+                        break;
+                    default:
+                        break;
+                }
+            }, false);
+            
             pc.current.ontrack = (e) => {
                 if (visitorVideoRef.current) { visitorVideoRef.current.srcObject = e.streams[0] }
             }
@@ -162,7 +189,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
             pc.current.close()
         }
         if (typeof onCloseHandler === 'function') {
-            onCloseHandler()
+            onCloseHandler();
         }
     }
     return (

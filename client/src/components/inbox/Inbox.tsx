@@ -114,7 +114,7 @@ const Inbox: FunctionComponent = () => {
             dismissHandler={closeMessageFormHandler}
             isOpen={openMessageForm}>
             {openMessageForm && <MessageForm
-                setIsActiveCall={() => setIsActiveCall(prev => !prev)}
+                setIsActiveCall={() => setIsActiveCall(false)}
                 calling={isActiveCall}
                 setThreadOwners={setThreadOwners}
                 owners={threadOwners}
