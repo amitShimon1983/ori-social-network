@@ -5,6 +5,7 @@ import useOnIceCandidate from "../../../hooks/useOnIceCandidate";
 import { cameraService } from "../../../services";
 import Me from "../../me";
 import classes from './videoCall.module.css';
+import { v4 as uuidv4 } from 'uuid';
 
 interface VideoCallProps {
     callTo?: { [key: string]: any };
@@ -41,12 +42,14 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
         pc.current = new RTCPeerConnection();
         const userStream = await cameraService.getCameraStream(deviceMediaOptions);
         if (userStream) {
+            const id = uuidv4()
             pc.current.onicecandidate = (e) => {
                 if (e.candidate) {
                     sendIceCandidateMutation({
                         variables: {
                             icecandidate: JSON.stringify(e.candidate),
-                            addressee: callTo?.email
+                            addressee: callTo?.email,
+                            id
                         }
                     })
                 }
@@ -69,7 +72,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
                 video.play();
             }
             setStream(userStream);
-            if (!callerSdp && !recipientSdp) {
+            if (!callerSdp) {
                 createOffer()
             }
         }
@@ -111,7 +114,8 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
                     startCallMutation({
                         variables: {
                             sdp: JSON.stringify(sdp),
-                            addressee: callTo?.email
+                            addressee: callTo?.email,
+                            id: uuidv4()
                         }
                     })
                     pc.current.setLocalDescription(sdp)
@@ -136,7 +140,8 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
                 answerCallMutation({
                     variables: {
                         sdp: JSON.stringify(sdp),
-                        addressee: callTo?.email
+                        addressee: callTo?.email,
+                        id: uuidv4()
                     }
                 })
                 if (sdp) {

@@ -7,6 +7,8 @@ export class StartCallArgs {
     addressee: string;
     @Field(() => String)
     sdp: string;
+    @Field(() => String)
+    id: string;
 }
 @InputType()
 export class SendIceCandidateArgs {
@@ -14,6 +16,8 @@ export class SendIceCandidateArgs {
     addressee: string;
     @Field(() => String)
     icecandidate: string;
+    @Field(() => String)
+    id: string;
 }
 @ObjectType()
 export class IceCandidate {
@@ -23,9 +27,13 @@ export class IceCandidate {
     caller: string;
     @Field(() => String)
     icecandidate: string;
+    @Field(() => String)
+    id: string;
 }
 @ObjectType()
 export class CallDetails {
+    @Field(() => String)
+    id: string;
     @Field(() => String)
     addressee: string;
     @Field(() => String)
@@ -35,6 +43,9 @@ export class CallDetails {
 }
 @ObjectType()
 export class StartCallDetails {
+
+    @Field(() => String)
+    id: string;
     @Field(() => String)
     addressee: string;
     @Field(() => String)
@@ -48,4 +59,6 @@ export class AnswerCallArgs {
     addressee: string;
     @Field(() => String)
     sdp: string;
+    @Field(() => String)
+    id: string;
 }

@@ -1,10 +1,11 @@
 import { gql } from "@apollo/client";
 import { CORE_USER_FIELDS } from "../fragments";
 const SEND_ICE_CANDIDATE = gql`
-mutation SendIceCandidate($addressee: String, $icecandidate: String){
+mutation SendIceCandidate($addressee: String, $icecandidate: String, $id: String){
     sendIceCandidate(args: {
         addressee:$addressee,
-        icecandidate:$icecandidate
+        icecandidate:$icecandidate,
+        id:$id
     })
 }
 `;
@@ -23,6 +24,7 @@ ${CORE_USER_FIELDS}
     onCallStart{
         addressee
         sdp
+        id
         caller{
             ...CoreUserFields
         }
@@ -35,17 +37,20 @@ const ON_CALL_ANSWER = gql`
         addressee
         sdp
         caller
+        id
     }
  }
 `
 const START_CALL = gql`
- mutation StartCall($sdp:String, $addressee: String){
-    startCall(args:{sdp:$sdp, addressee: $addressee})
+ mutation StartCall($sdp:String, $addressee: String, $id: String){
+    startCall(args:{sdp:$sdp, addressee: $addressee,
+        id:$id})
  }
 `
 const ANSWER_CALL = gql`
- mutation AnswerCall($sdp:String, $addressee: String){
-    answerCall(args:{sdp:$sdp, addressee: $addressee})
+ mutation AnswerCall($sdp:String, $addressee: String, $id: String){
+    answerCall(args:{sdp:$sdp, addressee: $addressee,
+        id:$id})
  }
 `
 const liveQueries = {
