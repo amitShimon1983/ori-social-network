@@ -1,8 +1,8 @@
 import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import AutoComplete from "../autoComplete";
-import { Drawer, InputButtonPanel, ReplyCard, Spinner, Fab } from "..";
+import { Drawer, InputButtonPanel, ReplyCard, Spinner } from "..";
 import classes from './index.module.css';
-import { useGetConversation, useOnCallAnswer, useSearchContacts, useSendMessage } from "../../../hooks";
+import { useGetConversation, useSearchContacts, useSendMessage } from "../../../hooks";
 import MiniMe from "../../me/MiniMe";
 import { Hr } from "../../styles";
 import { debounce } from "@mui/material";
@@ -115,7 +115,6 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         setThreadOwners(data);
         isFormValid();
     };
-    const { data: answerCallData } = useOnCallAnswer();
     return (<div className={classes.container}>
         {!owners.length && <AutoComplete
             defaultValue={owners}
@@ -130,7 +129,6 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
                     {calling && <VideoCall
                         onCloseHandler={() => setIsActiveCall()}
                         callTo={selectedUsers?.[0] ?? owners[0]}
-                        recipientSdp={answerCallData?.onCallAnswer?.sdp}
                     />}
                     {displayCamera && <div className={classes.camera_container}>
                         <CameraRoll styles={{ video: classes.video }} onSave={onVideoSave} />
