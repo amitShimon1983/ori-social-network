@@ -11,6 +11,7 @@ import {
   AiOutlineCloudUpload,
   Toolbar,
   FiInbox,
+  FadeDrawer,
 } from "../shared";
 import { Dialog } from "../shared/dialog/Dialog";
 import classes from "./Shell.module.css";
@@ -65,11 +66,14 @@ const Shell: FunctionComponent<ShellProps> = () => {
       />
       <div className={classes.outlet_container}>
         {isActiveCall && createCallData?.onCallStart?.caller &&
-          <VideoCall
-            callTo={createCallData?.onCallStart?.caller}
-            callerSdp={createCallData?.onCallStart?.sdp}
-            onCloseHandler={() => { setIsActiveCall(false) }}
-          />}
+          <FadeDrawer display={isActiveCall} styles={{ container: classes.video_call_container }} >
+            <VideoCall
+              callTo={createCallData?.onCallStart?.caller}
+              callerSdp={createCallData?.onCallStart?.sdp}
+              onCloseHandler={() => { setIsActiveCall(false) }}
+            />
+          </FadeDrawer>
+        }
         <Outlet />
       </div>
       <Toolbar
