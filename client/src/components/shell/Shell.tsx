@@ -68,7 +68,7 @@ const Shell: FunctionComponent<ShellProps> = () => {
           <VideoCall
             callTo={createCallData?.onCallStart?.caller}
             callerSdp={createCallData?.onCallStart?.sdp}
-            onCloseHandler={() => { setIsActiveCall(prev => !prev) }}
+            onCloseHandler={() => { setIsActiveCall(false) }}
           />}
         <Outlet />
       </div>

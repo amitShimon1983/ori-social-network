@@ -65,7 +65,6 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
                     case "closed":
                     case "failed":
                         setCallStarted(false);
-                        onCloseHandler?.()
                         close();
                         break;
                     default:
@@ -79,7 +78,6 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, recip
                     case "closed":
                     case "failed":
                         setCallStarted(false);
-                        onCloseHandler?.()
                         close();
                         break;
                     default:
