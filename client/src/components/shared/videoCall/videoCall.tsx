@@ -6,6 +6,7 @@ import { cameraService } from "../../../services";
 import Me from "../../me";
 import classes from './videoCall.module.css';
 import { v4 as uuidv4 } from 'uuid';
+import { useStopwatch } from 'react-timer-hook';
 
 interface VideoCallProps {
     callTo?: { [key: string]: any };
@@ -35,16 +36,27 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
     const { startCallMutation } = useStartCall();
     const { answerCallMutation } = useAnswerCall();
     const { sendIceCandidateMutation } = useSendIceCandidate();
+    const {
+        seconds,
+        minutes,
+        hours,
+        start,
+    } = useStopwatch({ autoStart: false });
     useOnIceCandidate(({ subscriptionData }) => {
         if (subscriptionData?.data?.onIceCandidate?.icecandidate) {
             const icecandidate = JSON.parse(subscriptionData?.data?.onIceCandidate?.icecandidate);
-            if (icecandidate) { addCandidates(icecandidate); }
+            if (icecandidate) {
+                addCandidates(icecandidate);
+            }
         }
     });
     useOnCallAnswer(({ subscriptionData }) => {
         if (subscriptionData.data?.onCallAnswer?.sdp) {
             const sdp = JSON.parse(subscriptionData.data?.onCallAnswer?.sdp);
-            if (!!sdp) { remoteDescription(sdp) }
+            if (!!sdp) {
+                remoteDescription(sdp);
+                start();
+            }
         }
     });
 
@@ -173,11 +185,13 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
         } catch (error: any) {
             console.log('createAnswer', error);
         }
+        start();
     }
 
     const addCandidates = async (candidate: any) => {
         pc.current?.addIceCandidate(new RTCIceCandidate(candidate))
     }
+
     const close = async () => {
         if (stream) { cameraService.closeCamera(stream); }
         if (pc.current) {
@@ -186,6 +200,9 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
         if (typeof onCloseHandler === 'function') {
             onCloseHandler();
         }
+    }
+    const formatTimer = (value: number) => {
+        return value < 10 ? `0${value}` : value;
     }
     return (
         <div className={classes.container}>
@@ -203,6 +220,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
                     user={callTo}
                 />
             </span>}
+            <span className={`${callStarted ? classes.timer : classes.hidden}`}>{formatTimer(hours)}:{formatTimer(minutes)}:{formatTimer(seconds)}</span>
             <VideoElement className={`${classes.video_me} ${callStarted ? classes.visible : classes.hidden}`} video={{ controls: false, muted: true, autoPlay: true }} ref={creatorVideoRef} />
             <VideoElement className={`${classes.video_visitor} ${callStarted && classes.shadow}`} video={{ controls: false, autoPlay: true }} ref={visitorVideoRef} />
             <div className={classes.buttons_container}>
