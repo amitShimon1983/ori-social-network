@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback, useEffect, useRef, useState } from "react";
-import { Fab, HiOutlinePhoneIncoming, TbPhoneOff, VideoElement } from "..";
+import { AiOutlineAudio, AiOutlineAudioMuted, Fab, HiOutlinePhoneIncoming, TbPhoneOff, VideoElement } from "..";
 import { useAnswerCall, useOnCallAnswer, useSendIceCandidate, useStartCall } from "../../../hooks";
 import useOnIceCandidate from "../../../hooks/useOnIceCandidate";
 import { cameraService, PeerConnection } from "../../../services";
@@ -27,6 +27,7 @@ const deviceMediaOptions = {
         }
     }, audio: true
 }
+
 const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onCloseHandler }) => {
     const creatorVideoRef = useRef<HTMLVideoElement | null>(null);
     const visitorVideoRef = useRef<HTMLVideoElement | null>(null);
@@ -34,6 +35,8 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
     const [stream, setStream] = useState<MediaStream>();
     const [_peerConnection, setPeerConnection] = useState<PeerConnection>();
     const [callStarted, setCallStarted] = useState<boolean>(false);
+    const [playAudio, setPlayAudio] = useState<boolean>(true);
+    const [playVideo, setPlayVideo] = useState<boolean>(false);
     const { startCallMutation } = useStartCall();
     const { answerCallMutation } = useAnswerCall();
     const { sendIceCandidateMutation } = useSendIceCandidate();
@@ -133,7 +136,6 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
             if (stream) { cameraService.closeCamera(stream); }
         }
     }, [stream, getUserVideo])
-
     const close = async () => {
         if (stream) { cameraService.closeCamera(stream); }
         if (pc.current) {
@@ -143,8 +145,17 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
             onCloseHandler();
         }
     }
-    const formatTimer = (value: number) => {
-        return value < 10 ? `0${value}` : value;
+    const formatTimer = (value: number) => value < 10 ? `0${value}` : value;
+    const createAnswer = () => { if (callerSdp) { _peerConnection?.createAnswer(JSON.parse(callerSdp)) } }
+    const toggleAudio = () => {
+        cameraService.toggleMediaKind(stream, 'audio');
+        setPlayAudio(prev => !prev);
+    }
+    const toggleVideo = () => {
+        cameraService.toggleMediaKind(stream, 'video');
+        setPlayVideo(prev => {
+            return !prev;
+        });
     }
     return (
         <div className={classes.container}>
@@ -169,7 +180,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
                 {!callStarted && callerSdp && <Fab
                     color="success"
                     className={`${classes.fab} ${!callStarted && callerSdp && classes.fab_incoming}`}
-                    onClick={() => _peerConnection?.createAnswer(JSON.parse(callerSdp))}>
+                    onClick={createAnswer}>
                     <HiOutlinePhoneIncoming />
                 </Fab>}
                 <Fab
@@ -178,6 +189,18 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
                     onClick={close}>
                     <TbPhoneOff />
                 </Fab>
+                {callStarted && <Fab
+                    color="primary"
+                    className={`${classes.fab} ${!callStarted && classes.fab_close}`}
+                    onClick={toggleAudio}>
+                    {playAudio ? < AiOutlineAudioMuted /> : <AiOutlineAudio />}
+                </Fab>}
+                {callStarted && <Fab
+                    color="primary"
+                    className={`${classes.fab} ${!callStarted && classes.fab_close}`}
+                    onClick={toggleVideo}>
+                    {playVideo ? < AiOutlineAudioMuted /> : <AiOutlineAudio />}
+                </Fab>}
             </div>
         </div>
     );
