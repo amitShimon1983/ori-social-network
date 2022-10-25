@@ -2,7 +2,7 @@ import { FunctionComponent, useCallback, useEffect, useRef, useState } from "rea
 import { Fab, HiOutlinePhoneIncoming, TbPhoneOff, VideoElement } from "..";
 import { useAnswerCall, useOnCallAnswer, useSendIceCandidate, useStartCall } from "../../../hooks";
 import useOnIceCandidate from "../../../hooks/useOnIceCandidate";
-import { cameraService } from "../../../services";
+import { cameraService, PeerConnection } from "../../../services";
 import Me from "../../me";
 import classes from './videoCall.module.css';
 import { v4 as uuidv4 } from 'uuid';
@@ -30,8 +30,9 @@ const deviceMediaOptions = {
 const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onCloseHandler }) => {
     const creatorVideoRef = useRef<HTMLVideoElement | null>(null);
     const visitorVideoRef = useRef<HTMLVideoElement | null>(null);
-    const pc = useRef<RTCPeerConnection | null>(null);
+    const pc = useRef<RTCPeerConnection | null>(new RTCPeerConnection());
     const [stream, setStream] = useState<MediaStream>();
+    const [_peerConnection, setPeerConnection] = useState<PeerConnection>();
     const [callStarted, setCallStarted] = useState<boolean>(false);
     const { startCallMutation } = useStartCall();
     const { answerCallMutation } = useAnswerCall();
@@ -46,7 +47,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
         if (subscriptionData?.data?.onIceCandidate?.icecandidate) {
             const icecandidate = JSON.parse(subscriptionData?.data?.onIceCandidate?.icecandidate);
             if (icecandidate) {
-                addCandidates(icecandidate);
+                _peerConnection?.addIceCandidate(icecandidate);
             }
         }
     });
@@ -54,65 +55,47 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
         if (subscriptionData.data?.onCallAnswer?.sdp) {
             const sdp = JSON.parse(subscriptionData.data?.onCallAnswer?.sdp);
             if (!!sdp) {
-                remoteDescription(sdp);
+                _peerConnection?.setRemoteDescription(sdp);
                 start();
             }
         }
     });
-
-    const getUserVideo = useCallback(async () => {
-        pc.current = new RTCPeerConnection();
-        const userStream = await cameraService.getCameraStream(deviceMediaOptions);
-        if (userStream) {
-            const id = uuidv4();
-            pc.current.onicecandidate = (e) => {
-                if (e.candidate) {
-                    sendIceCandidateMutation({
-                        variables: {
-                            icecandidate: JSON.stringify(e.candidate),
-                            addressee: callTo?.email,
-                            id
-                        }
-                    })
+    const onTrack = (e: RTCTrackEvent) => {
+        if (visitorVideoRef.current) { visitorVideoRef.current.srcObject = e.streams[0] }
+    }
+    const onCallConnected = () => {
+        setCallStarted(true);
+        start()
+    }
+    const onCallDisconnected = () => {
+        setCallStarted(false);
+        close();
+    }
+    const onIceCandidate = async (candidate: RTCIceCandidate) => {
+        const id = uuidv4();
+        if (candidate) {
+            sendIceCandidateMutation({
+                variables: {
+                    icecandidate: JSON.stringify(candidate),
+                    addressee: callTo?.email,
+                    id
                 }
-            }
-            pc.current.onconnectionstatechange = (ev) => {
-                switch (pc.current?.connectionState) {
-                    case "new":
-                        break;
-                    case "connected":
-                        setCallStarted(true)
-                        break;
-                    case "disconnected":
-                    case "closed":
-                    case "failed":
-                        setCallStarted(false);
-                        close();
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            pc.current.addEventListener("connectionstatechange", (ev) => {
-                switch (pc.current?.connectionState) {
-                    case "disconnected":
-                    case "closed":
-                    case "failed":
-                        setCallStarted(false);
-                        close();
-                        break;
-                    default:
-                        break;
-                }
-            }, false);
-
-            pc.current.ontrack = (e) => {
-                if (visitorVideoRef.current) { visitorVideoRef.current.srcObject = e.streams[0] }
-            }
-            userStream.getTracks().forEach(track => {
-                pc?.current?.addTrack(track, userStream)
             })
+        }
+    }
+    const getUserVideo = useCallback(async () => {
+        const userStream = await cameraService.getCameraStream(deviceMediaOptions);
+        const peerConnectionService = new PeerConnection(userStream,
+            onTrack,
+            onCallConnected,
+            onCallDisconnected,
+            onIceCandidate,
+            onOfferCreated,
+            onAnswer
+        );
+        setPeerConnection(peerConnectionService);
+        if (userStream) {
+            if (peerConnectionService.peerConnection) { pc.current = peerConnectionService.peerConnection; }
             const video: any = creatorVideoRef.current;
             if (video) {
                 video.srcObject = userStream;
@@ -120,10 +103,28 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
             }
             setStream(userStream);
             if (!callerSdp) {
-                createOffer()
+                await peerConnectionService.createOffer();
             }
         }
     }, []);
+    const onAnswer = async (sdp: any) => {
+        answerCallMutation({
+            variables: {
+                sdp: JSON.stringify(sdp),
+                addressee: callTo?.email,
+                id: uuidv4()
+            }
+        })
+    }
+    const onOfferCreated = async (sdp: any) => {
+        startCallMutation({
+            variables: {
+                sdp: JSON.stringify(sdp),
+                addressee: callTo?.email,
+                id: uuidv4()
+            }
+        })
+    }
     useEffect(() => {
         if (!stream) {
             getUserVideo();
@@ -132,65 +133,6 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
             if (stream) { cameraService.closeCamera(stream); }
         }
     }, [stream, getUserVideo])
-
-    const remoteDescription = async (sdp: any) => {
-        pc.current?.setRemoteDescription(new RTCSessionDescription(sdp))
-    }
-
-    const createOffer = useCallback(async () => {
-        try {
-            if (pc.current) {
-                const sdp = await pc.current.createOffer({
-                    offerToReceiveAudio: true,
-                    offerToReceiveVideo: true,
-                });
-                if (sdp) {
-                    startCallMutation({
-                        variables: {
-                            sdp: JSON.stringify(sdp),
-                            addressee: callTo?.email,
-                            id: uuidv4()
-                        }
-                    })
-                    pc.current.setLocalDescription(sdp)
-                }
-            }
-        } catch (error: any) {
-            console.log('createOffer', error);
-        }
-    }, [callTo?.email, startCallMutation])
-
-    const createAnswer = async () => {
-        try {
-            if (pc.current) {
-                if (!!callerSdp) {
-                    const sdp = JSON.parse(callerSdp);
-                    if (!!sdp) { remoteDescription(sdp) }
-                }
-                const sdp = await pc.current.createAnswer({
-                    offerToReceiveAudio: true,
-                    offerToReceiveVideo: true,
-                });
-                answerCallMutation({
-                    variables: {
-                        sdp: JSON.stringify(sdp),
-                        addressee: callTo?.email,
-                        id: uuidv4()
-                    }
-                })
-                if (sdp) {
-                    pc.current.setLocalDescription(sdp)
-                }
-            }
-        } catch (error: any) {
-            console.log('createAnswer', error);
-        }
-        start();
-    }
-
-    const addCandidates = async (candidate: any) => {
-        pc.current?.addIceCandidate(new RTCIceCandidate(candidate))
-    }
 
     const close = async () => {
         if (stream) { cameraService.closeCamera(stream); }
@@ -227,7 +169,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
                 {!callStarted && callerSdp && <Fab
                     color="success"
                     className={`${classes.fab} ${!callStarted && callerSdp && classes.fab_incoming}`}
-                    onClick={createAnswer}>
+                    onClick={() => _peerConnection?.createAnswer(JSON.parse(callerSdp))}>
                     <HiOutlinePhoneIncoming />
                 </Fab>}
                 <Fab
