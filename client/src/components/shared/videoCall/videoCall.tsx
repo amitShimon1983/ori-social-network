@@ -193,7 +193,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
                     color="primary"
                     className={`${classes.fab} ${!callStarted && classes.fab_close}`}
                     onClick={toggleAudio}>
-                    {playAudio ? < AiOutlineAudioMuted /> : <AiOutlineAudio />}
+                    {!playAudio ? < AiOutlineAudioMuted /> : <AiOutlineAudio />}
                 </Fab>}
                 {callStarted && <Fab
                     color="primary"
