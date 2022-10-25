@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback, useEffect, useRef, useState } from "react";
-import { AiOutlineAudio, AiOutlineAudioMuted, Fab, HiOutlinePhoneIncoming, TbPhoneOff, VideoElement } from "..";
+import { AiOutlineAudio, AiOutlineAudioMuted, Fab, HiOutlinePhoneIncoming, MdOutlineVideocam, MdOutlineVideocamOff, TbPhoneOff, VideoElement } from "..";
 import { useAnswerCall, useOnCallAnswer, useSendIceCandidate, useStartCall } from "../../../hooks";
 import useOnIceCandidate from "../../../hooks/useOnIceCandidate";
 import { cameraService, PeerConnection } from "../../../services";
@@ -199,7 +199,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
                     color="primary"
                     className={`${classes.fab} ${!callStarted && classes.fab_close}`}
                     onClick={toggleVideo}>
-                    {playVideo ? < AiOutlineAudioMuted /> : <AiOutlineAudio />}
+                    {!playVideo ? < MdOutlineVideocamOff /> : <MdOutlineVideocam />}
                 </Fab>}
             </div>
         </div>
