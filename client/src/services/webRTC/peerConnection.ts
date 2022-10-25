@@ -43,7 +43,6 @@ export class PeerConnection {
         this._onCallDisconnected?.()
     }
     onconnectionstatechange(event: Event) {
-        debugger
         switch (this.peerConnection?.connectionState) {
             case "new":
                 break;
