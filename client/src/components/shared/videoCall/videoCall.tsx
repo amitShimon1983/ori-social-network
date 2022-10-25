@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback, useEffect, useRef, useState } from "react";
-import { AiOutlineAudio, AiOutlineAudioMuted, Fab, HiOutlinePhoneIncoming, MdOutlineVideocam, MdOutlineVideocamOff, TbPhoneOff, VideoElement } from "..";
+import { VideoElement } from "..";
 import { useAnswerCall, useOnCallAnswer, useSendIceCandidate, useStartCall } from "../../../hooks";
 import useOnIceCandidate from "../../../hooks/useOnIceCandidate";
 import { cameraService, PeerConnection } from "../../../services";
@@ -7,6 +7,7 @@ import Me from "../../me";
 import classes from './videoCall.module.css';
 import { v4 as uuidv4 } from 'uuid';
 import { useStopwatch } from 'react-timer-hook';
+import { VideoCallButtonList } from "./videoCallButtonList";
 
 interface VideoCallProps {
     callTo?: { [key: string]: any };
@@ -71,8 +72,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
         start()
     }
     const onCallDisconnected = () => {
-        setCallStarted(false);
-        close();
+        endConversation();
     }
     const onIceCandidate = async (candidate: RTCIceCandidate) => {
         const id = uuidv4();
@@ -136,7 +136,7 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
             if (stream) { cameraService.closeCamera(stream); }
         }
     }, [stream, getUserVideo])
-    const close = async () => {
+    const endConversation = async () => {
         if (stream) { cameraService.closeCamera(stream); }
         if (pc.current) {
             pc.current.close()
@@ -176,34 +176,18 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
             <span className={`${callStarted ? classes.timer : classes.hidden}`}>{formatTimer(hours)}:{formatTimer(minutes)}:{formatTimer(seconds)}</span>
             <VideoElement className={`${classes.video_me} ${callStarted ? classes.visible : classes.hidden}`} video={{ controls: false, muted: true, autoPlay: true }} ref={creatorVideoRef} />
             <VideoElement className={`${classes.video_visitor} ${callStarted && classes.shadow}`} video={{ controls: false, autoPlay: true }} ref={visitorVideoRef} />
-            <div className={classes.buttons_container}>
-                {!callStarted && callerSdp && <Fab
-                    color="success"
-                    className={`${classes.fab} ${!callStarted && callerSdp && classes.fab_incoming}`}
-                    onClick={createAnswer}>
-                    <HiOutlinePhoneIncoming />
-                </Fab>}
-                <Fab
-                    color="error"
-                    className={`${classes.fab} ${!callStarted && classes.fab_close}`}
-                    onClick={close}>
-                    <TbPhoneOff />
-                </Fab>
-                {callStarted && <Fab
-                    color="primary"
-                    className={`${classes.fab} ${!callStarted && classes.fab_close}`}
-                    onClick={toggleAudio}>
-                    {!playAudio ? < AiOutlineAudioMuted /> : <AiOutlineAudio />}
-                </Fab>}
-                {callStarted && <Fab
-                    color="primary"
-                    className={`${classes.fab} ${!callStarted && classes.fab_close}`}
-                    onClick={toggleVideo}>
-                    {!playVideo ? < MdOutlineVideocamOff /> : <MdOutlineVideocam />}
-                </Fab>}
-            </div>
+            <VideoCallButtonList
+                callStarted={callStarted}
+                callerSdp={callerSdp}
+                createAnswer={createAnswer}
+                endConversation={endConversation}
+                playAudio={playAudio}
+                playVideo={playVideo}
+                toggleAudio={toggleAudio}
+                toggleVideo={toggleVideo}
+            />
         </div>
     );
-}
 
+}
 export default VideoCall;
