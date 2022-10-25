@@ -118,7 +118,19 @@ class CameraService {
             this._onVideoStart(video)
         }
     }
-
+    toggleMediaKind(stream: MediaStream | undefined, kind: string) {
+        if (stream) {
+            const tracks = stream.getTracks();
+            const track = tracks.find(track => track.kind === kind);
+            if (track) {
+                if (track.enabled) {
+                    track.enabled = false;
+                } else {
+                    track.enabled = true;
+                }
+            }
+        }
+    }
     _toBase64(video: any) {
         try {
             return video.toDataURL("image/png");
