@@ -15,25 +15,29 @@ export const VideoCallButtonList: FunctionComponent<VideoCallButtonListProps> = 
     return <div className={classes.buttons_container}>
         {!callStarted && callerSdp && <Fab
             color="success"
-            className={`${classes.fab} ${!callStarted && callerSdp && classes.fab_incoming}`}
+            size="small"
+            className={` ${!callStarted && callerSdp && classes.fab_incoming}`}
             onClick={createAnswer}>
             <HiOutlinePhoneIncoming />
         </Fab>}
         <Fab
+            size="small"
             color="error"
-            className={`${classes.fab} ${!callStarted && classes.fab_close}`}
+            className={` ${!callStarted && classes.fab_close}`}
             onClick={endConversation}>
             <TbPhoneOff />
         </Fab>
         {callStarted && <Fab
             color="primary"
-            className={`${classes.fab} ${!callStarted && classes.fab_incoming}`}
+            size="small"
+            className={` ${!callStarted && classes.fab_incoming}`}
             onClick={toggleAudio}>
             {!playAudio ? <AiOutlineAudioMuted /> : <AiOutlineAudio />}
         </Fab>}
         {callStarted && <Fab
             color="primary"
-            className={`${classes.fab} ${!callStarted && classes.fab_close}`}
+            size="small"
+            className={` ${!callStarted && classes.fab_close}`}
             onClick={toggleVideo}>
             {playVideo ? <MdOutlineVideocamOff /> : <MdOutlineVideocam />}
         </Fab>}

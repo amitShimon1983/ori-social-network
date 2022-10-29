@@ -59,11 +59,6 @@
     left: 0px;
 }
 
-.fab {
-    width: 35px !important;
-    height: 25px !important;
-}
-
 .fab_incoming {
     animation: jump 1s infinite !important;
 }

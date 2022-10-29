@@ -48,8 +48,6 @@
 }
 
 .phone_fab {
-    width: 35px !important;
-    height: 25px !important;
     position: absolute !important;
     right: 10px !important;
 }

@@ -5,11 +5,12 @@ interface ToolbarButtonProps {
     actions: { icon: React.ReactNode; name: string }[]
 }
 const boxStyles = { height: '100%', transform: 'translateZ(0px)', flexGrow: 1 };
-const speedDialStyles = { position: 'absolute', bottom: 16, right: 16 };
+const speedDialStyles = { position: 'absolute', bottom: 20, right: 0 };
 const ToolbarButton: FunctionComponent<ToolbarButtonProps> = ({ actions }) => {
     return (
         <Box sx={boxStyles}>
             <SpeedDial
+                FabProps={{ size: 'small' }}
                 ariaLabel="Toolbar"
                 sx={speedDialStyles}
                 icon={<SpeedDialIcon />}

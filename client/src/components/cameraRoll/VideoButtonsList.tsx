@@ -21,7 +21,7 @@ const CameraButtonsList: FunctionComponent<VideoButtonsListProps> = ({ blob,
         {!!blob &&
             <Fab size="small" className={classes.button} onClick={saveHandler}><BsSave />
             </Fab>}
-        {<Fab className={`${classes.button}`} onClick={handleMainButtonClick} color="error" aria-label="recording">
+        {<Fab size="small" className={`${classes.button}`} onClick={handleMainButtonClick} color="error" aria-label="recording">
             {mainButtonIcon}
         </Fab>}
         {isRecording && <div className={classes.recording_icon}><RecordingIcon></RecordingIcon></div>}

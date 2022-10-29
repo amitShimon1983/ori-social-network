@@ -4,7 +4,7 @@ import { useGetMessageThreads } from "../../hooks";
 import { appContextVar } from "../../services/store";
 import { BackButton } from "../backButton";
 import MiniMe from "../me/MiniMe";
-import { Drawer, Fab, FaPencilAlt, Header, HiOutlinePhoneIncoming, HiOutlinePhoneOutgoing, ImFilesEmpty, MessageForm, Spinner } from "../shared";
+import { AiOutlinePlus, Drawer, Fab, Header, HiOutlinePhoneOutgoing, ImFilesEmpty, MessageForm, Spinner } from "../shared";
 import Card from "../shared/card/Card";
 import InfiniteScroll from "../shared/infiniteScrolling/InfiniteScroll";
 import { Hr } from "../styles";
@@ -90,8 +90,13 @@ const Inbox: FunctionComponent = () => {
                 <p className={classes.paragraph}>No messages</p>
             </div>}
         {loading && <Spinner label="Loading" />}
-        <Fab onClick={openMessageFormHandler} className={`${classes.fab} ${!openMessageForm && classes.fab_show}`} color="secondary" aria-label="edit">
-            <FaPencilAlt />
+        <Fab
+            size="small"
+            onClick={openMessageFormHandler}
+            className={`${classes.fab} ${!openMessageForm && classes.fab_show}`}
+            color="primary"
+            aria-label="edit">
+            <AiOutlinePlus />
         </Fab>
         <Drawer
             headerStyles={{ container: classes.drawer_header_container, header: classes.drawer_header_header }}
@@ -105,6 +110,7 @@ const Inbox: FunctionComponent = () => {
                             navigateOnClick={false} />
                     </div>
                     <Fab
+                        size="small"
                         color="primary"
                         className={classes.phone_fab}
                         onClick={() => setIsActiveCall(prev => !prev)}>
