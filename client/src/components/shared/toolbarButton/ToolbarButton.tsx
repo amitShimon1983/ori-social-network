@@ -1,10 +1,11 @@
 import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
 import { FunctionComponent } from "react";
+import { CgMore, CgMoreVertical } from "..";
 
 interface ToolbarButtonProps {
     actions: { icon: React.ReactNode; name: string }[]
 }
-const boxStyles = { height: '100%', transform: 'translateZ(0px)', flexGrow: 1 };
+const boxStyles = { height: '100%', flexGrow: 1 };
 const speedDialStyles = { position: 'absolute', bottom: 20, right: 0 };
 const ToolbarButton: FunctionComponent<ToolbarButtonProps> = ({ actions }) => {
     return (
@@ -13,7 +14,7 @@ const ToolbarButton: FunctionComponent<ToolbarButtonProps> = ({ actions }) => {
                 FabProps={{ size: 'small' }}
                 ariaLabel="Toolbar"
                 sx={speedDialStyles}
-                icon={<SpeedDialIcon />}
+                icon={<CgMoreVertical />}
             >
                 {actions.map((action: any) => (
                     <SpeedDialAction

@@ -8,6 +8,10 @@
     font-size: 60px;
 }
 
+.icon {
+    font-size: 20px;
+}
+
 .drawer_header_container {
     text-transform: none;
 }

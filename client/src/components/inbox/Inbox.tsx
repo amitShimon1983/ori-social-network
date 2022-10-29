@@ -96,7 +96,7 @@ const Inbox: FunctionComponent = () => {
             className={`${classes.fab} ${!openMessageForm && classes.fab_show}`}
             color="primary"
             aria-label="edit">
-            <BsVectorPen />
+            <BsVectorPen className={classes.icon} />
         </Fab>
         <Drawer
             headerStyles={{ container: classes.drawer_header_container, header: classes.drawer_header_header }}
