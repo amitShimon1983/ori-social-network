@@ -12,6 +12,8 @@
   --secondary-dark-color: #677680;
   --speech-bubble-reply-to-message-background: #F0F2F5;
   --box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  --box-shadow-top: inset 0 7px 9px -10px rgba(0, 0, 0, 0.15);
+  --box-shadow-bottom: inset 0 -7px 9px -7px rgba(0, 0, 0, 0.4);
   --hight-light-bubble: #6495ED;
   --primary-light: #3F84F7;
   --icon-gray: #8696A0;

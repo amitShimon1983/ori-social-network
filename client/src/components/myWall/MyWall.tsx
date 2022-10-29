@@ -1,4 +1,3 @@
-import { gql, useQuery, useSubscription } from "@apollo/client";
 import { FunctionComponent } from "react";
 import { useGetUser } from "../../hooks";
 import { appContextVar } from "../../services/store";

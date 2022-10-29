@@ -35,7 +35,7 @@
     flex: 1;
     overflow-y: scroll;
     overflow-X: hidden;
-    border: 1px solid #d1cbcb;
+    box-shadow: var(--box-shadow-top);
 }
 
 .emoji {

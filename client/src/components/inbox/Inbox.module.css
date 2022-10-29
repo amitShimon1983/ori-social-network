@@ -9,20 +9,23 @@
 }
 
 .drawer_header_container {
-    background: var(--secondary);
     text-transform: none;
 }
 
 .drawer_header_header {
-    background: var(--secondary);
     text-transform: none;
 }
 
-.mini_me {
+.header_container {
     margin-bottom: 10px;
     margin-top: 10px;
     width: 100%;
     padding-left: 10px;
+    display: flex;
+}
+
+.mini_me {
+    width: 85%;
 }
 
 .card_container {
@@ -40,6 +43,11 @@
 .fab {
     bottom: 10px !important;
     right: 10px !important;
+}
+
+.phone_fab {
+    width: 35px !important;
+    height: 25px !important;
 }
 
 .fab_show {

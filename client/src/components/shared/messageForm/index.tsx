@@ -10,12 +10,15 @@ import { SpeechBubbleList } from "..";
 import { appConfig } from "../../../configuration";
 import { cameraService } from "../../../services";
 import { CameraRoll } from "../../cameraRoll";
+import { VideoCall } from "../videoCall";
 export interface MessageFormProps {
     owners: { [key: string]: any }[];
+    calling: boolean;
     messageThreadId?: string;
     setThreadOwners: React.Dispatch<React.SetStateAction<any[]>>
+    setIsActiveCall: () => void
 }
-const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, owners, setThreadOwners }) => {
+const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, owners, setThreadOwners, calling, setIsActiveCall }) => {
     const [messageThreadIdState, setMessageThreadId] = useState<string>();
     const [hasMore, setHasMore] = useState<boolean>(false);
     useEffect(() => {
@@ -112,7 +115,6 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         setThreadOwners(data);
         isFormValid();
     };
-
     return (<div className={classes.container}>
         {!owners.length && <AutoComplete
             defaultValue={owners}
@@ -123,7 +125,11 @@ const MessageForm: FunctionComponent<MessageFormProps> = ({ messageThreadId, own
         />}
         {!getConversationLoading &&
             <div className={classes.list_container}>
-                <Drawer isOpen={displayCamera} >
+                <Drawer isOpen={displayCamera || calling} >
+                    {calling && <VideoCall
+                        onCloseHandler={() => setIsActiveCall()}
+                        callTo={selectedUsers?.[0] ?? owners[0]}
+                    />}
                     {displayCamera && <div className={classes.camera_container}>
                         <CameraRoll styles={{ video: classes.video }} onSave={onVideoSave} />
                     </div>}

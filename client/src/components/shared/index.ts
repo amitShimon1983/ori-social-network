@@ -30,3 +30,4 @@ export * from './userDetail';
 export * from './counter';
 export * from './mediaCard';
 export * from './reactions';
+export * from './fadeDrawer';

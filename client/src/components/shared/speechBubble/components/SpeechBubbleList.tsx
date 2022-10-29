@@ -60,9 +60,10 @@ const SpeechBubbleList: FunctionComponent<SpeechBubbleListProps> = ({ items, fet
             renderItem={renderItem}
             initialData={items}
             fetchMore={fetchMore} />
-        {displayButton && <Fab onClick={() => {
+        {displayButton && <Fab 
+        onClick={() => {
             document.getElementById('first_message')?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'end' })
-        }} className={`${classes.fab}`} color="secondary" aria-label="edit">
+        }} className={`${classes.fab}`} color="primary" aria-label="edit">
             <FaPencilAlt />
         </Fab>}
     </>

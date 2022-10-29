@@ -2,7 +2,7 @@ import { forwardRef, ForwardRefExoticComponent } from "react";
 
 interface VideoElementProps {
     className?: string;
-    children: React.ReactNode;
+    children?: React.ReactNode;
     video?: React.DetailedHTMLProps<React.VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement>
 }
 

@@ -40,8 +40,6 @@ export function useDownloadFile({ fileName, skip }: { fileName: string; skip?: b
             }
             catch (error) {
                 console.error(error);
-                console.log(blob?.type);
-
             }
             setType(blob?.type);
             setUrl(objectURL);
