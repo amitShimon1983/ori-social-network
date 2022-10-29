@@ -9,5 +9,5 @@ export { BsCloudDownload, BsSave, BsCheck2All, BsCheck2, BsStopCircle } from 're
 export { RiDeleteBin2Fill } from 'react-icons/ri';
 export { ImFilesEmpty } from 'react-icons/im';
 export { TbSend, TbPhoneOff } from 'react-icons/tb';
-export { HiOutlinePhoneIncoming, HiOutlinePhoneOutgoing } from 'react-icons/hi';
+export { HiOutlinePhoneIncoming, HiOutlinePhoneOutgoing, HiOutlineHome } from 'react-icons/hi';
 export { MdOutlineVideocamOff, MdOutlineVideocam } from 'react-icons/md';

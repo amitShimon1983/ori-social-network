@@ -6,12 +6,12 @@ import { authService, storeService } from "../../services";
 import { appContextVar } from "../../services/store";
 import {
   AiOutlineLogout,
-  FcHome,
   CgProfile,
   AiOutlineCloudUpload,
   Toolbar,
   FiInbox,
   FadeDrawer,
+  HiOutlineHome,
 } from "../shared";
 import { Dialog } from "../shared/dialog/Dialog";
 import classes from "./Shell.module.css";
@@ -90,7 +90,7 @@ const Shell: FunctionComponent<ShellProps> = () => {
           },
           {
             function: navigateHome,
-            icon: <FcHome />,
+            icon: <HiOutlineHome />,
             id: "FcHome-navigateHome",
           },
           {
