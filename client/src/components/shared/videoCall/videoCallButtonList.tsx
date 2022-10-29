@@ -35,7 +35,7 @@ export const VideoCallButtonList: FunctionComponent<VideoCallButtonListProps> = 
             color="primary"
             className={`${classes.fab} ${!callStarted && classes.fab_close}`}
             onClick={toggleVideo}>
-            {!playVideo ? <MdOutlineVideocamOff /> : <MdOutlineVideocam />}
+            {playVideo ? <MdOutlineVideocamOff /> : <MdOutlineVideocam />}
         </Fab>}
     </div>;
 }

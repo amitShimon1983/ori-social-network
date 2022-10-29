@@ -98,11 +98,15 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
         );
         setPeerConnection(peerConnectionService);
         if (userStream) {
+            debugger
             if (peerConnectionService.peerConnection) { pc.current = peerConnectionService.peerConnection; }
             const video: any = creatorVideoRef.current;
             if (video) {
                 video.srcObject = userStream;
                 video.play();
+            }
+            if (!playVideo) {
+                cameraService.toggleMediaKind(userStream, 'video');
             }
             setStream(userStream);
             if (!callerSdp) {
@@ -174,8 +178,14 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
                 />
             </span>}
             <span className={`${callStarted ? classes.timer : classes.hidden}`}>{formatTimer(hours)}:{formatTimer(minutes)}:{formatTimer(seconds)}</span>
-            <VideoElement className={`${classes.video_me} ${callStarted ? classes.visible : classes.hidden}`} video={{ controls: false, muted: true, autoPlay: true }} ref={creatorVideoRef} />
-            <VideoElement className={`${classes.video_visitor} ${callStarted && classes.shadow}`} video={{ controls: false, autoPlay: true }} ref={visitorVideoRef} />
+            <VideoElement
+                className={`${classes.video_me} ${callStarted && playVideo ? classes.visible : classes.hidden}`}
+                video={{ controls: false, muted: true, autoPlay: true }}
+                ref={creatorVideoRef} />
+            <VideoElement
+                className={`${classes.video_visitor} ${callStarted && classes.shadow} ${!playVideo && classes.hidden_video}`}
+                video={{ controls: false, autoPlay: true }}
+                ref={visitorVideoRef} />
             <VideoCallButtonList
                 callStarted={callStarted}
                 callerSdp={callerSdp}
