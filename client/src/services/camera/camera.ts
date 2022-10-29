@@ -120,8 +120,7 @@ class CameraService {
     }
     toggleMediaKind(stream: MediaStream | undefined, kind: string) {
         if (stream) {
-            const tracks = stream.getTracks();
-            const track = tracks.find(track => track.kind === kind);
+            const track = this.findTrackKind(stream, kind);
             if (track) {
                 if (track.enabled) {
                     track.enabled = false;
@@ -129,6 +128,12 @@ class CameraService {
                     track.enabled = true;
                 }
             }
+        }
+    }
+    findTrackKind(stream: MediaStream | undefined, kind: string) {
+        if (stream) {
+            const tracks = stream.getTracks();
+            return tracks.find(track => track.kind === kind);
         }
     }
     _toBase64(video: any) {

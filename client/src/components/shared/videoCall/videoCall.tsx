@@ -65,7 +65,10 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
         }
     });
     const onTrack = (e: RTCTrackEvent) => {
-        if (visitorVideoRef.current) { visitorVideoRef.current.srcObject = e.streams[0] }
+        if (visitorVideoRef.current) {
+            const calleeStream = e.streams[0]
+            visitorVideoRef.current.srcObject = calleeStream;
+        }
     }
     const onCallConnected = () => {
         setCallStarted(true);
