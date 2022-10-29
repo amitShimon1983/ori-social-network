@@ -98,7 +98,6 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
         );
         setPeerConnection(peerConnectionService);
         if (userStream) {
-            debugger
             if (peerConnectionService.peerConnection) { pc.current = peerConnectionService.peerConnection; }
             const video: any = creatorVideoRef.current;
             if (video) {
@@ -107,6 +106,9 @@ const VideoCall: FunctionComponent<VideoCallProps> = ({ callTo, callerSdp, onClo
             }
             if (!playVideo) {
                 cameraService.toggleMediaKind(userStream, 'video');
+            }
+            if (!playAudio) {
+                cameraService.toggleMediaKind(userStream, 'audio');
             }
             setStream(userStream);
             if (!callerSdp) {
