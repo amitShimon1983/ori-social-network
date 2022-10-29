@@ -25,7 +25,9 @@
 }
 
 .mini_me {
-    width: 85%;
+    width: 83%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .card_container {
@@ -48,6 +50,8 @@
 .phone_fab {
     width: 35px !important;
     height: 25px !important;
+    position: absolute !important;
+    right: 10px !important;
 }
 
 .fab_show {
