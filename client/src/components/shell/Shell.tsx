@@ -7,11 +7,13 @@ import { appContextVar } from "../../services/store";
 import {
   AiOutlineLogout,
   CgProfile,
-  AiOutlineCloudUpload,
   Toolbar,
   FiInbox,
   FadeDrawer,
   HiOutlineHome,
+  BsPlusCircle,
+  AiOutlinePlus,
+  Fab,
 } from "../shared";
 import { Dialog } from "../shared/dialog/Dialog";
 import classes from "./Shell.module.css";
@@ -80,28 +82,30 @@ const Shell: FunctionComponent<ShellProps> = () => {
         actions={[
           {
             function: handleLogout,
-            icon: <AiOutlineLogout />,
+            icon: <AiOutlineLogout className={classes.icon} />,
             id: "AiOutlineLogout-handleLogout",
           },
           {
-            function: navigatePost,
-            icon: <AiOutlineCloudUpload />,
-            id: "AiOutlineCloudUpload-navigatePost",
-          },
-          {
             function: navigateHome,
-            icon: <HiOutlineHome />,
+            icon: <HiOutlineHome className={classes.icon} />,
             id: "FcHome-navigateHome",
           },
           {
-            function: navigateInbox,
-            icon: <FiInbox />,
-            id: "FcHome-navigateInbox",
+            function: navigatePost,
+            button: <Fab onClick={navigatePost} key={'AiOutlineCloudUpload-navigatePost'} size="medium" color="info" className={classes.add_post_fab} >
+              <AiOutlinePlus className={classes.icon} />
+            </Fab>,
+            id: "AiOutlineCloudUpload-navigatePost",
           },
           {
             function: navigateMyWall,
-            icon: <CgProfile />,
+            icon: <CgProfile className={classes.icon} />,
             id: "CgProfile-navigateMyWall",
+          },
+          {
+            function: navigateInbox,
+            icon: <FiInbox className={classes.icon} />,
+            id: "FcHome-navigateInbox",
           },
         ]}
       />

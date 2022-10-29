@@ -19,3 +19,13 @@
     height: 100%;
     z-index: 7;
 }
+
+.add_post_fab {
+    position: relative;
+    bottom: 15px;
+    border-radius: 50%;
+    border: 3px solid #fff !important;
+}
+.icon {
+    font-size: 20px;
+}
