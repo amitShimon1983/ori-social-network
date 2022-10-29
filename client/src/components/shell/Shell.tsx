@@ -1,5 +1,5 @@
 import { useReactiveVar } from "@apollo/client";
-import { FunctionComponent, useEffect } from "react";
+import { FunctionComponent } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { useOnCallCreated, useUpdateUserStatus } from "../../hooks";
 import { authService, storeService } from "../../services";
@@ -11,7 +11,6 @@ import {
   FiInbox,
   FadeDrawer,
   HiOutlineHome,
-  BsPlusCircle,
   AiOutlinePlus,
   Fab,
 } from "../shared";

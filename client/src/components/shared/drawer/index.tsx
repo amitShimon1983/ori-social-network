@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { AiOutlineClose, CloseButton, Header } from "..";
+import { CloseButton, Header } from "..";
 import classes from './index.module.css';
 interface DrawerProps {
     children: React.ReactNode;

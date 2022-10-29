@@ -1,6 +1,6 @@
-import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
+import { Box, SpeedDial, SpeedDialAction } from "@mui/material";
 import { FunctionComponent } from "react";
-import { CgMore, CgMoreVertical } from "..";
+import { CgMoreVertical } from "..";
 
 interface ToolbarButtonProps {
     actions: { icon: React.ReactNode; name: string }[]

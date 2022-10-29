@@ -2,7 +2,7 @@ import { FunctionComponent, useCallback, useRef, useState } from "react";
 import SpeechBubble from "./SpeechBubble";
 import classes from './index.module.css';
 import InfiniteScroll from "../../infiniteScrolling/InfiniteScroll";
-import { AiOutlineDown, Fab, FaPencilAlt } from "../..";
+import { AiOutlineDown, Fab } from "../..";
 interface SpeechBubbleListProps {
     items: any[];
     setReplyTo: React.Dispatch<any>;

@@ -86,7 +86,7 @@ const VideoFooter: FunctionComponent<VideoFooterProps> = ({ likes, me, comments,
                     }} style={badgeStyle} max={99} badgeContent={internalLikes?.length || 0}>
                     <FcLike onClick={onLikeClick} className={`${classes.icon} ${styles?.icon} ${iLikeIt ? classes.like_icon_selected : classes.like_icon_not_selected}`} />
                 </Badge>,
-                name: 'Liks'
+                name: 'Likes'
             },
             { icon: <BsCloudDownload />, name: 'Download' },
             { icon: <GiArrowDunk />, name: 'Share' },

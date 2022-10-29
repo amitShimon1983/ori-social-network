@@ -48,7 +48,7 @@ const Post: FunctionComponent<PostProps> = ({ post, styles, displayToolbar }) =>
                 type={type} link={url} />}
             {url && !isVideo && !loading && <img className={`${classes.image} ${styles?.imageClassName}`} src={url} alt={'post'} />}
             {loading && <Skeleton />}
-            {!!post?._id && displayToolbar && <div className={classes.speedDaild_container}>
+            {!!post?._id && displayToolbar && <div className={classes.speedDial_container}>
                 <VideoFooter
                     postId={post?._id}
                     me={user}

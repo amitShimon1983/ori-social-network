@@ -57,7 +57,7 @@ const Inbox: FunctionComponent = () => {
     }
     const handleCommentFetch = async (skip: number) => {
         if (hasMore) {
-            const data = await fetchMore({
+            await fetchMore({
                 variables: {
                     skip
                 },
