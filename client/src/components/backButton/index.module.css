@@ -10,4 +10,5 @@
 
 .icon {
     font-size: 26px;
+    color: var(--secondary-light);
 }

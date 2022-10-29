@@ -16,11 +16,11 @@ export { FaRegComments, FaPencilAlt, FaMicrophoneAlt, FaMicrophoneAltSlash, FaEy
 export { CgProfile } from 'react-icons/cg';
 export { BiVideoRecording, BiLike, BiImage, BiSmile } from 'react-icons/bi';
 export { GiArrowDunk } from 'react-icons/gi';
-export { BsCloudDownload, BsSave, BsCheck2All, BsCheck2, BsStopCircle, BsPlusCircle } from 'react-icons/bs';
+export { BsCloudDownload, BsSave, BsCheck2All, BsCheck2, BsStopCircle, BsPlusCircle, BsVectorPen } from 'react-icons/bs';
 export { RiDeleteBin2Fill } from 'react-icons/ri';
 export { ImFilesEmpty } from 'react-icons/im';
 export { TbSend, TbPhoneOff } from 'react-icons/tb';
 export { HiOutlinePhoneIncoming, HiOutlinePhoneOutgoing, HiOutlineHome } from 'react-icons/hi';
 export { MdOutlineVideocamOff, MdOutlineVideocam } from 'react-icons/md';
-export { TiArrowBack } from 'react-icons/ti';
+export { TiArrowBack, TiArrowBackOutline } from 'react-icons/ti';
 

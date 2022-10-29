@@ -4,7 +4,7 @@ import { useGetMessageThreads } from "../../hooks";
 import { appContextVar } from "../../services/store";
 import { BackButton } from "../backButton";
 import MiniMe from "../me/MiniMe";
-import { AiOutlinePlus, Drawer, Fab, Header, HiOutlinePhoneOutgoing, ImFilesEmpty, MessageForm, Spinner } from "../shared";
+import { BsVectorPen, Drawer, Fab, Header, HiOutlinePhoneOutgoing, ImFilesEmpty, MessageForm, Spinner } from "../shared";
 import Card from "../shared/card/Card";
 import InfiniteScroll from "../shared/infiniteScrolling/InfiniteScroll";
 import { Hr } from "../styles";
@@ -96,7 +96,7 @@ const Inbox: FunctionComponent = () => {
             className={`${classes.fab} ${!openMessageForm && classes.fab_show}`}
             color="primary"
             aria-label="edit">
-            <AiOutlinePlus />
+            <BsVectorPen />
         </Fab>
         <Drawer
             headerStyles={{ container: classes.drawer_header_container, header: classes.drawer_header_header }}

@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import { useNavigate } from "react-router";
-import { IconButton, TiArrowBack } from "../shared";
+import { IconButton, TiArrowBackOutline } from "../shared";
 import classes from './index.module.css';
 
 export const BackButton: FunctionComponent = () => {
@@ -9,7 +9,7 @@ export const BackButton: FunctionComponent = () => {
         <IconButton
             className={classes.button}
             onClick={() => navigate(-1)}>
-            <TiArrowBack className={classes.icon} />
+            <TiArrowBackOutline className={classes.icon} />
         </IconButton>
     </div>;
 }

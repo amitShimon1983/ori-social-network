@@ -2,12 +2,13 @@
     text-transform: capitalize;
     text-align: center;
     justify-self: center;
-    font-weight: 400;
+    font-weight: 600;
     display: flex;
     max-width: 80%;
     justify-content: center;
     align-items: center;
     flex: 1;
+    color: var(--secondary-light);
 }
 
 .container {
