@@ -11,3 +11,4 @@ export { ImFilesEmpty } from 'react-icons/im';
 export { TbSend, TbPhoneOff } from 'react-icons/tb';
 export { HiOutlinePhoneIncoming, HiOutlinePhoneOutgoing, HiOutlineHome } from 'react-icons/hi';
 export { MdOutlineVideocamOff, MdOutlineVideocam } from 'react-icons/md';
+export { TiArrowBack } from 'react-icons/ti';
