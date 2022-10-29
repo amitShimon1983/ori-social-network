@@ -7,6 +7,7 @@ export {
     AiOutlineCloudUpload,
     AiOutlineAudio,
     AiOutlinePlus,
+    AiOutlineDown,
     AiOutlineAudioMuted
 } from 'react-icons/ai';
 export { FiRefreshCw, FiVideoOff, FiVideo, FiInbox, FiCameraOff, FiEye } from 'react-icons/fi';

@@ -2,7 +2,7 @@ import { FunctionComponent, useCallback, useRef, useState } from "react";
 import SpeechBubble from "./SpeechBubble";
 import classes from './index.module.css';
 import InfiniteScroll from "../../infiniteScrolling/InfiniteScroll";
-import { Fab, FaPencilAlt } from "../..";
+import { AiOutlineDown, Fab, FaPencilAlt } from "../..";
 interface SpeechBubbleListProps {
     items: any[];
     setReplyTo: React.Dispatch<any>;
@@ -68,7 +68,7 @@ const SpeechBubbleList: FunctionComponent<SpeechBubbleListProps> = ({ items, fet
             className={`${classes.fab}`}
             color="primary"
             aria-label="edit">
-            <FaPencilAlt />
+            <AiOutlineDown />
         </Fab>}
     </>
     )
