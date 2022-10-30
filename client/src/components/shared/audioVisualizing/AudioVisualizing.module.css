@@ -1,6 +1,7 @@
 .button {
     min-width: 10% !important;
     width: 20% !important;
+    max-width: 50px !important;
     box-shadow: none !important;
     border-radius: 50px 0px 0px 50px !important;
     background: var(--hight-light-bubble) !important;
