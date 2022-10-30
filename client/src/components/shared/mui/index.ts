@@ -11,7 +11,8 @@ export {
     DialogContentText,
     DialogTitle,
     Popover,
-    TextField
+    TextField,
+    Divider
 } from '@mui/material';
 export { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 export { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';

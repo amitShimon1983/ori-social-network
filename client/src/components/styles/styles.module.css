@@ -5,3 +5,13 @@
     height: 2px;
     opacity: .7;
 }
+
+.divider {
+    /* background: linear-gradient(to right, transparent, #818078, transparent); */
+    border: 0;
+    text-align: center;
+    height: 25px;
+    width: 2px;
+    opacity: .7;
+    background-color: white;
+}

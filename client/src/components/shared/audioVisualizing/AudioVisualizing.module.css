@@ -1,0 +1,31 @@
+.button {
+    min-width: 10% !important;
+    width: 20% !important;
+    box-shadow: none !important;
+    border-radius: 50px 0px 0px 50px !important;
+    background: var(--hight-light-bubble) !important;
+    padding-right: 10px !important;
+}
+
+.canvas {
+    height: 100%;
+    width: 80%;
+}
+
+.container {
+    display: flex;
+    border: 1px solid white;
+    border-radius: 50px;
+    height: 40px;
+    padding-right: 20px;
+    background: var(--hight-light-bubble);
+}
+
+.divider_container {
+    display: flex;
+    height: 98%;
+    padding-right: 3px;
+    justify-content: center;
+    align-items: center;
+    background: var(--hight-light-bubble);
+}
