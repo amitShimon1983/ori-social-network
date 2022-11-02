@@ -10,32 +10,41 @@ interface AudioVisualizingProps {
     id: string;
 }
 const AudioVisualizing: FunctionComponent<AudioVisualizingProps> = ({ audioUrl, id }) => {
-    const audioRef = useRef<any>(null)
+    const audioRef = useRef<any>(null);
+    const myRef = useRef<any>(null);
     const audio = new Audio(audioUrl);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
-    audio.onended = (ev) => {
-        setIsPlaying(false)
-    }
+    const [points, setPoints] = useState<number[]>()
     useEffect(() => {
-        canvasService.drawAudio(audioUrl, id)
+        canvasService.getAudioData(audioUrl).then((data) => {
+            canvasService.drawAudio(data, id)
+            setPoints(data)
+        })
     }, [audioUrl, id])
 
     const play = () => {
-        if (audio.paused) {
-            audio.play();
-            setIsPlaying(true);
-            canvasService.drawAudio(audioUrl, id)
+        debugger
+        console.log({ isPlaying, paused: audio.paused, played: audio.played });
+
+        if (!isPlaying) {
+            myRef.current.play();
+            setIsPlaying((prev) => !prev);
+            // canvasService.drawAudio(audioUrl, id)
         } else {
-            audio.pause();
-            setIsPlaying(false)
+            myRef.current.pause();
+            setIsPlaying((prev) => !prev)
         }
     }
 
     return (<div className={classes.container}>
-        <Button className={classes.button} handleClick={(e) => {
-            e.stopPropagation();
-            play()
-        }}>{!isPlaying ? <FaPlay /> : <FaPause fontSize={'25px'} />}</Button>
+        <audio
+            ref={myRef}
+            src={audioUrl}
+            onEnded={(ev) => {
+                setIsPlaying(false)
+            }}
+        />
+        <Button className={classes.button} handleClick={play}>{!isPlaying ? <FaPlay /> : <FaPause fontSize={'25px'} />}</Button>
         <div className={classes.divider_container}>
             <DividerCustom />
         </div>
